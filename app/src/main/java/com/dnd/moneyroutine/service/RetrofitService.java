@@ -8,5 +8,5 @@ import retrofit2.http.GET;
 // api interface
 public interface RetrofitService {
     @GET(".")
-    Call<JsonObject> test();
+    Call<String> test();
 }

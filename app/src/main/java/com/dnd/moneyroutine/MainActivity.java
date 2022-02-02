@@ -3,17 +3,22 @@ package com.dnd.moneyroutine;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dnd.moneyroutine.service.RequestService;
 import com.google.gson.JsonObject;
 
+import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,20 +27,19 @@ public class MainActivity extends AppCompatActivity {
 
         TextView tv_test = findViewById(R.id.tv_test);
 
-        Call<JsonObject> call = RequestService.getInstance().test();
-
-        call.enqueue(new Callback<JsonObject>() {
+        Call<String> call = RequestService.getInstance().test();
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    JsonObject responseJson = response.body();
-
-                    tv_test.setText(responseJson.toString());
+                    Log.d(TAG, response.body());
+                    tv_test.setText(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d(TAG, t.getMessage());
                 Toast.makeText(MainActivity.this, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
