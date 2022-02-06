@@ -2,6 +2,8 @@ package com.dnd.moneyroutine;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -19,6 +21,15 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(newBase);
+
+        Configuration configuration = new Configuration(newBase.getResources().getConfiguration());
+        configuration.fontScale = 1;
+        applyOverrideConfiguration(configuration);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
