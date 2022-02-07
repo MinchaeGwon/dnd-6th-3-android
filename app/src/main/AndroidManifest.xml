@@ -18,9 +18,11 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".SignupStep2Activity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:exported="true" />
         <activity
             android:name=".SignupStep1Activity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:exported="true" />
         <activity
             android:name=".NormalLoginActivity"

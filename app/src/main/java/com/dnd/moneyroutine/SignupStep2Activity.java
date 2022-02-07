@@ -1,10 +1,12 @@
 package com.dnd.moneyroutine;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,12 +17,14 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dnd.moneyroutine.custom.Common;
+import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
+import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
 import com.dnd.moneyroutine.dto.UserForm;
 import com.dnd.moneyroutine.service.RequestService;
 import com.google.gson.JsonObject;
@@ -39,8 +43,12 @@ public class SignupStep2Activity extends AppCompatActivity {
     private TextView tvPasswordConfirm;
     private Button btnNext;
 
+    private ConstraintLayout.LayoutParams contentLayoutParams;
     private InputMethodManager inputManager;
+    private SoftKeyboardDetector softKeyboardDetector;
+
     private String email;
+    private float scale;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -56,19 +64,33 @@ public class SignupStep2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_step2);
 
-        inputManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-        email = getIntent().getStringExtra("email");
-
-        init();
+        initView();
+        initField();
         setListener();
     }
 
     private void init() {
+
+    }
+
+    private void initView() {
         ibBack = findViewById(R.id.ib_sign2_back);
         etPassword = findViewById(R.id.et_signup2_password);
         etPasswordRepeat = findViewById(R.id.et_signup2_password_repeat);
         tvPasswordConfirm = findViewById(R.id.tv_password_confirm);
         btnNext = findViewById(R.id.btn_signup2_next);
+    }
+
+    private void initField() {
+        contentLayoutParams = (ConstraintLayout.LayoutParams) btnNext.getLayoutParams();
+
+        inputManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+
+        softKeyboardDetector = new SoftKeyboardDetector(this);
+        addContentView(softKeyboardDetector, new FrameLayout.LayoutParams(-1, -1));
+
+        scale = getResources().getDisplayMetrics().density;
+        email = getIntent().getStringExtra("email");
     }
 
     private void setListener() {
@@ -91,6 +113,44 @@ public class SignupStep2Activity extends AppCompatActivity {
             }
         });
 
+        // 키보드가 내려갈 때 수행
+        softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
+            @Override
+            public void onHiddenSoftKeyboard() {
+                if (tvPasswordConfirm.getText().equals("비밀번호가 일치하지 않습니다")) {
+                    btnNext.setBackgroundResource(R.drawable.rectangle_e9ecef_radius_8);
+                    btnNext.setEnabled(false);
+                } else {
+                    btnNext.setBackgroundResource(R.drawable.rectangle_212529_radius_8);
+                    btnNext.setEnabled(true);
+                }
+
+                contentLayoutParams.setMarginStart((int) (16 * scale + 0.2f));
+                contentLayoutParams.setMarginEnd((int) (16 * scale + 0.2f));
+                contentLayoutParams.bottomMargin = (int) (56 * scale + 0.2f);
+                btnNext.setLayoutParams(contentLayoutParams);
+            }
+        });
+
+        // 키보드가 올라올 때 수행
+        softKeyboardDetector.setOnShownKeyboard(new SoftKeyboardDetector.OnShownKeyboardListener() {
+            @Override
+            public void onShowSoftKeyboard() {
+                if (tvPasswordConfirm.getText().equals("비밀번호가 일치하지 않습니다")) {
+                    btnNext.setBackgroundColor(Color.parseColor("#e9ecef"));
+                    btnNext.setEnabled(false);
+                } else {
+                    btnNext.setBackgroundColor(Color.parseColor("#212529"));
+                    btnNext.setEnabled(true);
+                }
+
+                contentLayoutParams.setMarginStart(0);
+                contentLayoutParams.setMarginEnd(0);
+                contentLayoutParams.bottomMargin = 0;
+                btnNext.setLayoutParams(contentLayoutParams);
+            }
+        });
+
         //  키보드에서 완료 버튼 누르면 키보드 내리기
         TextView.OnEditorActionListener onEditorActionListener = new TextView.OnEditorActionListener() {
             @Override
@@ -98,6 +158,14 @@ public class SignupStep2Activity extends AppCompatActivity {
                 switch (actionId) {
                     case EditorInfo.IME_ACTION_DONE:
                         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                        if (etPassword.isFocused()) {
+                            etPassword.clearFocus();
+                        }
+
+                        if (etPasswordRepeat.isFocused()) {
+                            etPasswordRepeat.clearFocus();
+                        }
                         break;
                     default:
                         // 기본 엔터키 동작
@@ -111,7 +179,22 @@ public class SignupStep2Activity extends AppCompatActivity {
         etPassword.setOnEditorActionListener(onEditorActionListener);
         etPasswordRepeat.setOnEditorActionListener(onEditorActionListener);
 
-        // 비밀번호, 비밀번호 확인 일치 여부 확인
+        // focus 되어있는지 확인
+        View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean focus) {
+                if (focus) {
+                    view.setBackgroundResource(R.drawable.rectangle_343a40_stroke_radius_8);
+                } else {
+                    view.setBackgroundResource(R.drawable.rectangle_f8f9fa_radius_8);
+                }
+            }
+        };
+
+        etPassword.setOnFocusChangeListener(onFocusChangeListener);
+        etPasswordRepeat.setOnFocusChangeListener(onFocusChangeListener);
+
+        // 비밀번호, 비밀번호 확인 일치 여부 확인, 다음 버튼 활성화/비활성화
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -123,7 +206,13 @@ public class SignupStep2Activity extends AppCompatActivity {
                 if (etPasswordRepeat.length() == 0) {
                     tvPasswordConfirm.setVisibility(View.INVISIBLE);
 
-                    btnNext.setBackgroundResource(R.drawable.rectangle_gray_e9ecef_radius_8);
+                    // 키보드가 활성화 되지 않은 경우에만 둥글게 표시
+                    if (inputManager.isAcceptingText()) {
+                        btnNext.setBackgroundColor(Color.parseColor("#e9ecef"));
+                    } else {
+                        btnNext.setBackgroundResource(R.drawable.rectangle_e9ecef_radius_8);
+                    }
+
                     btnNext.setEnabled(false);
                 } else {
                     tvPasswordConfirm.setVisibility(View.VISIBLE);
@@ -131,12 +220,22 @@ public class SignupStep2Activity extends AppCompatActivity {
                     if (etPasswordRepeat.getText().toString().equals(etPassword.getText().toString())) {
                         tvPasswordConfirm.setText("비밀번호가 일치합니다");
 
-                        btnNext.setBackgroundResource(R.drawable.rectangle_black_212529_radius_8);
+                        if (inputManager.isAcceptingText()) {
+                            btnNext.setBackgroundColor(Color.parseColor("#212529"));
+                        } else {
+                            btnNext.setBackgroundResource(R.drawable.rectangle_212529_radius_8);
+                        }
+
                         btnNext.setEnabled(true);
                     } else {
                         tvPasswordConfirm.setText("비밀번호가 일치하지 않습니다");
 
-                        btnNext.setBackgroundResource(R.drawable.rectangle_gray_e9ecef_radius_8);
+                        if (inputManager.isAcceptingText()) {
+                            btnNext.setBackgroundColor(Color.parseColor("#e9ecef"));
+                        } else {
+                            btnNext.setBackgroundResource(R.drawable.rectangle_e9ecef_radius_8);
+                        }
+
                         btnNext.setEnabled(false);
                     }
                 }
@@ -164,11 +263,8 @@ public class SignupStep2Activity extends AppCompatActivity {
                     Log.d(TAG, responseJson.toString());
 
 //                    if (responseJson.get("code").getAsInt() == 200 && responseJson.get("response").getAsBoolean()) {
-//                        String token = responseJson.get("token").getAsString();
-//                        String refreshToken = responseJson.get("refreshToken").getAsString();
-//                        saveTokenAndMoveActivity(token, refreshToken);
-//                    } else {
-//                        // 회원가입 실패 다이얼로그 띄움
+//                        String token = responseJson.get("access_token").getAsString();
+//                        saveTokenAndMoveActivity(token);
 //                    }
                 }
             }
@@ -181,9 +277,8 @@ public class SignupStep2Activity extends AppCompatActivity {
         });
     }
 
-    public void saveTokenAndMoveActivity(String jwtToken, String refreshToken) {
-        PreferenceManager.setString(this, (new Common()).getTokenKey(), jwtToken);
-        PreferenceManager.setString(this, Common.REFRESH_TOKEN_KEY, refreshToken);
+    public void saveTokenAndMoveActivity(String jwtToken) {
+        PreferenceManager.setString(this, Constants.tokenKey, jwtToken);
 
         Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show();
 

@@ -13,20 +13,17 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dnd.moneyroutine.custom.Common;
+import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
+import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
 import com.dnd.moneyroutine.dto.UserForm;
-import com.dnd.moneyroutine.service.RequestBodyUtil;
 import com.dnd.moneyroutine.service.RequestService;
 import com.google.gson.JsonObject;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -100,7 +97,6 @@ public class NormalLoginActivity extends AppCompatActivity {
                 String password = etPassword.getText().toString();
 
                 if (email.length() != 0 && password.length() != 0) {
-                    Log.d(TAG, "!11111111111");
                     loginToServer(email, password);
                 }
             }
@@ -109,29 +105,21 @@ public class NormalLoginActivity extends AppCompatActivity {
 
     // 로그인 정보 서버로 전달, 로그인 성공 여부 확인하여 토큰 값 SharedPreferences에 저장
     private void loginToServer(String email, String password) {
-        Log.d(TAG, "@222222222");
-
         Call<JsonObject> call = RequestService.getInstance().login(new UserForm(email, password));
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                Log.d(TAG, "33333333");
-                Log.d(TAG, response.message());
-
                 if (response.isSuccessful()) {
-                    Log.d(TAG, "4444444");
-
                     JsonObject responseJson = response.body();
 
                     Log.d(TAG, responseJson.toString());
 
-                    if (responseJson.get("code").getAsInt() == 200 && responseJson.get("response").getAsBoolean()) {
-                        String token = responseJson.get("token").getAsString();
-                        String refreshToken = responseJson.get("refreshToken").getAsString();
-                        saveTokenAndMoveActivity(token, refreshToken);
-                    } else {
-                        // 로그인 정보가 맞지 않으면 로그인 실패 다이얼로그 띄움
-                    }
+//                    if (responseJson.get("code").getAsInt() == 200 && responseJson.get("response").getAsBoolean()) {
+//                        String token = responseJson.get("access_token").getAsString();
+//                        saveTokenAndMoveActivity(token);
+//                    } else {
+//                        // 로그인 정보가 맞지 않으면 로그인 실패 다이얼로그 띄움
+//                    }
                 }
             }
 
@@ -142,19 +130,8 @@ public class NormalLoginActivity extends AppCompatActivity {
         });
     }
 
-    // 서버로 전달할 파라미터를 만듦
-    private Map<String, RequestBody> makeFormMap(String email, String password) {
-        Map<String, RequestBody> map = new HashMap<>();
-
-        map.put("email", RequestBodyUtil.toRequestBody(String.valueOf(email)));
-        map.put("password", RequestBodyUtil.toRequestBody(String.valueOf(password)));
-
-        return map;
-    }
-
-    private void saveTokenAndMoveActivity(String jwtToken, String refreshToken) {
-        PreferenceManager.setString(this, (new Common()).getTokenKey(), jwtToken);
-        PreferenceManager.setString(this, Common.REFRESH_TOKEN_KEY, refreshToken);
+    private void saveTokenAndMoveActivity(String jwtToken) {
+        PreferenceManager.setString(this, Constants.tokenKey, jwtToken);
 
         Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show();
 
