@@ -1,33 +1,25 @@
 package com.dnd.moneyroutine.service;
 
-import com.dnd.moneyroutine.custom.Common;
+import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.dto.UserForm;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-import java.util.Map;
-
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
-import retrofit2.http.Body;
 
-// 서버 요청 관련 service class
+// 서버 요청 관련 service class : 헤더에 토큰 필요 없을 때 사용
 public class RequestService {
 
     private static RequestService requestService = null;
+
     private Retrofit retrofit;
-
     private RetrofitService retrofitService;
-
-    Gson gson = new GsonBuilder().setLenient().create();
 
     public RequestService() {
         retrofit = new Retrofit.Builder()
-                .baseUrl(Common.SERVER)
+                .baseUrl(Constants.SERVER)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

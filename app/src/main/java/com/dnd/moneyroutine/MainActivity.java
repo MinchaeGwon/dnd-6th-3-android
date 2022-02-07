@@ -9,14 +9,16 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dnd.moneyroutine.custom.Constants;
+import com.dnd.moneyroutine.custom.PreferenceManager;
+import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.RequestService;
-import com.google.gson.JsonObject;
-
-import java.util.Locale;
+import com.dnd.moneyroutine.service.RetrofitService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +40,19 @@ public class MainActivity extends AppCompatActivity {
 
         TextView tv_test = findViewById(R.id.tv_test);
 
-        Call<String> call = RequestService.getInstance().test();
+        /*
+         * 헤더에 토큰 추가하는 코드
+         * String token = PreferenceManager.getToken(this, Constants.tokenKey); // 토큰 가져오기
+         *
+         * HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+         * Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+         * RetrofitService retrofitService = retrofit.create(RetrofitService.class);
+         *
+         * Call<String> call = retrofitService.test();
+         */
+
+        Call<String> call = RequestService.getInstance().test(); // 토큰이 필요 없을 때 사용하는 코드
+
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
