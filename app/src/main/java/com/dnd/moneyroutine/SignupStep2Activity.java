@@ -118,10 +118,10 @@ public class SignupStep2Activity extends AppCompatActivity {
             @Override
             public void onHiddenSoftKeyboard() {
                 if (tvPasswordConfirm.getText().equals("비밀번호가 일치하지 않습니다")) {
-                    btnNext.setBackgroundResource(R.drawable.rectangle_e9ecef_radius_8);
+                    btnNext.setBackgroundResource(R.drawable.rectangle_ced4da_radius_8);
                     btnNext.setEnabled(false);
                 } else {
-                    btnNext.setBackgroundResource(R.drawable.rectangle_212529_radius_8);
+                    btnNext.setBackgroundResource(R.drawable.rectangle_343a40_radius_8);
                     btnNext.setEnabled(true);
                 }
 
@@ -136,11 +136,11 @@ public class SignupStep2Activity extends AppCompatActivity {
         softKeyboardDetector.setOnShownKeyboard(new SoftKeyboardDetector.OnShownKeyboardListener() {
             @Override
             public void onShowSoftKeyboard() {
-                if (tvPasswordConfirm.getText().equals("비밀번호가 일치하지 않습니다")) {
-                    btnNext.setBackgroundColor(Color.parseColor("#e9ecef"));
+                if (tvPasswordConfirm.getVisibility() == View.VISIBLE) {
+                    btnNext.setBackgroundColor(Color.parseColor("#ced4da"));
                     btnNext.setEnabled(false);
                 } else {
-                    btnNext.setBackgroundColor(Color.parseColor("#212529"));
+                    btnNext.setBackgroundColor(Color.parseColor("#343a40"));
                     btnNext.setEnabled(true);
                 }
 
@@ -184,7 +184,7 @@ public class SignupStep2Activity extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean focus) {
                 if (focus) {
-                    view.setBackgroundResource(R.drawable.rectangle_343a40_stroke_radius_8);
+                    view.setBackgroundResource(R.drawable.rectangle_495057_stroke_radius_8);
                 } else {
                     view.setBackgroundResource(R.drawable.rectangle_f8f9fa_radius_8);
                 }
@@ -208,32 +208,37 @@ public class SignupStep2Activity extends AppCompatActivity {
 
                     // 키보드가 활성화 되지 않은 경우에만 둥글게 표시
                     if (inputManager.isAcceptingText()) {
-                        btnNext.setBackgroundColor(Color.parseColor("#e9ecef"));
+                        btnNext.setBackgroundColor(Color.parseColor("#ced4da"));
                     } else {
-                        btnNext.setBackgroundResource(R.drawable.rectangle_e9ecef_radius_8);
+                        btnNext.setBackgroundResource(R.drawable.rectangle_ced4da_radius_8);
                     }
 
                     btnNext.setEnabled(false);
                 } else {
-                    tvPasswordConfirm.setVisibility(View.VISIBLE);
-
                     if (etPasswordRepeat.getText().toString().equals(etPassword.getText().toString())) {
-                        tvPasswordConfirm.setText("비밀번호가 일치합니다");
+                        tvPasswordConfirm.setVisibility(View.INVISIBLE);
+
+                        if (etPasswordRepeat.isFocused()) {
+                            etPasswordRepeat.setBackgroundResource(R.drawable.rectangle_495057_stroke_radius_8);
+                        } else {
+                            etPasswordRepeat.setBackgroundResource(R.drawable.rectangle_f8f9fa_radius_8);
+                        }
 
                         if (inputManager.isAcceptingText()) {
-                            btnNext.setBackgroundColor(Color.parseColor("#212529"));
+                            btnNext.setBackgroundColor(Color.parseColor("#343a40"));
                         } else {
-                            btnNext.setBackgroundResource(R.drawable.rectangle_212529_radius_8);
+                            btnNext.setBackgroundResource(R.drawable.rectangle_343a40_radius_8);
                         }
 
                         btnNext.setEnabled(true);
                     } else {
-                        tvPasswordConfirm.setText("비밀번호가 일치하지 않습니다");
+                        tvPasswordConfirm.setVisibility(View.VISIBLE);
+                        etPasswordRepeat.setBackgroundResource(R.drawable.rectangle_fa5c6c_stroke_radius_8);
 
                         if (inputManager.isAcceptingText()) {
-                            btnNext.setBackgroundColor(Color.parseColor("#e9ecef"));
+                            btnNext.setBackgroundColor(Color.parseColor("#ced4da"));
                         } else {
-                            btnNext.setBackgroundResource(R.drawable.rectangle_e9ecef_radius_8);
+                            btnNext.setBackgroundResource(R.drawable.rectangle_ced4da_radius_8);
                         }
 
                         btnNext.setEnabled(false);

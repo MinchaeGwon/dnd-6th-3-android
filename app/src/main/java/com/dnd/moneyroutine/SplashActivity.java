@@ -13,6 +13,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.dnd.moneyroutine.custom.Constants;
+import com.dnd.moneyroutine.custom.PreferenceManager;
+
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
 
@@ -41,7 +44,17 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashActivity.this, SocialLoginActivity.class);
+                Intent intent;
+
+                String token = PreferenceManager.getToken(SplashActivity.this, Constants.tokenKey); // 토큰 가져오기
+
+                // 토큰이 null이거나 길이가 0일 경우 로그인 화면으로 이동, 아닌 경우 메인 화면으로 이동
+                if (token == null || token.length() == 0) {
+                    intent = new Intent(SplashActivity.this, SocialLoginActivity.class);
+                } else {
+                    intent = new Intent(SplashActivity.this, MainActivity.class);
+                }
+
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();

@@ -38,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView tv_test = findViewById(R.id.tv_test);
-
         /*
          * 헤더에 토큰 추가하는 코드
          * String token = PreferenceManager.getToken(this, Constants.tokenKey); // 토큰 가져오기
@@ -58,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
                     Log.d(TAG, response.body());
-                    tv_test.setText(response.body());
                 }
             }
 
