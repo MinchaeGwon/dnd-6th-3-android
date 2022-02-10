@@ -1,5 +1,6 @@
 package com.dnd.moneyroutine.service;
 
+import com.dnd.moneyroutine.CustomCategoryModel;
 import com.dnd.moneyroutine.custom.Common;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -39,5 +40,9 @@ public class RequestService {
 
     public Call<String> test() {
         return  retrofitService.test();
+    }
+
+    public Call<CustomCategoryModel> create(CustomCategoryModel customCategoryModel){
+        return retrofitService.create(customCategoryModel);
     }
 }

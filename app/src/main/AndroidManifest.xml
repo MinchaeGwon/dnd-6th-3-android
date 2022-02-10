@@ -3,23 +3,30 @@
     package="com.dnd.moneyroutine">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyRoutine"
-        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".NewCategoryActivity"
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".OnboardingDetailBudgetActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".OnboardingEntireBudgetActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".OnboardingCategoryActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

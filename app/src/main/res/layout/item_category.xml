@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_category_item"
+    android:layout_width="104dp"
+    android:layout_height="110dp"
+    android:background="@drawable/button_category_unclicked">
+
+    <TextView
+        android:id="@+id/ic_category_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:height="35dp"
+        android:gravity="bottom"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="0dp"
+        android:text="🖥"
+        android:textColor="#FF000000"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_category_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/spoqahansansneo_medium"
+        android:text="이름"
+        android:textColor="#343A40"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ic_category_icon" />
+
+    <TextView
+        android:id="@+id/tv_category_ex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spoqahansansneo_regular"
+        android:text="설명입니다"
+        android:textColor="#868E96"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_category_name" />
+
+<!--    <ImageView-->
+<!--        android:id="@+id/iv_category_icon"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:srcCompat="@drawable/bus" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
