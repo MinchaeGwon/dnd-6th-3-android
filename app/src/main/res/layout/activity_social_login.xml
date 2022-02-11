@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".SocialLoginActivity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="56dp"
+        android:fontFamily="@font/spoqa_han_sans_neo_bold"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="5sp"
+        android:text="어때써요에\n오신 것을 환영합니다 😃"
+        android:textColor="#131313"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout13"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="138dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+        <Button
+            android:id="@+id/btn_login_kakao"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rectangle_fae300_radius_8"
+            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+            android:stateListAnimator="@null"
+            android:text="카카오톡으로 계속하기"
+            android:textColor="#212529"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView25"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/logo_kakao"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_login_kakao"
+            app:layout_constraintStart_toStartOf="@+id/btn_login_kakao"
+            app:layout_constraintTop_toTopOf="@+id/btn_login_kakao" />
+
+        <Button
+            android:id="@+id/btn_login_naver"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rectangle_06be34_radius_8"
+            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+            android:stateListAnimator="@null"
+            android:text="네이버로 계속하기"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_login_kakao" />
+
+        <ImageView
+            android:id="@+id/imageView26"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_login_naver"
+            app:layout_constraintStart_toStartOf="@+id/btn_login_naver"
+            app:layout_constraintTop_toTopOf="@+id/btn_login_naver"
+            app:srcCompat="@drawable/logo_naver" />
+
+        <!--        <com.nhn.android.naverlogin.ui.view.OAuthLoginButton-->
+        <!--            android:id="@+id/naver_login_btn"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="50dp"-->
+        <!--            android:layout_marginStart="20dp"-->
+        <!--            android:layout_marginEnd="20dp"-->
+        <!--            android:foreground="@drawable/rectangle_green_06be34_radius_8"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/textView18"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:fontFamily="@font/spoqa_han_sans_neo_medium"-->
+        <!--            android:includeFontPadding="false"-->
+        <!--            android:stateListAnimator="@null"-->
+        <!--            android:text="네이버로 계속하기"-->
+        <!--            android:textColor="#ffffff"-->
+        <!--            android:textSize="15sp"-->
+        <!--            android:textStyle="normal"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@+id/btn_naver_login"-->
+        <!--            app:layout_constraintEnd_toEndOf="@+id/btn_naver_login"-->
+        <!--            app:layout_constraintStart_toStartOf="@+id/btn_naver_login"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/btn_naver_login" />-->
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/btn_login_google"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:foreground="@drawable/rectangle_e9ecef_stroke_radius_8"
+            android:stateListAnimator="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_login_naver" />
+
+        <ImageView
+            android:id="@+id/imageView28"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_login_google"
+            app:layout_constraintStart_toStartOf="@+id/btn_login_google"
+            app:layout_constraintTop_toTopOf="@+id/btn_login_google"
+            app:srcCompat="@drawable/logo_google" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+            android:includeFontPadding="false"
+            android:text="구글로 계속하기"
+            android:textColor="#212529"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_login_google"
+            app:layout_constraintEnd_toEndOf="@+id/btn_login_google"
+            app:layout_constraintStart_toStartOf="@+id/btn_login_google"
+            app:layout_constraintTop_toTopOf="@+id/btn_login_google" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="121dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_login_google">
+
+            <TextView
+                android:id="@+id/tv_email_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                android:includeFontPadding="false"
+                android:text="이메일 로그인"
+                android:textColor="#868E96"
+                android:textSize="12sp"
+                android:textStyle="normal" />
+
+            <View
+                android:layout_width="3dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="18dp"
+                android:layout_marginEnd="18dp"
+                android:background="#dee2e6" />
+
+            <TextView
+                android:id="@+id/tv_email_signup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                android:includeFontPadding="false"
+                android:text="이메일 회원가입"
+                android:textColor="#868E96"
+                android:textSize="12sp"
+                android:textStyle="normal" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
