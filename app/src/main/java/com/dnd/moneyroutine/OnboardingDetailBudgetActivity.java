@@ -5,21 +5,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dnd.moneyroutine.adapter.BudgetRecyclerViewAdapter;
 import com.dnd.moneyroutine.item.BudgetItem;
 import com.dnd.moneyroutine.item.CategoryItem;
 import com.dnd.moneyroutine.service.RequestService;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,8 +31,9 @@ import retrofit2.Response;
 public class OnboardingDetailBudgetActivity extends AppCompatActivity {
 
     private TextView tvTitle;
-    private TextView tv_entire_budget_sub;
+    private TextView tvTotal;
     private TextView tvGone;
+    private TextView tvAlert;
     private String entireBudget;
     private RecyclerView rcBudget;
     private Button btnNext;
@@ -53,20 +57,20 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
         newItem = (ArrayList<CategoryItem>) intent.getSerializableExtra("New Item");
 
 
-
+        String budget = new DecimalFormat("#,###").format(Integer.parseInt(entireBudget));
 
 //        tvTotal=findViewById(R.id.tv_entire_budget);
-//        tvAlert=findViewById(R.id.tv_budget_alert);
+        tvTotal=findViewById(R.id.tv_budget_total);
+        tvTotal.setText(budget);
 
         tvTitle = (TextView) findViewById(R.id.tv_entire_budget);
-        tvTitle.setText(entireBudget + "만원 안으로\n세부 예산 항목을 정해주세요");
+        tvTitle.setText(budget + "원 안으로\n세부 예산 항목을 정해주세요");
 
-        //예산 비교 위해 전체 예산 저장해두는 view (더 나은 방법 찾기)
-        tvGone = findViewById(R.id.tv_gone);
-        tvGone.setText(entireBudget);
+        tvAlert=findViewById(R.id.tv_budget_alert);
+        tvAlert.setText(budget+" 원 남음");
+
 
         getRecyclerView();
-
 
         ivBack = findViewById(R.id.iv_back_detail);
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +92,8 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
 
             }
         });
+
+
 
     }
 
@@ -134,5 +140,24 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
         });
     }
 
+    //edittext 외부 누르면 키보드 내려가면서 focus 없어지게
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        View focusView = getCurrentFocus();
+        if (focusView != null) {
+            Rect rect = new Rect();
+            focusView.getGlobalVisibleRect(rect);
+            int x = (int) ev.getX(), y = (int) ev.getY();
+            if (!rect.contains(x, y)) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                if (imm != null)
+                    imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
+                focusView.clearFocus();
+            }
+
+            tvAlert.setTextColor(Color.parseColor("#212529"));
+        }
+        return super.dispatchTouchEvent(ev);
+    }
 
 }

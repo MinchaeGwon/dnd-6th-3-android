@@ -1,15 +1,16 @@
 package com.dnd.moneyroutine.adapter;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Context;
 import android.graphics.Color;
-import android.media.Image;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.item.BudgetItem;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecyclerViewAdapter.ViewHolder>{
@@ -33,14 +35,15 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
     TextView tv_budget_total;
     TextView tvAlert;
     TextView tvGone;
-    TextView tvtotalText;
 
-    ArrayList<String> nameArray = new ArrayList<>();
     ArrayList<String> totalAmountArray = new ArrayList<>();
 
 
     boolean isOnTextChanged = false;
     int finalTotal;
+
+    private DecimalFormat decimalFormat = new DecimalFormat("#,###");
+    private String result="";
 
     public BudgetRecyclerViewAdapter(ArrayList<BudgetItem> list){
         this.mBudgetItem = list;
@@ -53,10 +56,10 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
 
         context = parent.getContext();
         rootView = ((Activity) context).getWindow().getDecorView().findViewById(android.R.id.content);
-        tv_budget_total =rootView.findViewById(R.id.tv_budget_total);
-        tvAlert = rootView.findViewById(R.id.tv_budget_alert);
-        tvGone=rootView.findViewById(R.id.tv_gone);
-        tvtotalText=rootView.findViewById(R.id.tv_total_text);
+        tvAlert =rootView.findViewById(R.id.tv_budget_alert);
+        tv_budget_total = rootView.findViewById(R.id.tv_budget_total);
+
+
 
         return new ViewHolder(view);
     }
@@ -75,10 +78,21 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 isOnTextChanged = true;
+                if(!TextUtils.isEmpty(charSequence.toString()) && !charSequence.toString().equals(result)){
+                    result = decimalFormat.format(Double.parseDouble(charSequence.toString().replaceAll(",","")));
+                    holder.et_budget_detail.setText(result);
+                    holder.et_budget_detail.setSelection(result.length());
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
+
+                String num = editable.toString().replaceAll("\\,","");
+                String totalbudget = tv_budget_total.getText().toString();
+                int mbudget = Integer.parseInt(totalbudget.replaceAll("\\,","").toString());
+
+
                 finalTotal = 0;
                 if(isOnTextChanged){
                     isOnTextChanged=false;
@@ -90,7 +104,7 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                                 totalAmountArray.add("0");
                             }else{
                                 totalAmountArray.add("0");
-                                totalAmountArray.set(position,editable.toString());
+                                totalAmountArray.set(position,num);
 
                                 break;
                             }
@@ -101,8 +115,17 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                             finalTotal =  finalTotal+tmpTotal;
                         }
 
-                        tv_budget_total.setText(String.valueOf(finalTotal)+"원");
+                        if(finalTotal>mbudget){
+                            String commaTotal = new DecimalFormat("#,###").format(finalTotal-mbudget);
+                            tvAlert.setText(commaTotal+"원 초과");
+                            tvAlert.setTextColor(Color.parseColor("#FD5E6E"));
+                        }
+                        else{
+                            String commaTotal = new DecimalFormat("#,###").format(mbudget-finalTotal);
+                            tvAlert.setText(commaTotal+"원 남음");
+                            tvAlert.setTextColor(Color.parseColor("#0DC9B9"));
 
+                        }
 
                     }catch (NumberFormatException e){
                         finalTotal=0;
@@ -116,34 +139,59 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                             int tmp = Integer.parseInt(totalAmountArray.get(i));
                             finalTotal=finalTotal+tmp;
                         }
-                        tv_budget_total.setText(String.valueOf(finalTotal)+"원");
+
+//                        String commaTotal = new DecimalFormat("#,###").format(mbudget-finalTotal);
+//                        tv_budget_total.setText(commaTotal+"원 남음");
+
+                        if(finalTotal>mbudget){
+                            String commaTotal = new DecimalFormat("#,###").format(finalTotal-mbudget);
+                            tvAlert.setText(commaTotal+"원 초과");
+                            tvAlert.setTextColor(Color.parseColor("#FD5E6E"));
+                        }
+                        else{
+                            String commaTotal = new DecimalFormat("#,###").format(mbudget-finalTotal);
+                            tvAlert.setText(commaTotal+"원 남음");
+                        }
 
                     }
 
                     //합계가 예산을 넘으면
-                    String totalbudget = tvGone.getText().toString();
-                    if(finalTotal>Integer.parseInt(totalbudget)){
-                        tvAlert.setVisibility(View.VISIBLE);
-                        tvAlert.setText("앗 "+totalbudget+"원이 넘었어요!");
-                        tv_budget_total.setTextColor(Color.parseColor("#ff6eab"));
-                        tvtotalText.setTextColor(Color.parseColor("#ff6eab"));
-                    }
-                    else{
-                        tvAlert.setVisibility(View.INVISIBLE);
-                        tv_budget_total.setTextColor(Color.parseColor("#343A40"));
-                        tvtotalText.setTextColor(Color.parseColor("#343A40"));
-                    }
+
+
+//                    if(finalTotal>Integer.parseInt(mbudget)){
+//                        tvAlert.setText(totalbudget+"");
+//                        tv_budget_total.setTextColor(Color.parseColor("#ff6eab"));
+//                        tvtotalText.setTextColor(Color.parseColor("#ff6eab"));
+//                    }
+//                    else{
+//                        tvAlert.setVisibility(View.INVISIBLE);
+//                        tv_budget_total.setTextColor(Color.parseColor("#343A40"));
+//                        tvtotalText.setTextColor(Color.parseColor("#343A40"));
+//                    }
                 }
+
+
 
 
 
             }
         });
 
+
+
 //        holder.setItem(mBudgetItem.get(position));
         holder.bindView(position, mBudgetItem.get(position));
 
 
+    }
+
+    protected String makeStringComma(String str) {    // 천단위 콤마설정.
+        if (str.length() == 0) {
+            return "";
+        }
+        long value = Long.parseLong(str);
+        DecimalFormat format = new DecimalFormat("###,###");
+        return format.format(value);
     }
 
 
@@ -181,6 +229,7 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
             ic_category_item_detail = itemView.findViewById(R.id.ic_category_item_detail);
             tv_category_name_budget = (TextView) itemView.findViewById(R.id.tv_category_item_detail);
 
+
         }
 
 
@@ -213,6 +262,9 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                     }
                 }
             });
+
+
+
 
 
 
