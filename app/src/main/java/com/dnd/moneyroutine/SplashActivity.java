@@ -45,7 +45,6 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent;
-
                 String token = PreferenceManager.getToken(SplashActivity.this, Constants.tokenKey); // 토큰 가져오기
 
                 // 토큰이 null이거나 길이가 0일 경우 로그인 화면으로 이동, 아닌 경우 메인 화면으로 이동
