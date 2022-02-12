@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="53dp"
-        android:fontFamily="@font/spoqahansansneo_bold"
+        android:fontFamily="@font/spoqa_han_sans_neo_bold"
         android:lineHeight="30sp"
         android:lineSpacingExtra="10sp"
         android:text="100만원 안으로\n세부 예산 항목을 정해주세요"
@@ -115,6 +115,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
                         android:text="전체 예산 "
                         android:textColor="#ADB5BD"
                         android:textSize="12sp" />
@@ -124,7 +125,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/spoqahansansneo_regular"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
                         android:textColor="#ADB5BD"
                         android:textSize="12sp" />
 
@@ -133,6 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
                         android:text="원"
                         android:textColor="#ADB5BD"
                         android:textSize="12sp" />
@@ -142,7 +144,7 @@
                     android:id="@+id/tv_budget_alert"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/spoqahansansneo_medium"
+                    android:fontFamily="@font/spoqa_han_sans_neo_medium"
                     android:text="만원"
                     android:textColor="#343A40"
                     android:textSize="16sp"
@@ -155,16 +157,15 @@
     </androidx.core.widget.NestedScrollView>
 
 
-
     <android.widget.Button
-        android:id="@+id/btn_start"
+        android:id="@+id/btn_next_detail_budget"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/button_black"
-        android:fontFamily="@font/spoqahansansneo_bold"
+        android:background="@drawable/button_enabled_true"
+        android:fontFamily="@font/spoqa_han_sans_neo_bold"
         android:text="다음"
         android:textColor="@color/white"
         android:textSize="16dp" />

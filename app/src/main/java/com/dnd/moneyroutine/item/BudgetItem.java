@@ -6,14 +6,14 @@ public class BudgetItem implements Serializable {
 
     int id;
     String categoryIcon;
-//    int categoryIcon;
+    //    int categoryIcon;
     String categoryName;
 
 
-    public BudgetItem(int id, String categoryIcon, String categoryName){
-        this.id=id;
-        this.categoryIcon=categoryIcon;
-        this.categoryName=categoryName;
+    public BudgetItem(int id, String categoryIcon, String categoryName) {
+        this.id = id;
+        this.categoryIcon = categoryIcon;
+        this.categoryName = categoryName;
     }
 
     public int getId() {

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,26 +27,30 @@ import com.dnd.moneyroutine.item.BudgetItem;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecyclerViewAdapter.ViewHolder>{
+public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecyclerViewAdapter.ViewHolder> {
 
+
+    private Context context;
+    private View rootView;
+
+    private TextView tv_budget_total;
+    private TextView tvAlert;
+    private Button btnNext;
+
+
+    private ArrayList<String> totalAmountArray = new ArrayList<>();
     private ArrayList<BudgetItem> mBudgetItem;
-
-    Context context;
-    View rootView;
-    TextView tv_budget_total;
-    TextView tvAlert;
-    TextView tvGone;
-
-    ArrayList<String> totalAmountArray = new ArrayList<>();
+    private InputMethodManager inputManager;
 
 
     boolean isOnTextChanged = false;
-    int finalTotal;
+    private int finalTotal;
+    private int mbudget;
 
     private DecimalFormat decimalFormat = new DecimalFormat("#,###");
-    private String result="";
+    private String result = "";
 
-    public BudgetRecyclerViewAdapter(ArrayList<BudgetItem> list){
+    public BudgetRecyclerViewAdapter(ArrayList<BudgetItem> list) {
         this.mBudgetItem = list;
     }
 
@@ -56,9 +61,10 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
 
         context = parent.getContext();
         rootView = ((Activity) context).getWindow().getDecorView().findViewById(android.R.id.content);
-        tvAlert =rootView.findViewById(R.id.tv_budget_alert);
+        tvAlert = rootView.findViewById(R.id.tv_budget_alert);
         tv_budget_total = rootView.findViewById(R.id.tv_budget_total);
-
+        btnNext = rootView.findViewById(R.id.btn_next_detail_budget);
+        inputManager = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
 
 
         return new ViewHolder(view);
@@ -68,136 +74,129 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+
         //예산 입력하면 합산하여 띄움
         holder.et_budget_detail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
 
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 isOnTextChanged = true;
-                if(!TextUtils.isEmpty(charSequence.toString()) && !charSequence.toString().equals(result)){
-                    result = decimalFormat.format(Double.parseDouble(charSequence.toString().replaceAll(",","")));
+                //쉼표 추가
+                if (!TextUtils.isEmpty(charSequence.toString()) && !charSequence.toString().equals(result)) {
+                    result = decimalFormat.format(Double.parseDouble(charSequence.toString().replaceAll(",", "")));
                     holder.et_budget_detail.setText(result);
                     holder.et_budget_detail.setSelection(result.length());
                 }
+
+                if (finalTotal > mbudget) {
+                    if (inputManager.isAcceptingText()) {
+                        btnNext.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
+                    } else {
+                        btnNext.setBackgroundResource(R.drawable.button_enabled_false);
+
+                    }
+                } else {
+                    if (inputManager.isAcceptingText()) {
+                        btnNext.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
+                    } else {
+                        btnNext.setBackgroundResource(R.drawable.button_enabled_true);
+
+                    }
+                }
+
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
 
-                String num = editable.toString().replaceAll("\\,","");
+                String num = editable.toString().replaceAll("\\,", "");
                 String totalbudget = tv_budget_total.getText().toString();
-                int mbudget = Integer.parseInt(totalbudget.replaceAll("\\,","").toString());
+                mbudget = Integer.parseInt(totalbudget.replaceAll("\\,", "").toString());
 
 
                 finalTotal = 0;
-                if(isOnTextChanged){
-                    isOnTextChanged=false;
-                    try{
+                if (isOnTextChanged) {
+                    isOnTextChanged = false;
+                    try {
                         finalTotal = 0;
 
-                        for(int i=0; i<=position;i++){
-                            if(i!=position){
+                        for (int i = 0; i <= position; i++) {
+                            if (i != position) {
                                 totalAmountArray.add("0");
-                            }else{
+                            } else {
                                 totalAmountArray.add("0");
-                                totalAmountArray.set(position,num);
+                                totalAmountArray.set(position, num);
 
                                 break;
                             }
                         }
 
-                        for(int i =0; i<=totalAmountArray.size()-1;i++){
+                        for (int i = 0; i <= totalAmountArray.size() - 1; i++) {
                             int tmpTotal = Integer.parseInt(totalAmountArray.get(i));
-                            finalTotal =  finalTotal+tmpTotal;
+                            finalTotal = finalTotal + tmpTotal;
                         }
 
-                        if(finalTotal>mbudget){
-                            String commaTotal = new DecimalFormat("#,###").format(finalTotal-mbudget);
-                            tvAlert.setText(commaTotal+"원 초과");
+
+                        if (finalTotal > mbudget) {
+                            //예산보다 많으면
+                            String commaTotal = new DecimalFormat("#,###").format(finalTotal - mbudget);
+                            tvAlert.setText(commaTotal + "원 초과");
                             tvAlert.setTextColor(Color.parseColor("#FD5E6E"));
-                        }
-                        else{
-                            String commaTotal = new DecimalFormat("#,###").format(mbudget-finalTotal);
-                            tvAlert.setText(commaTotal+"원 남음");
+                            btnNext.setEnabled(false); //다음 버튼 비활성화
+
+                        } else {
+                            //예산보다 적으면
+                            String commaTotal = new DecimalFormat("#,###").format(mbudget - finalTotal);
+                            tvAlert.setText(commaTotal + "원 남음");
                             tvAlert.setTextColor(Color.parseColor("#0DC9B9"));
-
+                            btnNext.setEnabled(true);//다음 버튼 활성화
                         }
 
-                    }catch (NumberFormatException e){
-                        finalTotal=0;
-                        for(int i=0;i<=position;i++){
-                            if(i==position){
+                    } catch (NumberFormatException e) {
+                        finalTotal = 0;
+                        for (int i = 0; i <= position; i++) {
+                            if (i == position) {
                                 totalAmountArray.set(position, "0");
 //                                    nameArray.set(position,"0");
                             }
                         }
-                        for (int i=0;i<=totalAmountArray.size()-1; i++){
+                        for (int i = 0; i <= totalAmountArray.size() - 1; i++) {
                             int tmp = Integer.parseInt(totalAmountArray.get(i));
-                            finalTotal=finalTotal+tmp;
+                            finalTotal = finalTotal + tmp;
                         }
 
-//                        String commaTotal = new DecimalFormat("#,###").format(mbudget-finalTotal);
-//                        tv_budget_total.setText(commaTotal+"원 남음");
-
-                        if(finalTotal>mbudget){
-                            String commaTotal = new DecimalFormat("#,###").format(finalTotal-mbudget);
-                            tvAlert.setText(commaTotal+"원 초과");
+                        if (finalTotal > mbudget) {
+                            String commaTotal = new DecimalFormat("#,###").format(finalTotal - mbudget);
+                            tvAlert.setText(commaTotal + "원 초과");
                             tvAlert.setTextColor(Color.parseColor("#FD5E6E"));
-                        }
-                        else{
-                            String commaTotal = new DecimalFormat("#,###").format(mbudget-finalTotal);
-                            tvAlert.setText(commaTotal+"원 남음");
+                            btnNext.setEnabled(false);
+                            btnNext.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
+
+                        } else {
+                            String commaTotal = new DecimalFormat("#,###").format(mbudget - finalTotal);
+                            tvAlert.setText(commaTotal + "원 남음");
+                            btnNext.setEnabled(true);
+                            btnNext.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
+
                         }
 
                     }
 
-                    //합계가 예산을 넘으면
-
-
-//                    if(finalTotal>Integer.parseInt(mbudget)){
-//                        tvAlert.setText(totalbudget+"");
-//                        tv_budget_total.setTextColor(Color.parseColor("#ff6eab"));
-//                        tvtotalText.setTextColor(Color.parseColor("#ff6eab"));
-//                    }
-//                    else{
-//                        tvAlert.setVisibility(View.INVISIBLE);
-//                        tv_budget_total.setTextColor(Color.parseColor("#343A40"));
-//                        tvtotalText.setTextColor(Color.parseColor("#343A40"));
-//                    }
                 }
-
-
-
-
 
             }
         });
 
 
-
-//        holder.setItem(mBudgetItem.get(position));
         holder.bindView(position, mBudgetItem.get(position));
 
 
     }
-
-    protected String makeStringComma(String str) {    // 천단위 콤마설정.
-        if (str.length() == 0) {
-            return "";
-        }
-        long value = Long.parseLong(str);
-        DecimalFormat format = new DecimalFormat("###,###");
-        return format.format(value);
-    }
-
-
-
-
-
 
 
     @Override
@@ -206,17 +205,13 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
     }
 
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout linear_budget_detail;
         TextView ic_category_item_detail;
         TextView tv_category_name_budget;
         EditText et_budget_detail;
         ImageView won_detail;
         TextView tv_budget_detail_won;
-
-
-
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -229,32 +224,26 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
             ic_category_item_detail = itemView.findViewById(R.id.ic_category_item_detail);
             tv_category_name_budget = (TextView) itemView.findViewById(R.id.tv_category_item_detail);
 
-
         }
 
-
-        public void bindView(int position, BudgetItem item){
-
-//            int id =mBudgetItem.get(position).getId();
+        public void bindView(int position, BudgetItem item) {
 
             //edittext 커서 위치에 따라 색 변경
             et_budget_detail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View view, boolean isFocus) {
-                    if(isFocus){
+                    if (isFocus) {
                         linear_budget_detail.setBackgroundResource(R.drawable.textbox_typing);
                         won_detail.setImageResource(R.drawable.won);
                         tv_budget_detail_won.setTextColor(Color.parseColor("#495057"));
-                    }
-                    else{
 
-                        if(et_budget_detail.getText().toString().length()>0){
+                    } else {
+
+                        if (et_budget_detail.getText().toString().length() > 0) {
                             won_detail.setImageResource(R.drawable.won);
                             tv_budget_detail_won.setTextColor(Color.parseColor("#495057"));
                             linear_budget_detail.setBackgroundResource(R.drawable.textbox_default);
-                        }
-
-                        else{
+                        } else {
                             linear_budget_detail.setBackgroundResource(R.drawable.textbox_default);
                             won_detail.setImageResource(R.drawable.won_grey);
                             tv_budget_detail_won.setTextColor(Color.parseColor("#ADB5BD"));
@@ -262,13 +251,6 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                     }
                 }
             });
-
-
-
-
-
-
-
 
             ic_category_item_detail.setText(item.getCategoryIcon());
 //            ic_category_item_detail.setImageResource(item.getCategoryIcon());

@@ -91,6 +91,15 @@ dependencies {
     // SwipeRefreshLayout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
+    //이모지 키보드를 먼저 띄우는 라이브러리
 //    implementation 'com.github.hani-momanii:SuperNova-Emoji:1.1'
 
+    // 카카오 로그인
+//    implementation "com.kakao.sdk:v2-user:2.4.2"
+    
+    // 네이버 로그인
+//    implementation 'com.naver.nid:naveridlogin-android-sdk:4.2.6'
+
+    // 구글 로그인
+    implementation 'com.google.android.gms:play-services-auth:20.1.0'
 }

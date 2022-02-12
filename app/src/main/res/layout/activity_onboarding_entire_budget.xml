@@ -6,160 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".OnboardingEntireBudgetActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="91dp"
-        android:fontFamily="@font/spoqahansansneo_bold"
-        android:lineHeight="30sp"
-        android:text="이번 말까지의\n써야할 돈 액수를 정해주세요"
-        android:textColor="@color/fontTitle"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_last_day"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/spoqahansansneo_regular"
-        android:lineHeight="18sp"
-        android:text="TextView"
-        android:textColor="@color/fontSubtitle"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <LinearLayout
-        android:id="@+id/linear_entire_budget"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/textbox_default"
-        android:orientation="horizontal"
-        android:paddingLeft="18dp"
-        android:paddingTop="17dp"
-        android:paddingRight="18dp"
-        android:paddingBottom="17dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_last_day">
-
-        <ImageView
-            android:id="@+id/iv_won_entire"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/won_grey" />
-
-        <EditText
-            android:id="@+id/et_entire_budget"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginRight="6dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:ems="10"
-            android:hint="0"
-            android:inputType="number"
-            android:textAlignment="textEnd"
-            android:textColor="#212529"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/tv_won_entire"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
-            android:fontFamily="@font/spoqahansansneo_medium"
-            android:gravity="center"
-            android:lineSpacingExtra="6sp"
-            android:text="원"
-            android:textColor="#ADB5BD"
-            android:textSize="14sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linear_entire_budget">
-
-        <android.widget.Button
-            android:id="@+id/btn_20w"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:layout_marginRight="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/budget_button"
-            android:fontFamily="@font/spoqahansansneo_medium"
-            android:text="20만원"
-            android:textColor="#343A40" />
-
-        <android.widget.Button
-            android:id="@+id/btn_30w"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:layout_marginRight="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/budget_button"
-            android:fontFamily="@font/spoqahansansneo_medium"
-            android:text="30만원"
-            android:textColor="#343A40" />
-
-        <android.widget.Button
-            android:id="@+id/btn_40w"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:layout_marginRight="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/budget_button"
-            android:fontFamily="@font/spoqahansansneo_medium"
-            android:text="40만원"
-            android:textColor="#343A40" />
-
-        <android.widget.Button
-            android:id="@+id/btn_50w"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:layout_weight="1"
-            android:background="@drawable/budget_button"
-            android:fontFamily="@font/spoqahansansneo_medium"
-            android:text="50만원"
-            android:textColor="#343A40" />
-    </LinearLayout>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_next2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/button_enable_selector"
-        android:enabled="false"
-        android:fontFamily="@font/spoqahansansneo_bold"
-        android:text="다음"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <ImageView
         android:id="@+id/iv_back_entire"
         android:layout_width="wrap_content"
@@ -202,5 +48,160 @@
             android:layout_weight="1"
             app:srcCompat="@drawable/circlegray" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="91dp"
+        android:fontFamily="@font/spoqa_han_sans_neo_bold"
+        android:lineHeight="30sp"
+        android:text="이번 말까지의\n써야할 돈 액수를 정해주세요"
+        android:textColor="@color/fontTitle"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_last_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:lineHeight="18sp"
+        android:text="TextView"
+        android:textColor="@color/fontSubtitle"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <LinearLayout
+        android:id="@+id/linear_entire_budget"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/textbox_default"
+        android:orientation="horizontal"
+        android:paddingLeft="18dp"
+        android:paddingTop="17dp"
+        android:paddingRight="18dp"
+        android:paddingBottom="17dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_last_day">
+
+        <ImageView
+            android:id="@+id/iv_won_entire"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/won_grey" />
+
+        <EditText
+            android:id="@+id/et_entire_budget"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="6dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:ems="10"
+            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+            android:hint="0"
+            android:inputType="number"
+            android:textAlignment="textEnd"
+            android:textColor="#212529"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_won_entire"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+            android:gravity="center"
+            android:lineSpacingExtra="6sp"
+            android:text="원"
+            android:textColor="#ADB5BD"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear_entire_budget">
+
+        <android.widget.Button
+            android:id="@+id/btn_20w"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/budget_button"
+            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+            android:text="20만원"
+            android:textColor="#343A40" />
+
+        <android.widget.Button
+            android:id="@+id/btn_30w"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/budget_button"
+            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+            android:text="30만원"
+            android:textColor="#343A40" />
+
+        <android.widget.Button
+            android:id="@+id/btn_40w"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/budget_button"
+            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+            android:text="40만원"
+            android:textColor="#343A40" />
+
+        <android.widget.Button
+            android:id="@+id/btn_50w"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:background="@drawable/budget_button"
+            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+            android:text="50만원"
+            android:textColor="#343A40" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_next2"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/button_enable_selector"
+        android:enabled="false"
+        android:fontFamily="@font/spoqa_han_sans_neo_bold"
+        android:text="다음"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

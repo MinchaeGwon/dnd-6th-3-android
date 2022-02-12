@@ -5,16 +5,16 @@ import java.io.Serializable;
 public class CategoryItem implements Serializable {
 
     String categoryIcon;
-//    int categoryIcon;
+    //    int categoryIcon;
     String categoryName;
     String categoryEx;
 //    boolean isSelected;
 
 
-    public CategoryItem(String categoryIcon, String categoryName, String categoryEx){
-        this.categoryIcon=categoryIcon;
-        this.categoryName=categoryName;
-        this.categoryEx=categoryEx;
+    public CategoryItem(String categoryIcon, String categoryName, String categoryEx) {
+        this.categoryIcon = categoryIcon;
+        this.categoryName = categoryName;
+        this.categoryEx = categoryEx;
 //        this.isSelected=isSelected;
     }
 
@@ -26,6 +26,7 @@ public class CategoryItem implements Serializable {
     public void setCategoryIcon(String categoryIcon) {
         this.categoryIcon = categoryIcon;
     }
+
     public String getCategoryName() {
         return categoryName;
     }
@@ -42,15 +43,4 @@ public class CategoryItem implements Serializable {
         this.categoryEx = categoryEx;
     }
 
-//    public boolean isSelected(){
-//        return isSelected;
-//    }
-//
-//    public void toggleChecked(){
-//        isSelected=!isSelected;
-//    }
-////
-//    public void setSelected(boolean isSelected){
-//        this.isSelected=isSelected;
-//    }
 }

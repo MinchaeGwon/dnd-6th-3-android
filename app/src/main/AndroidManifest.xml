@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyRoutine"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".NewCategoryActivity"
             android:windowSoftInputMode="adjustResize"></activity>
         <activity
@@ -24,10 +25,36 @@
         <activity
             android:name=".OnboardingEntireBudgetActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".MainActivity" />
+
         <activity
             android:name=".OnboardingCategoryActivity"
-            android:exported="true">
+            android:exported="true" />
+
+        <activity
+            android:name=".SignupStep2Activity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:exported="true" />
+        <activity
+            android:name=".SignupStep1Activity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:exported="true" />
+        <activity
+            android:name=".NormalLoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SocialLoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".WelcomeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

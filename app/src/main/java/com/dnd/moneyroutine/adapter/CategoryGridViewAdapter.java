@@ -26,7 +26,7 @@ public class CategoryGridViewAdapter extends BaseAdapter {
         return items.size();
     }
 
-    public void addItem(CategoryItem item){
+    public void addItem(CategoryItem item) {
         items.add(item);
     }
 
@@ -41,16 +41,16 @@ public class CategoryGridViewAdapter extends BaseAdapter {
     }
 
 
-        @Override
+    @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
 
-        Context context=viewGroup.getContext();
+        Context context = viewGroup.getContext();
         CategoryItem categoryItem = items.get(position);
 
 
-        if (view==null){
+        if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-            view=inflater.inflate(R.layout.item_category, viewGroup, false);
+            view = inflater.inflate(R.layout.item_category, viewGroup, false);
 
             TextView ic_category_icon = view.findViewById(R.id.ic_category_icon);
             TextView tv_category_name = (TextView) view.findViewById(R.id.tv_category_name);
@@ -62,13 +62,10 @@ public class CategoryGridViewAdapter extends BaseAdapter {
             tv_category_name.setText(categoryItem.getCategoryName());
             tv_category_ex.setText(categoryItem.getCategoryEx());
 
+        } else {
+            View myView = new View(context);
+            myView = (View) view;
         }
-        else{
-            View myView= new View(context);
-            myView=(View) view;
-        }
-
-
 
         return view;
     }
