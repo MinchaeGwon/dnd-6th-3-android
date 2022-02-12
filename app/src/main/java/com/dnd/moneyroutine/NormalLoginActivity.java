@@ -13,17 +13,16 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
-import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
 import com.dnd.moneyroutine.dto.UserForm;
 import com.dnd.moneyroutine.service.RequestService;
 import com.google.gson.JsonObject;
 
+import lombok.SneakyThrows;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -103,10 +102,11 @@ public class NormalLoginActivity extends AppCompatActivity {
         });
     }
 
- //    로그인 정보 서버로 전달, 로그인 성공 여부 확인하여 토큰 값 SharedPreferences에 저장
+    // 로그인 정보 서버로 전달, 로그인 성공 여부 확인하여 토큰 값 SharedPreferences에 저장
     private void loginToServer(String email, String password) {
         Call<JsonObject> call = RequestService.getInstance().login(new UserForm(email, password));
         call.enqueue(new Callback<JsonObject>() {
+            @SneakyThrows
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
@@ -114,12 +114,14 @@ public class NormalLoginActivity extends AppCompatActivity {
 
                     Log.d(TAG, responseJson.toString());
 
-//                    if (responseJson.get("code").getAsInt() == 200 && responseJson.get("response").getAsBoolean()) {
-//                        String token = responseJson.get("access_token").getAsString();
-//                        saveTokenAndMoveActivity(token);
-//                    } else {
-//                        // 로그인 정보가 맞지 않으면 로그인 실패 다이얼로그 띄움
-//                    }
+                    if (responseJson.get("statusCode").getAsInt() == 200) {
+                        JsonObject data = responseJson.get("data").getAsJsonObject();
+                        String token = data.get("access_token").getAsString();
+
+                        saveTokenAndMoveActivity(token);
+                    } else {
+                        // 로그인 정보가 맞지 않으면 로그인 실패 다이얼로그 띄움
+                    }
                 }
             }
 
@@ -130,6 +132,7 @@ public class NormalLoginActivity extends AppCompatActivity {
         });
     }
 
+    // 로그인 성공시 토큰 저장, 화면 이동
     private void saveTokenAndMoveActivity(String jwtToken) {
         PreferenceManager.setString(this, Constants.tokenKey, jwtToken);
 

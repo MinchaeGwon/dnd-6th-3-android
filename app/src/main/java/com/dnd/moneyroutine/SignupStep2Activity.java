@@ -47,7 +47,7 @@ public class SignupStep2Activity extends AppCompatActivity {
     private InputMethodManager inputManager;
     private SoftKeyboardDetector softKeyboardDetector;
 
-    private String email;
+    private UserForm userForm;
     private float scale;
 
     @Override
@@ -69,10 +69,6 @@ public class SignupStep2Activity extends AppCompatActivity {
         setListener();
     }
 
-    private void init() {
-
-    }
-
     private void initView() {
         ibBack = findViewById(R.id.ib_sign2_back);
         etPassword = findViewById(R.id.et_signup2_password);
@@ -90,7 +86,7 @@ public class SignupStep2Activity extends AppCompatActivity {
         addContentView(softKeyboardDetector, new FrameLayout.LayoutParams(-1, -1));
 
         scale = getResources().getDisplayMetrics().density;
-        email = getIntent().getStringExtra("email");
+        userForm = (UserForm) getIntent().getSerializableExtra("userForm");
     }
 
     private void setListener() {
@@ -109,7 +105,7 @@ public class SignupStep2Activity extends AppCompatActivity {
                     inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 }
 
-                joinToServer(email, etPassword.getText().toString());
+                joinToServer();
             }
         });
 
@@ -257,8 +253,10 @@ public class SignupStep2Activity extends AppCompatActivity {
     }
 
     // 회원 정보 서버로 전달, 회원가입 성공 여부 확인하여 토큰 값 SharedPreferences에 저장
-    private void joinToServer(String email, String password) {
-        Call<JsonObject> call = RequestService.getInstance().join(new UserForm(email, password));
+    private void joinToServer() {
+        userForm.setPassword(etPassword.getText().toString());
+
+        Call<JsonObject> call = RequestService.getInstance().join(userForm);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -267,10 +265,12 @@ public class SignupStep2Activity extends AppCompatActivity {
 
                     Log.d(TAG, responseJson.toString());
 
-//                    if (responseJson.get("code").getAsInt() == 200 && responseJson.get("response").getAsBoolean()) {
-//                        String token = responseJson.get("access_token").getAsString();
-//                        saveTokenAndMoveActivity(token);
-//                    }
+                    if (responseJson.get("statusCode").getAsInt() == 200) {
+                        JsonObject data = responseJson.get("data").getAsJsonObject();
+                        String token = data.get("access_token").getAsString();
+
+                        saveTokenAndMoveActivity(token);
+                    }
                 }
             }
 
@@ -282,6 +282,7 @@ public class SignupStep2Activity extends AppCompatActivity {
         });
     }
 
+    // 회원가입 성공시 토큰 저장, 화면 이동
     public void saveTokenAndMoveActivity(String jwtToken) {
         PreferenceManager.setString(this, Constants.tokenKey, jwtToken);
 
@@ -289,6 +290,7 @@ public class SignupStep2Activity extends AppCompatActivity {
 
         Intent intent = new Intent(this, WelcomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 기존 화면 모두 clear
+        intent.putExtra("join", true);
         startActivity(intent);
     }
 }

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.dnd.moneyroutine.fragment.ChallengeFragment;
 import com.dnd.moneyroutine.fragment.DiaryFragment;
@@ -27,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Fragment> fragmentList;
     private List<ImageView> bottomIconList;
+
+    private int nowTabPosition = 0;
+    private long backPressedTime = 0;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -96,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
+                nowTabPosition = position;
 
                 setFragment(position);
                 setBottomIcon(position, true);
@@ -182,5 +187,20 @@ public class MainActivity extends AppCompatActivity {
                 return R.drawable.icon_empty_challenge;
         }
         return 0;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (nowTabPosition > 0) {
+            tlMain.getTabAt(0).select();
+            return;
+        }
+
+        if (System.currentTimeMillis() > backPressedTime + 2000) {
+            backPressedTime = System.currentTimeMillis();
+            Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        } else if (System.currentTimeMillis() <= backPressedTime + 2000) {
+            finish();
+        }
     }
 }
