@@ -1,5 +1,6 @@
 package com.dnd.moneyroutine.service;
 
+import com.dnd.moneyroutine.dto.CustomCategoryModel;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.dto.UserForm;
 import com.google.gson.JsonObject;
@@ -35,8 +36,9 @@ public class RequestService {
     }
 
     public Call<String> test() {
-        return  retrofitService.test();
+        return retrofitService.test();
     }
+
 
     public Call<JsonObject> join(UserForm userForm) {
         return retrofitService.join(userForm);
@@ -44,5 +46,10 @@ public class RequestService {
 
     public Call<JsonObject> login(UserForm userForm) {
         return retrofitService.login(userForm);
+    }
+
+
+    public Call<CustomCategoryModel> create(CustomCategoryModel customCategoryModel) {
+        return retrofitService.create(customCategoryModel);
     }
 }

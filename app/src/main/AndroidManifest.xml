@@ -16,6 +16,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyRoutine"
         android:usesCleartextTraffic="true">
+
+        <activity android:name=".NewCategoryActivity"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity
+            android:name=".OnboardingDetailBudgetActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".OnboardingEntireBudgetActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".OnboardingCategoryActivity"
+            android:exported="true" />
+
         <activity
             android:name=".SignupStep2Activity"
             android:windowSoftInputMode="adjustResize|stateHidden"

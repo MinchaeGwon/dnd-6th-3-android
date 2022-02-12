@@ -103,7 +103,7 @@ public class NormalLoginActivity extends AppCompatActivity {
         });
     }
 
-    // 로그인 정보 서버로 전달, 로그인 성공 여부 확인하여 토큰 값 SharedPreferences에 저장
+ //    로그인 정보 서버로 전달, 로그인 성공 여부 확인하여 토큰 값 SharedPreferences에 저장
     private void loginToServer(String email, String password) {
         Call<JsonObject> call = RequestService.getInstance().login(new UserForm(email, password));
         call.enqueue(new Callback<JsonObject>() {
