@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
+import com.dnd.moneyroutine.dto.UserForm;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,6 +37,8 @@ public class SignupStep1Activity extends AppCompatActivity {
     private InputMethodManager inputManager;
     private SoftKeyboardDetector softKeyboardDetector;
     private float scale;
+
+    private UserForm userForm;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -60,6 +63,8 @@ public class SignupStep1Activity extends AppCompatActivity {
         ibBack = findViewById(R.id.ib_sign1_back);
         etEmail = findViewById(R.id.et_signup1_email);
         btnNext = findViewById(R.id.btn_signup1_next);
+
+        userForm = new UserForm();
     }
 
     private void initField() {
@@ -92,8 +97,10 @@ public class SignupStep1Activity extends AppCompatActivity {
                 String email = etEmail.getText().toString();
 
                 if (isValidEmail(email)) {
+                    userForm.setEmail(email);
+
                     Intent intent = new Intent(SignupStep1Activity.this, SignupStep2Activity.class);
-                    intent.putExtra("email", email);
+                    intent.putExtra("userForm", userForm);
                     startActivity(intent);
                 } else {
                     Toast.makeText(SignupStep1Activity.this, "이메일 형식에 맞지 않습니다", Toast.LENGTH_SHORT).show();
