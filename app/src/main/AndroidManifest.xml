@@ -18,7 +18,7 @@
         android:usesCleartextTraffic="true">
 
         <activity android:name=".NewCategoryActivity"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".OnboardingDetailBudgetActivity"
             android:windowSoftInputMode="adjustResize" />
@@ -32,20 +32,25 @@
 
         <activity
             android:name=".SignupStep2Activity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"
             android:exported="true" />
         <activity
             android:name=".SignupStep1Activity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"
             android:exported="true" />
         <activity
             android:name=".NormalLoginActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".SocialLoginActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".WelcomeActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".MainActivity"

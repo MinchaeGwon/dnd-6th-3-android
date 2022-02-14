@@ -4,10 +4,15 @@ import com.dnd.moneyroutine.dto.CustomCategoryModel;
 import com.dnd.moneyroutine.dto.UserForm;
 import com.google.gson.JsonObject;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 // api interface
 public interface RetrofitService {
@@ -22,4 +27,7 @@ public interface RetrofitService {
 
     @POST("custom-category")
     Call<CustomCategoryModel> create (@Body CustomCategoryModel customCategoryModel);
+
+    @GET("goal/info")
+    Call<JsonObject> getMainGoalList(@Query("date") LocalDate date);
 }

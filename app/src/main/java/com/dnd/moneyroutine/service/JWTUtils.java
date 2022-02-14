@@ -36,14 +36,14 @@ public class JWTUtils {
         return new String(decodedBytes, "UTF-8");
     }
 
-    public static int getAccountId(String token) {
+    public static int getUserId(String token) {
         JsonObject jsonObject = decoded(token);
 
         if (jsonObject == null) {
             return -1;
         }
 
-        return jsonObject.get("accountId") != null ? jsonObject.get("accountId").getAsInt() : -1;
+        return jsonObject.get("sub") != null ? jsonObject.get("sub").getAsInt() : -1;
     }
 
     public static long getExpireTime(String token) {

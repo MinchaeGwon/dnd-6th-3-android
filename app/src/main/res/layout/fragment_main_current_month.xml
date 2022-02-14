@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="2dp"
+    android:background="#F8F9FA">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rectangle_white_radius_24"
+                android:elevation="5dp">
+
+                <TextView
+                    android:id="@+id/tv_current_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                    android:includeFontPadding="false"
+                    android:text="2022년 2월"
+                    android:textColor="#343A40"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_current_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                    android:includeFontPadding="false"
+                    android:text="2월 1일 ~ 2월 28일"
+                    android:textColor="#ADB5BD"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_current_month" />
+
+                <ProgressBar
+                    android:id="@+id/pb_remain_budget"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="184dp"
+                    android:layout_height="184dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="19dp"
+                    android:indeterminate="false"
+                    android:progressBackgroundTint="#F1F3F5"
+                    android:progressDrawable="@drawable/custom_main_progress_bar"
+                    android:progressTint="#FF6EAB"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_current_date" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/pb_remain_budget"
+                    app:layout_constraintEnd_toEndOf="@+id/pb_remain_budget"
+                    app:layout_constraintStart_toStartOf="@+id/pb_remain_budget"
+                    app:layout_constraintTop_toTopOf="@+id/pb_remain_budget">
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:text="남은 예산"
+                        android:textColor="#ADB5BD"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_current_remain"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/spoqa_han_sans_neo_bold"
+                        android:gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:text="0원"
+                        android:textColor="#212529"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_current_total_budget"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:text="0원 중"
+                        android:textColor="#ADB5BD"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_main_add_expenditure"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="36dp"
+                    android:layout_marginBottom="48dp"
+                    android:background="@drawable/rectangle_343a40_radius_8"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/pb_remain_budget">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="14dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="9dp"
+                            app:srcCompat="@drawable/icon_white_add" />
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:includeFontPadding="false"
+                            android:text="소비 입력"
+                            android:textColor="#ffffff"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="22dp"
+                android:background="@drawable/rectangle_white_radius_24"
+                android:elevation="5dp">
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                    android:includeFontPadding="false"
+                    android:text="목표 절약 리스트"
+                    android:textColor="#343A40"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_current_total_expense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                    android:includeFontPadding="false"
+                    android:text="전체 0원 지출"
+                    android:textColor="#ADB5BD"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_current_total_expense" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
