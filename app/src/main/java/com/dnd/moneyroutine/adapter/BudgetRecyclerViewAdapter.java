@@ -105,7 +105,6 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                         btnNext.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
                     } else {
                         btnNext.setBackgroundResource(R.drawable.button_enabled_true);
-
                     }
                 }
 

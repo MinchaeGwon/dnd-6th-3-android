@@ -1,5 +1,6 @@
 package com.dnd.moneyroutine.service;
 
+import com.dnd.moneyroutine.dto.BudgetDetailModel;
 import com.dnd.moneyroutine.dto.CustomCategoryModel;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.dto.UserForm;
@@ -49,7 +50,7 @@ public class RequestService {
     }
 
 
-    public Call<CustomCategoryModel> create(CustomCategoryModel customCategoryModel) {
-        return retrofitService.create(customCategoryModel);
-    }
+    public Call<CustomCategoryModel> create(CustomCategoryModel customCategoryModel) { return retrofitService.create(customCategoryModel); }
+
+    public Call<BudgetDetailModel> goal(BudgetDetailModel budgetDetailModel){ return retrofitService.goal(budgetDetailModel);}
 }

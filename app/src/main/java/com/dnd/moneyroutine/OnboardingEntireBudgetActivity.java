@@ -119,7 +119,7 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
 
                 contentLayoutParams.setMarginStart((int) (16 * scale + 0.2f));
                 contentLayoutParams.setMarginEnd((int) (16 * scale + 0.2f));
-                contentLayoutParams.bottomMargin = (int) (8 * scale + 0.2f);
+                contentLayoutParams.bottomMargin = (int) (56 * scale + 0.2f);
                 btnNext.setLayoutParams(contentLayoutParams);
             }
         });

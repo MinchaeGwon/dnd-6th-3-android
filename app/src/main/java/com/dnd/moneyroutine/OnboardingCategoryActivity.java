@@ -19,10 +19,16 @@ import android.widget.LinearLayout;
 
 import com.dnd.moneyroutine.adapter.CategoryGridViewAdapter;
 import com.dnd.moneyroutine.custom.ExpandableHeightGridView;
+import com.dnd.moneyroutine.dto.CustomCategoryModel;
 import com.dnd.moneyroutine.item.CategoryItem;
+import com.dnd.moneyroutine.service.RequestService;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OnboardingCategoryActivity extends AppCompatActivity {
 
@@ -42,6 +48,8 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
     private ArrayList<String> ex;
     private ArrayList<CategoryItem> newItem;
     private ArrayList<Integer> selectedItem = new ArrayList<>();
+
+//    private ArrayList<GoalCategoryCreateDtoList>
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,6 +201,8 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
                         gridView.setAdapter(adapter);
 
 
+
+
                         //새 카테고리 추가 후 이전에 선택했던 항목 선택된 상태로 background 설정
                         ViewTreeObserver vto = gridView.getViewTreeObserver();
                         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -208,6 +218,10 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
                     }
                 }
             });
+
+
+
+
 
 
 }

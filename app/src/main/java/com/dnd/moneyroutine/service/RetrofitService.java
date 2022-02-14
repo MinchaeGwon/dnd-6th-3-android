@@ -1,7 +1,9 @@
 package com.dnd.moneyroutine.service;
 
+import com.dnd.moneyroutine.dto.BudgetDetailModel;
 import com.dnd.moneyroutine.dto.CustomCategoryModel;
 import com.dnd.moneyroutine.dto.UserForm;
+import com.dnd.moneyroutine.item.BudgetItem;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -21,5 +23,8 @@ public interface RetrofitService {
     Call<JsonObject> login(@Body UserForm userForm);
 
     @POST("custom-category")
-    Call<CustomCategoryModel> create (@Body CustomCategoryModel customCategoryModel);
+    Call<CustomCategoryModel> create(@Body CustomCategoryModel customCategoryModel);
+
+    @POST("goal")
+    Call<BudgetDetailModel> goal(@Body BudgetDetailModel budgetDetailModel);
 }

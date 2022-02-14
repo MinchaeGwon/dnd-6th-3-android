@@ -27,7 +27,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".OnboardingCategoryActivity"
+            android:name=".SplashActivity"
             android:exported="true" />
 
         <activity
@@ -52,7 +52,7 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".OnboardingCategoryActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
