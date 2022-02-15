@@ -18,9 +18,11 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".AddFeelingActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true" />
         <activity
             android:name=".AddExpenseActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true" />
         <activity
             android:name=".NewCategoryActivity"

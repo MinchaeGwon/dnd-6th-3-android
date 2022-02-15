@@ -68,7 +68,6 @@ public class MainFragment extends Fragment {
 
     // tab view 초기화 메소드
     private void tabInit(View v) {
-        Log.d(TAG, "11111111111111");
         fragmentList = new ArrayList<>();
         fragmentList.add(null);
         fragmentList.add(null);
