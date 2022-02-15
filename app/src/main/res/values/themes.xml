@@ -19,6 +19,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 
         <!-- Customize your theme here. -->
-
+        <!-- 바텀시트 둥글게 -->
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
 </resources>

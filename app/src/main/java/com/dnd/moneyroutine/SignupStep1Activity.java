@@ -122,7 +122,7 @@ public class SignupStep1Activity extends AppCompatActivity {
             @Override
             public void onHiddenSoftKeyboard() {
                 if (etEmail.length() == 0) {
-                    btnNext.setBackgroundResource(R.drawable.rectangle_ced4da_radius_8);
+                    btnNext.setBackgroundResource(R.drawable.rectangle_adb5bd_radius_8);
                     btnNext.setEnabled(false);
                 } else {
                     btnNext.setBackgroundResource(R.drawable.rectangle_343a40_radius_8);
@@ -192,7 +192,7 @@ public class SignupStep1Activity extends AppCompatActivity {
                     if (inputManager.isAcceptingText()) {
                         btnNext.setBackgroundColor(Color.parseColor("#ced4da"));
                     } else {
-                        btnNext.setBackgroundResource(R.drawable.rectangle_ced4da_radius_8);
+                        btnNext.setBackgroundResource(R.drawable.rectangle_adb5bd_radius_8);
                     }
 
                     btnNext.setEnabled(false);

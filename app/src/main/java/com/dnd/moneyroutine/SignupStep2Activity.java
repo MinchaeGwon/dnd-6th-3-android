@@ -132,7 +132,7 @@ public class SignupStep2Activity extends AppCompatActivity {
             @Override
             public void onHiddenSoftKeyboard() {
                 if (tvPasswordConfirm.getText().equals("비밀번호가 일치하지 않습니다")) {
-                    btnNext.setBackgroundResource(R.drawable.rectangle_ced4da_radius_8);
+                    btnNext.setBackgroundResource(R.drawable.rectangle_adb5bd_radius_8);
                     btnNext.setEnabled(false);
                 } else {
                     btnNext.setBackgroundResource(R.drawable.rectangle_343a40_radius_8);
@@ -255,7 +255,7 @@ public class SignupStep2Activity extends AppCompatActivity {
                     if (inputManager.isAcceptingText()) {
                         btnNext.setBackgroundColor(Color.parseColor("#ced4da"));
                     } else {
-                        btnNext.setBackgroundResource(R.drawable.rectangle_ced4da_radius_8);
+                        btnNext.setBackgroundResource(R.drawable.rectangle_adb5bd_radius_8);
                     }
 
                     btnNext.setEnabled(false);
@@ -283,7 +283,7 @@ public class SignupStep2Activity extends AppCompatActivity {
                         if (inputManager.isAcceptingText()) {
                             btnNext.setBackgroundColor(Color.parseColor("#ced4da"));
                         } else {
-                            btnNext.setBackgroundResource(R.drawable.rectangle_ced4da_radius_8);
+                            btnNext.setBackgroundResource(R.drawable.rectangle_adb5bd_radius_8);
                         }
 
                         btnNext.setEnabled(false);

@@ -18,6 +18,7 @@ import com.dnd.moneyroutine.service.RetrofitService;
 
 import retrofit2.Retrofit;
 
+// 지난 기록 fragment
 public class MainPastRecordFragment extends Fragment  {
 
     private final static String TAG = "PastRecordFragment";

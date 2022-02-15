@@ -16,8 +16,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyRoutine"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".NewCategoryActivity"
+        <activity
+            android:name=".AddFeelingActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AddExpenseActivity"
+            android:exported="true" />
+        <activity
+            android:name=".NewCategoryActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".OnboardingDetailBudgetActivity"
@@ -25,33 +31,31 @@
         <activity
             android:name=".OnboardingEntireBudgetActivity"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name=".OnboardingCategoryActivity"
             android:exported="true" />
-
         <activity
             android:name=".SignupStep2Activity"
+            android:exported="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:exported="true" />
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".SignupStep1Activity"
+            android:exported="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:exported="true" />
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".NormalLoginActivity"
-            android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SocialLoginActivity"
-            android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".WelcomeActivity"
-            android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

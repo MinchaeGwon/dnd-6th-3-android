@@ -68,13 +68,13 @@
         android:layout_marginEnd="19dp"
         android:layout_weight="0"
         android:adjustViewBounds="true"
-        android:background="@drawable/icon_remove"
+        android:background="@drawable/icon_erase"
         android:scaleType="centerInside"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/et_signup2_password"
         app:layout_constraintEnd_toEndOf="@+id/et_signup2_password"
         app:layout_constraintTop_toTopOf="@+id/et_signup2_password"
-        app:srcCompat="@drawable/icon_remove" />
+        app:srcCompat="@drawable/icon_erase" />
 
     <EditText
         android:id="@+id/et_signup2_password_repeat"
@@ -108,13 +108,13 @@
         android:layout_marginEnd="19dp"
         android:layout_weight="0"
         android:adjustViewBounds="true"
-        android:background="@drawable/icon_remove"
+        android:background="@drawable/icon_erase"
         android:scaleType="centerInside"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/et_signup2_password_repeat"
         app:layout_constraintEnd_toEndOf="@+id/et_signup2_password_repeat"
         app:layout_constraintTop_toTopOf="@+id/et_signup2_password_repeat"
-        app:srcCompat="@drawable/icon_remove" />
+        app:srcCompat="@drawable/icon_erase" />
 
     <TextView
         android:id="@+id/tv_password_confirm"
@@ -138,7 +138,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="56dp"
-        android:background="@drawable/rectangle_ced4da_radius_8"
+        android:background="@drawable/rectangle_adb5bd_radius_8"
         android:fontFamily="@font/spoqa_han_sans_neo_regular"
         android:stateListAnimator="@null"
         android:text="다음"

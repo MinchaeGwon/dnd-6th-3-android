@@ -22,6 +22,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+// 메인 fragment
 public class MainFragment extends Fragment {
 
     private final static String TAG = "MainFragment";

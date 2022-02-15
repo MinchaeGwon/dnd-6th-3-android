@@ -28,7 +28,25 @@
         app:layout_constraintTop_toTopOf="@+id/view"
         app:srcCompat="@drawable/coffee" />
 
+    <TextView
+        android:id="@+id/tv_custom_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:height="25dp"
+        android:gravity="bottom"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="0dp"
+        android:text="🥘"
+        android:textColor="#FF000000"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/view" />
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -61,6 +79,58 @@
             android:text="0원"
             android:textColor="#212529"
             android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="12dp"
+        android:layout_weight="1"
+        android:progressDrawable="@drawable/custom_category_progress_bar"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="12dp"
+        android:orientation="horizontal"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar">
+
+        <TextView
+            android:id="@+id/tv_category_budget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+            android:includeFontPadding="false"
+            android:text="예산 0원"
+            android:textColor="#868E96"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tv_cat_remain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+            android:gravity="end"
+            android:includeFontPadding="false"
+            android:text="0원 남음"
+            android:textColor="#868E96"
+            android:textSize="10sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
