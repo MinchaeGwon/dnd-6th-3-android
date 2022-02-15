@@ -8,16 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class BudgetDetailModel {
 
     private List<GoalCategoryCreateDtoList> goalCategoryCreateDtoList = new ArrayList<>();
-    private String total_budget;
+    private int total_budget;
 
-    public BudgetDetailModel(List<GoalCategoryCreateDtoList> goalCategoryCreateDtoList, String total_budget) {
+    public BudgetDetailModel(List<GoalCategoryCreateDtoList> goalCategoryCreateDtoList, int total_budget) {
         this.goalCategoryCreateDtoList = goalCategoryCreateDtoList;
         this.total_budget = total_budget;
     }
@@ -30,11 +27,11 @@ public class BudgetDetailModel {
         this.goalCategoryCreateDtoList = goalCategoryCreateDtoList;
     }
 
-    public String getTotal_budget() {
+    public int getTotal_budget() {
         return total_budget;
     }
 
-    public void setTotal_budget(String total_budget) {
+    public void setTotal_budget(int total_budget) {
         this.total_budget = total_budget;
     }
 

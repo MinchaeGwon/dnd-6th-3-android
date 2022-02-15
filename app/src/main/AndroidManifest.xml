@@ -16,12 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyRoutine"
         android:usesCleartextTraffic="true">
+<<<<<<< Updated upstream
         <activity
             android:name=".AddFeelingActivity"
             android:exported="true" />
         <activity
             android:name=".AddExpenseActivity"
             android:exported="true" />
+=======
+        <activity android:name=".OnboardingCategoryActivity"></activity>
+>>>>>>> Stashed changes
         <activity
             android:name=".NewCategoryActivity"
             android:windowSoftInputMode="adjustResize" />
@@ -37,12 +41,18 @@
         <activity
             android:name=".SignupStep2Activity"
             android:exported="true"
+<<<<<<< Updated upstream
             android:screenOrientation="portrait"
+=======
+>>>>>>> Stashed changes
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".SignupStep1Activity"
             android:exported="true"
+<<<<<<< Updated upstream
             android:screenOrientation="portrait"
+=======
+>>>>>>> Stashed changes
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".NormalLoginActivity"
@@ -61,7 +71,7 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".OnboardingCategoryActivity"
+            android:name=".EnterExpenditureActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

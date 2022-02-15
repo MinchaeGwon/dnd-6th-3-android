@@ -1,18 +1,24 @@
 package com.dnd.moneyroutine.dto;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-public class GoalCategoryCreateDtoList {
+public class GoalCategoryCreateDtoList implements Serializable {
+
+    private int budget;
+    private int categoryId;
 
     private Boolean isCustom;
-    private String categoryId;
-    private String budget;
 
-    public GoalCategoryCreateDtoList(Boolean isCustom, String categoryId, String budget) {
+    public GoalCategoryCreateDtoList(){
+    }
+
+    public GoalCategoryCreateDtoList(int budget, int categoryId,  Boolean isCustom) {
         this.isCustom = isCustom;
         this.categoryId = categoryId;
         this.budget = budget;
@@ -26,19 +32,19 @@ public class GoalCategoryCreateDtoList {
         isCustom = custom;
     }
 
-    public String getCategoryId() {
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 
-    public String getBudget() {
+    public int getBudget() {
         return budget;
     }
 
-    public void setBudget(String budget) {
+    public void setBudget(int budget) {
         this.budget = budget;
     }
 

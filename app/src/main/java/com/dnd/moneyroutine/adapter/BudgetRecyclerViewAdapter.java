@@ -3,10 +3,12 @@ package com.dnd.moneyroutine.adapter;
 import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +23,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dnd.moneyroutine.MainActivity;
+import com.dnd.moneyroutine.OnboardingDetailBudgetActivity;
 import com.dnd.moneyroutine.R;
+import com.dnd.moneyroutine.dto.BudgetDetailModel;
+import com.dnd.moneyroutine.dto.CustomCategoryModel;
+import com.dnd.moneyroutine.dto.GoalCategoryCreateDtoList;
 import com.dnd.moneyroutine.item.BudgetItem;
+import com.dnd.moneyroutine.service.RequestService;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecyclerViewAdapter.ViewHolder> {
 
@@ -40,12 +52,16 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
 
     private ArrayList<String> totalAmountArray = new ArrayList<>();
     private ArrayList<BudgetItem> mBudgetItem;
+    private ArrayList<GoalCategoryCreateDtoList> goalCategoryCreateDtoList;
     private InputMethodManager inputManager;
+    private BudgetDetailModel budgetDetailModel;
 
 
-    boolean isOnTextChanged = false;
+    private boolean isOnTextChanged = false;
     private int finalTotal;
     private int mbudget;
+    private int budgetDetail;
+    private String entireBudget;
 
     private DecimalFormat decimalFormat = new DecimalFormat("#,###");
     private String result = "";
@@ -65,6 +81,8 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
         tv_budget_total = rootView.findViewById(R.id.tv_budget_total);
         btnNext = rootView.findViewById(R.id.btn_next_detail_budget);
         inputManager = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
+        goalCategoryCreateDtoList=(ArrayList<GoalCategoryCreateDtoList>) ((Activity)context).getIntent().getSerializableExtra("goalCategoryCreateDtoList");
+        entireBudget = ((Activity)context).getIntent().getStringExtra("Budget");
 
 
         return new ViewHolder(view);
@@ -145,14 +163,14 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                             //예산보다 많으면
                             String commaTotal = new DecimalFormat("#,###").format(finalTotal - mbudget);
                             tvAlert.setText(commaTotal + "원 초과");
-                            tvAlert.setTextColor(Color.parseColor("#FD5E6E"));
+                            tvAlert.setTextColor(Color.parseColor("#E70621"));
                             btnNext.setEnabled(false); //다음 버튼 비활성화
 
                         } else {
                             //예산보다 적으면
                             String commaTotal = new DecimalFormat("#,###").format(mbudget - finalTotal);
                             tvAlert.setText(commaTotal + "원 남음");
-                            tvAlert.setTextColor(Color.parseColor("#0DC9B9"));
+                            tvAlert.setTextColor(Color.parseColor("#047E74"));
                             btnNext.setEnabled(true);//다음 버튼 활성화
                         }
 
@@ -185,16 +203,57 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                         }
 
                     }
+                    if(holder.et_budget_detail.getText().toString().length()>0){
+                        budgetDetail = Integer.parseInt(holder.et_budget_detail.getText().toString().replaceAll("\\,", ""));
+                        goalCategoryCreateDtoList.get(position).setBudget(budgetDetail);
+                    }else{
+                        goalCategoryCreateDtoList.get(position).setBudget(0);
+                    }
 
                 }
 
             }
         });
 
+        budgetDetailModel=new BudgetDetailModel(goalCategoryCreateDtoList, mbudget);
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                Intent intent = new Intent(view.getContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(intent);
+                goaltoServer();
+
+            }
+
+        });
 
         holder.bindView(position, mBudgetItem.get(position));
 
+    }
 
+    private void goaltoServer(){
+        Call<BudgetDetailModel> call = RequestService.getInstance().goal(budgetDetailModel);
+        call.enqueue(new Callback<BudgetDetailModel>() {
+
+            @Override
+            public void onResponse(Call<BudgetDetailModel> call, Response<BudgetDetailModel> response) {
+                if (response.isSuccessful()) {
+                    BudgetDetailModel post = response.body();
+                    Log.d("BudgetDetailModel", post.toString());
+                } else {
+                    Log.e("BudgetDetailModel", "error: " + response.code());
+                    return;
+                }
+            }
+            @Override
+            public void onFailure(Call<BudgetDetailModel> call, Throwable t) {
+                Log.e("custom category", "fail: " + t.getMessage());
+            }
+        });
     }
 
 

@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import com.dnd.moneyroutine.adapter.CategoryGridViewAdapter;
 import com.dnd.moneyroutine.custom.ExpandableHeightGridView;
 import com.dnd.moneyroutine.dto.CustomCategoryModel;
+import com.dnd.moneyroutine.dto.GoalCategoryCreateDtoList;
 import com.dnd.moneyroutine.item.CategoryItem;
 import com.dnd.moneyroutine.service.RequestService;
 
@@ -49,6 +50,13 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
     private ArrayList<CategoryItem> newItem;
     private ArrayList<Integer> selectedItem = new ArrayList<>();
 
+//    private GoalCategoryCreateDtoList goalCategoryCreateDtoList;
+    private ArrayList<GoalCategoryCreateDtoList> goalCategoryCreateDtoList;
+    private boolean isCustom = false;
+    private int budget;
+    private int categoryId = 0;
+
+
 //    private ArrayList<GoalCategoryCreateDtoList>
 
     @Override
@@ -69,6 +77,8 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
         btnNext = (Button) findViewById(R.id.btn_next1);
 
         linearAddcategory = findViewById(R.id.btn_addcategory);
+
+        goalCategoryCreateDtoList=new ArrayList<>();
 
     }
 
@@ -165,12 +175,22 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
                 for (int i = 0; i < selectedItem.size(); i++) {
                     int index = selectedItem.get(i);
                     bgList.add(new CategoryItem(icon.get(index), name.get(index), ex.get(index)));
+                    if(selectedItem.get(i)<9){
+                        goalCategoryCreateDtoList.add(i, new GoalCategoryCreateDtoList(0, index, false));
+                    }
+                    else{
+                        goalCategoryCreateDtoList.add(i, new GoalCategoryCreateDtoList(0, categoryId, true));
+                        categoryId++;
+                    }
                 }
+
+
+
                 Intent intent = new Intent(getApplicationContext(), OnboardingEntireBudgetActivity.class);
                 intent.putExtra("BudgetItem", bgList);
                 intent.putExtra("NewItem", newItem);
+                intent.putExtra("goalCategoryCreateDtoList", goalCategoryCreateDtoList);
                 startActivity(intent);
-
             }
         });
     }
@@ -199,8 +219,6 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
                         adapter.addItem(new CategoryItem(newIcon, newName, newEx));
                         gridView.invalidateViews();
                         gridView.setAdapter(adapter);
-
-
 
 
                         //새 카테고리 추가 후 이전에 선택했던 항목 선택된 상태로 background 설정

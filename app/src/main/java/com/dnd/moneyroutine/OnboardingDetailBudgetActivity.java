@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.dnd.moneyroutine.adapter.BudgetRecyclerViewAdapter;
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
 import com.dnd.moneyroutine.dto.CustomCategoryModel;
+import com.dnd.moneyroutine.dto.GoalCategoryCreateDtoList;
 import com.dnd.moneyroutine.item.BudgetItem;
 import com.dnd.moneyroutine.item.CategoryItem;
 import com.dnd.moneyroutine.service.RequestService;
@@ -47,6 +48,7 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
     private ArrayList<CategoryItem> cList;
     private ArrayList<BudgetItem> bgList;
     private ArrayList<CategoryItem> newItem;
+    private ArrayList<GoalCategoryCreateDtoList> goalCategoryCreateDtoList;
 
     private BudgetRecyclerViewAdapter adapter;
 
@@ -65,8 +67,8 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding_detail_budget);
 
-        Intent intent = getIntent();
-        entireBudget = intent.getStringExtra("Budget");
+
+        entireBudget = getIntent().getStringExtra("Budget");
         cList = (ArrayList<CategoryItem>) getIntent().getSerializableExtra("BudgetItem");
         newItem = (ArrayList<CategoryItem>) getIntent().getSerializableExtra("NewItem");
 
@@ -95,7 +97,6 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
             }
             if (tvAlert.getText().toString().contains("남음")) {
                 tvAlert.setTextColor(Color.parseColor("#212529"));
-
             }
 
         }
@@ -127,7 +128,6 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
         }
         adapter = new BudgetRecyclerViewAdapter(bgList);
         rcBudget.setAdapter(adapter);
-
     }
 
     private void setTextView() {
@@ -169,9 +169,9 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
             public void onShowSoftKeyboard() {
 
                 if (tvAlert.getText().toString().contains("남음")) {
-                    tvAlert.setTextColor(Color.parseColor("#0DC9B9"));
+                    tvAlert.setTextColor(Color.parseColor("##047E74"));
                 } else if (tvAlert.getText().toString().contains("초과")) {
-                    tvAlert.setTextColor(Color.parseColor("#FD5E6E"));
+                    tvAlert.setTextColor(Color.parseColor("#E70621"));
                 }
 
                 if (btnNext.isEnabled()) {
@@ -196,20 +196,6 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
-            }
-        });
-
-        //다음 버튼
-        btnNext.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(OnboardingDetailBudgetActivity.this, MainActivity.class);
-                finish();
-                startActivity(intent);
-//                for (int i = 0; i < newItem.size(); i++) {
-//                    customCategoryServer(newItem.get(i).getCategoryEx(), newItem.get(i).getCategoryName());
-//                }
             }
         });
 
