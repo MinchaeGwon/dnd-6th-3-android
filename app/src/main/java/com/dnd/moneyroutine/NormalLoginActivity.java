@@ -34,6 +34,7 @@ public class NormalLoginActivity extends AppCompatActivity {
     private EditText etEmail;
     private EditText etPassword;
     private Button btnLogin;
+    private TextView tvJoin;
 
     private InputMethodManager inputManager;
 
@@ -61,6 +62,7 @@ public class NormalLoginActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.et_login_email);
         etPassword = findViewById(R.id.et_login_password);
         btnLogin = findViewById(R.id.btn_login_email);
+        tvJoin = findViewById(R.id.tv_join);
     }
 
     private void setListener() {
@@ -98,6 +100,13 @@ public class NormalLoginActivity extends AppCompatActivity {
                 if (email.length() != 0 && password.length() != 0) {
                     loginToServer(email, password);
                 }
+            }
+        });
+
+        tvJoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(NormalLoginActivity.this, SignupStep1Activity.class));
             }
         });
     }

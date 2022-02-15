@@ -1,12 +1,16 @@
 package com.dnd.moneyroutine;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -25,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private TabLayout tlMain;
+
+    private Window window;
 
     private List<Fragment> fragmentList;
     private List<ImageView> bottomIconList;
@@ -53,7 +59,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initField() {
+        window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
         tlMain = findViewById(R.id.tl_main_tab);
+
         fragmentList = new ArrayList<>();
         bottomIconList = new ArrayList<>();
     }
@@ -90,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentList.add(null);
         fragmentList.add(null);
 
+        window.setStatusBarColor(Color.parseColor("#F8F9FA"));
         getSupportFragmentManager().beginTransaction().add(R.id.fl_main_select, fragmentList.get(0)).commit();
         setBottomIcon(0, true);
     }
@@ -123,6 +135,12 @@ public class MainActivity extends AppCompatActivity {
 
     // fragment setting
     private void setFragment(int position) {
+        if (position == 0) {
+            window.setStatusBarColor(Color.parseColor("#F8F9FA"));
+        } else {
+            window.setStatusBarColor(ContextCompat.getColor(MainActivity.this, android.R.color.white));
+        }
+
         if (fragmentList.get(position) != null) {
             getSupportFragmentManager().beginTransaction().show(fragmentList.get(position)).commit();
             return;
