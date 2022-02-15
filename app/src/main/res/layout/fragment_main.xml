@@ -1,27 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="main fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:background="#F8F9FA">
 
     <Button
         android:id="@+id/btn_main_logout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="10dp"
         android:text="로그아웃"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ib_main_update_budget"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ib_main_update_budget"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="25dp"
+        android:layout_weight="0"
+        android:adjustViewBounds="true"
+        android:background="@drawable/icon_write"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toStartOf="@+id/ib_main_setting"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ib_main_setting"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="19dp"
+        android:layout_weight="0"
+        android:adjustViewBounds="true"
+        android:background="@drawable/icon_setting"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tl_main_goal"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabGravity="start"
+        app:tabIndicatorColor="#212529"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorGravity="bottom"
+        app:tabIndicatorHeight="2dp"
+        app:tabPaddingBottom="5dp"
+        app:tabPaddingTop="0dp"
+        app:tabRippleColor="@android:color/transparent"
+        app:tabSelectedTextColor="#212529"
+        app:tabTextAppearance="@style/tab_text"
+        app:tabTextColor="#ADB5BD">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이번 달" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="지난 기록" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_main_record"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="14dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tl_main_goal">
+
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

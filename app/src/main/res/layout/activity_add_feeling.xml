@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".AddFeelingActivity">
+
+    <ImageButton
+        android:id="@+id/ib_add_feeling_back"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="0"
+        android:adjustViewBounds="true"
+        android:background="@drawable/icon_left_arrow"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_left_arrow" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/spoqa_han_sans_neo_bold"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:text="소비 감정 입력"
+        android:textColor="#212529"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/ib_add_feeling_cancel"
+        app:layout_constraintStart_toEndOf="@+id/ib_add_feeling_back"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ib_add_feeling_cancel"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_weight="0"
+        android:adjustViewBounds="true"
+        android:background="@drawable/icon_cancel"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_cancel" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/spoqa_han_sans_neo_medium"
+        android:includeFontPadding="false"
+        android:text="지출 감정"
+        android:textColor="#212529"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="31dp"
+        android:fontFamily="@font/spoqa_han_sans_neo_medium"
+        android:includeFontPadding="false"
+        android:text="감정 내용"
+        android:textColor="#212529"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <CheckBox
+                android:id="@+id/cb_add_satisfaction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/custom_select_box_feeling"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/cb_add_satisfaction"
+                app:layout_constraintEnd_toEndOf="@+id/cb_add_satisfaction"
+                app:layout_constraintStart_toStartOf="@+id/cb_add_satisfaction"
+                app:layout_constraintTop_toTopOf="@+id/cb_add_satisfaction">
+
+                <ImageView
+                    android:id="@+id/iv_add_satisfaction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/beer" />
+
+                <TextView
+                    android:id="@+id/textView21"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                    android:gravity="center_horizontal"
+                    android:text="행복했다"
+                    android:textColor="#212529"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                    android:gravity="center_horizontal"
+                    android:text="만족"
+                    android:textColor="#ADB5BD"
+                    android:textSize="10sp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <CheckBox
+                android:id="@+id/cb_add_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/custom_select_box_feeling"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/cb_add_normal"
+                app:layout_constraintEnd_toEndOf="@+id/cb_add_normal"
+                app:layout_constraintStart_toStartOf="@+id/cb_add_normal"
+                app:layout_constraintTop_toTopOf="@id/cb_add_normal">
+
+                <ImageView
+                    android:id="@+id/iv_add_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/bag" />
+
+                <TextView
+                    android:id="@+id/textView23"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                    android:gravity="center_horizontal"
+                    android:text="그냥 그랬어"
+                    android:textColor="#212529"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/textView24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                    android:gravity="center_horizontal"
+                    android:text="보통"
+                    android:textColor="#ADB5BD"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <CheckBox
+                android:id="@+id/cb_add_dissatisfaction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/custom_select_box_feeling"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@id/cb_add_dissatisfaction"
+                app:layout_constraintEnd_toEndOf="@id/cb_add_dissatisfaction"
+                app:layout_constraintStart_toStartOf="@+id/cb_add_dissatisfaction"
+                app:layout_constraintTop_toTopOf="@id/cb_add_dissatisfaction">
+
+                <ImageView
+                    android:id="@+id/iv_add_dissatisfaction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/book" />
+
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                    android:gravity="center_horizontal"
+                    android:text="왜 썼지?"
+                    android:textColor="#212529"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/textView26"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                    android:gravity="center_horizontal"
+                    android:text="불만족"
+                    android:textColor="#ADB5BD"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_feeling_content"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rectangle_f8f9fa_radius_8"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView18">
+
+        <ImageView
+            android:id="@+id/iv_pencil"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/icon_pencil_gray" />
+
+        <EditText
+            android:id="@+id/et_feeling_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:ems="10"
+            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+            android:hint="감정 내용을 입력해주세요"
+            android:inputType="textPersonName"
+            android:textColor="#212529"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_add_feeling_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="56dp"
+        android:background="@drawable/rectangle_adb5bd_radius_8"
+        android:enabled="false"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:stateListAnimator="@null"
+        android:text="확인"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

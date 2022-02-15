@@ -95,34 +95,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_login_password" />
 
-        <CheckBox
-            android:id="@+id/cb_auto_login"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:buttonTint="#E9ECEF"
-            android:fontFamily="@font/spoqa_han_sans_neo_medium"
-            android:includeFontPadding="false"
-            android:text="자동로그인"
-            android:textColor="#868E96"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_login_email" />
-
-        <TextView
-            android:id="@+id/tv_find_email_password"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/spoqa_han_sans_neo_medium"
-            android:includeFontPadding="false"
-            android:text="이메일, 비밀번호 찾기"
-            android:textColor="#868E96"
-            android:textSize="14sp"
+            android:layout_marginTop="13dp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_login_email" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_login_email">
+
+            <TextView
+                android:id="@+id/tv_join"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="25dp"
+                android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                android:includeFontPadding="false"
+                android:text="회원가입"
+                android:textColor="#868E96"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_find_email_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                android:includeFontPadding="false"
+                android:text="이메일, 비밀번호 찾기"
+                android:textColor="#868E96"
+                android:textSize="14sp" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

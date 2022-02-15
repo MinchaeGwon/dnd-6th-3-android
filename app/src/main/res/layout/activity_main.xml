@@ -8,7 +8,6 @@
     tools:context=".MainActivity">
 
     <FrameLayout
-        android:id="@+id/fl_main_select"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constrainedHeight="true"
@@ -16,6 +15,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:id="@+id/fl_main_select"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintBottom_toTopOf="@+id/tl_main_tab"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/shadow_0d000000"
+            android:orientation="vertical" />
+
     </FrameLayout>
 
     <com.google.android.material.tabs.TabLayout

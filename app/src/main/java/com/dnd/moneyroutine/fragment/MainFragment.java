@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,17 +17,17 @@ import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.SocialLoginActivity;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
-import com.dnd.moneyroutine.service.RequestService;
+import com.google.android.material.tabs.TabLayout;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.ArrayList;
+import java.util.List;
 
+// 메인 fragment
 public class MainFragment extends Fragment {
 
     private final static String TAG = "MainFragment";
 
-    private Button btnLogout;
+    private List<Fragment> fragmentList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,33 +36,90 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        init(view);
-
-        Call<String> call = RequestService.getInstance().test(); // 토큰이 필요 없을 때 사용하는 코드
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful()) {
-                    Log.d(TAG, response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.d(TAG, t.getMessage());
-                Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
-            }
-        });
+        initView(view);
+        tabInit(view);
     }
 
-    private void init(View v) {
-        btnLogout = v.findViewById(R.id.btn_main_logout);
+    private void initView(View v) {
+        Button btnLogout = v.findViewById(R.id.btn_main_logout);
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 logoutToServer();
             }
         });
+
+        ImageButton ibUpdateBudget = v.findViewById(R.id.ib_main_update_budget);
+        ibUpdateBudget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        ImageButton ibSetting = v.findViewById(R.id.ib_main_setting);
+        ibSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
+
+    // tab view 초기화 메소드
+    private void tabInit(View v) {
+        Log.d(TAG, "11111111111111");
+        fragmentList = new ArrayList<>();
+        fragmentList.add(null);
+        fragmentList.add(null);
+
+        TabLayout tlGoal = v.findViewById(R.id.tl_main_goal);
+
+        // 초기 fragment setting
+        tlGoal.selectTab(tlGoal.getTabAt(0));
+        setFragment(0);
+
+        tlGoal.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                setFragment(position);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+
+                if (fragmentList.get(position) != null) {
+                    getChildFragmentManager().beginTransaction().hide(fragmentList.get(position)).commit();
+                }
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
+    private void setFragment(int position) {
+        if (fragmentList.get(position) != null) {
+            getChildFragmentManager().beginTransaction().show(fragmentList.get(position)).commit();
+            return;
+        }
+
+        fragmentList.set(position, getFragment(position));
+        getChildFragmentManager().beginTransaction().add(R.id.fl_main_record, fragmentList.get(position)).commit();
+    }
+
+    private Fragment getFragment(int position) {
+        switch (position) {
+            case 0:
+                return new MainCurrentMonthFragment();
+            case 1:
+                return new MainPastRecordFragment();
+        }
+        return null;
     }
 
     // 임시 로그아웃 버튼 설정
