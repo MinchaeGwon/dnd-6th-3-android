@@ -32,6 +32,7 @@ public class SignupStep1Activity extends AppCompatActivity {
     private ImageButton ibBack;
     private EditText etEmail;
     private Button btnNext;
+    private ImageButton ibRemove;
 
     private ConstraintLayout.LayoutParams contentLayoutParams;
     private InputMethodManager inputManager;
@@ -63,6 +64,7 @@ public class SignupStep1Activity extends AppCompatActivity {
         ibBack = findViewById(R.id.ib_sign1_back);
         etEmail = findViewById(R.id.et_signup1_email);
         btnNext = findViewById(R.id.btn_signup1_next);
+        ibRemove = findViewById(R.id.ib_sign1_email_remove);
 
         userForm = new UserForm();
     }
@@ -105,6 +107,13 @@ public class SignupStep1Activity extends AppCompatActivity {
                 } else {
                     Toast.makeText(SignupStep1Activity.this, "이메일 형식에 맞지 않습니다", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        ibRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etEmail.setText("");
             }
         });
 
@@ -177,6 +186,8 @@ public class SignupStep1Activity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (etEmail.length() == 0) {
+                    ibRemove.setVisibility(View.INVISIBLE);
+
                     // 키보드가 활성화 되지 않은 경우에만 둥글게 표시
                     if (inputManager.isAcceptingText()) {
                         btnNext.setBackgroundColor(Color.parseColor("#ced4da"));
@@ -186,6 +197,8 @@ public class SignupStep1Activity extends AppCompatActivity {
 
                     btnNext.setEnabled(false);
                 } else {
+                    ibRemove.setVisibility(View.VISIBLE);
+
                     if (inputManager.isAcceptingText()) {
                         btnNext.setBackgroundColor(Color.parseColor("#343a40"));
                     } else {
@@ -208,8 +221,13 @@ public class SignupStep1Activity extends AppCompatActivity {
             public void onFocusChange(View view, boolean focus) {
                 if (focus) {
                     view.setBackgroundResource(R.drawable.rectangle_495057_stroke_radius_8);
+
+                    if (etEmail.length() != 0) {
+                        ibRemove.setVisibility(View.VISIBLE);
+                    }
                 } else {
                     view.setBackgroundResource(R.drawable.rectangle_f8f9fa_radius_8);
+                    ibRemove.setVisibility(View.INVISIBLE);
                 }
             }
         });
