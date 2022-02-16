@@ -20,6 +20,7 @@
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_new_month_start"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
@@ -76,7 +77,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
                 <Button
-                    android:id="@+id/btn_same"
+                    android:id="@+id/btn_goal_continue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="36dp"
@@ -127,7 +128,7 @@
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout3"
+                android:id="@+id/cl_past_month_record"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -138,7 +139,7 @@
                 android:elevation="5dp">
 
                 <TextView
-                    android:id="@+id/tv_past_month"
+                    android:id="@+id/tv_past_year_month"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -161,8 +162,8 @@
                     android:text="성공"
                     android:textColor="#FF6EAB"
                     android:textSize="14sp"
-                    app:layout_constraintStart_toEndOf="@+id/tv_past_month"
-                    app:layout_constraintTop_toTopOf="@+id/tv_past_month" />
+                    app:layout_constraintStart_toEndOf="@+id/tv_past_year_month"
+                    app:layout_constraintTop_toTopOf="@+id/tv_past_year_month" />
 
                 <TextView
                     android:id="@+id/tv_past_date"
@@ -176,7 +177,7 @@
                     android:textColor="#ADB5BD"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_past_month" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_past_year_month" />
 
                 <ProgressBar
                     android:id="@+id/pb_past_remain_budget"
@@ -206,7 +207,7 @@
                     app:layout_constraintTop_toTopOf="@+id/pb_past_remain_budget">
 
                     <TextView
-                        android:id="@+id/textView13"
+                        android:id="@+id/tv_past_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -298,6 +299,49 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_past_total_expense" />
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_past_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/rectangle_white_radius_24"
+                android:elevation="5dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_past_empty_year_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                    android:includeFontPadding="false"
+                    android:text="2022년 2월"
+                    android:textColor="#343A40"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_past_empty_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="96dp"
+                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                    android:includeFontPadding="false"
+                    android:text="지난 기록이 없어요"
+                    android:textColor="#ADB5BD"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_past_empty_year_month" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>

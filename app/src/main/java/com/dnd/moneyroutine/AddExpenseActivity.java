@@ -139,7 +139,7 @@ public class AddExpenseActivity extends AppCompatActivity {
 
                 expenseCalendarFragment.setOnSelectListener(new ExpenseCalendarFragment.OnSelectListener() {
                     @Override
-                    public void onSelected(View view, Calendar selectDate) {
+                    public void onSelect(View view, Calendar selectDate) {
                         tvDate.setText(Common.getExpenseCalendarDate(selectDate));
                         expenseDate = selectDate;
                     }

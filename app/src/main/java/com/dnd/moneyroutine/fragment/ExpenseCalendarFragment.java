@@ -1,7 +1,6 @@
 package com.dnd.moneyroutine.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.adapter.CalendarAdapter;
@@ -27,13 +25,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import retrofit2.Retrofit;
-
 // 지출 날짜 bottom sheet fragment
 public class ExpenseCalendarFragment extends BottomSheetDialogFragment {
 
     public interface OnSelectListener {
-        void onSelected(View view, Calendar selectDate);
+        void onSelect(View view, Calendar selectDate);
     }
 
     private static final int DAYS_COUNT = 42;
@@ -113,7 +109,7 @@ public class ExpenseCalendarFragment extends BottomSheetDialogFragment {
                 selectDate.setTime(date);
 
                 dismiss();
-                onSelectListener.onSelected(view, selectDate);
+                onSelectListener.onSelect(view, selectDate);
             }
         });
     }

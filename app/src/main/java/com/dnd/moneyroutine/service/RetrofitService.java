@@ -30,4 +30,10 @@ public interface RetrofitService {
 
     @GET("goal/info")
     Call<JsonObject> getMainGoalList(@Query("date") LocalDate date);
+
+    @POST("goal/continue")
+    Call<JsonObject> continueGoal();
+
+    @GET("goal-category/")
+    Call<JsonObject> getGoalCategory();
 }

@@ -16,7 +16,7 @@
         android:fontFamily="@font/spoqa_han_sans_neo_medium"
         android:gravity="center_horizontal"
         android:includeFontPadding="false"
-        android:text="제목"
+        android:text="날짜 선택"
         android:textColor="#212529"
         android:textSize="16sp"
         android:textStyle="normal"
@@ -34,7 +34,7 @@
         android:fontFamily="@font/spoqa_han_sans_neo_regular"
         android:gravity="center_horizontal"
         android:includeFontPadding="false"
-        android:text="내용"
+        android:text="연도와 월을 선택해주세요"
         android:textColor="#868E96"
         android:textSize="12sp"
         android:textStyle="normal"
@@ -42,19 +42,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_dialog_title" />
 
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="23dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_content">
+
+        <NumberPicker
+            android:id="@+id/picker_year"
+            android:layout_width="wrap_content"
+            android:layout_height="184dp"
+            android:theme="@style/CustomNumberPicker" />
+
+        <NumberPicker
+            android:id="@+id/picker_month"
+            android:layout_width="match_parent"
+            android:layout_height="184dp"
+            android:layout_marginStart="16dp"
+            android:theme="@style/CustomNumberPicker" />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/btn_dialog_cancel"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="22dp"
         android:background="@drawable/rectangle_ced4da_radius_8"
         android:fontFamily="@font/spoqa_han_sans_neo_medium"
         android:letterSpacing="-0.02"
         android:lineSpacingExtra="16sp"
         android:stateListAnimator="@null"
-        android:text="취소"
+        android:text="닫기"
         android:textColor="#ffffff"
         android:textSize="14sp"
         android:textStyle="normal"
@@ -63,14 +91,14 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_dialog_confirm"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_content" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <Button
         android:id="@+id/btn_dialog_confirm"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="22dp"
         android:background="@drawable/rectangle_343a40_radius_8"
@@ -87,7 +115,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toEndOf="@+id/btn_dialog_cancel"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_content"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
