@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.dnd.moneyroutine.BudgetUpdateActivity;
 import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.SocialLoginActivity;
 import com.dnd.moneyroutine.custom.Constants;
@@ -53,7 +54,8 @@ public class MainFragment extends Fragment {
         ibUpdateBudget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(getContext(), BudgetUpdateActivity.class);
+                startActivity(intent);
             }
         });
 

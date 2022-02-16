@@ -10,30 +10,28 @@
         android:id="@+id/btn_main_logout"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginEnd="10dp"
         android:text="로그아웃"
         app:layout_constraintEnd_toStartOf="@+id/ib_main_update_budget"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/ib_main_update_budget"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginEnd="25dp"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="6dp"
         android:layout_weight="0"
         android:adjustViewBounds="true"
-        android:background="@drawable/icon_write"
+        android:background="@drawable/icon_update_budget"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toStartOf="@+id/ib_main_setting"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/ib_main_setting"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginEnd="19dp"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="9dp"
         android:layout_weight="0"
         android:adjustViewBounds="true"
         android:background="@drawable/icon_setting"

@@ -32,8 +32,8 @@
         android:text="소비 감정 입력"
         android:textColor="#212529"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/ib_add_feeling_cancel"
-        app:layout_constraintStart_toEndOf="@+id/ib_add_feeling_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton

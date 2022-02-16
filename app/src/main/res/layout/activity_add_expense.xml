@@ -32,8 +32,8 @@
         android:text="소비 입력"
         android:textColor="#212529"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/ib_add_expense_cancel"
-        app:layout_constraintStart_toEndOf="@+id/ib_add_expense_back"
+        app:layout_constraintEnd_toEndOf="@+id/ib_add_expense_cancel"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
@@ -55,6 +55,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="15dp"
+        android:clipToPadding="false"
+        android:paddingBottom="15dp"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toTopOf="@+id/btn_add_expense_next"
         app:layout_constraintEnd_toEndOf="parent"
