@@ -50,7 +50,7 @@ public class DayPickerDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialog);
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        View dialog = inflater.inflate(R.layout.dialog_time_picker, null);
+        View dialog = inflater.inflate(R.layout.dialog_day_picker, null);
         builder.setView(dialog);
 
         initView(dialog);

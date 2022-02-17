@@ -3,6 +3,7 @@ package com.dnd.moneyroutine;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -13,10 +14,15 @@ import com.dnd.moneyroutine.custom.Common;
 import com.dnd.moneyroutine.custom.DayPickerDialog;
 import com.dnd.moneyroutine.custom.TimePickerDialog;
 import com.dnd.moneyroutine.custom.YearMonthPickerDialog;
+import com.google.gson.JsonObject;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 // 알림 설정 activity
 public class NotificationSettingActivity extends AppCompatActivity {
@@ -40,6 +46,8 @@ public class NotificationSettingActivity extends AppCompatActivity {
 
         initView();
         setListener();
+
+        setNotificationInfo();
     }
 
     private void initView() {
@@ -57,6 +65,16 @@ public class NotificationSettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        scNoti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SwitchCompat switchCompat = (SwitchCompat) v;
+                boolean subscribe = switchCompat.isChecked();
+
+                changeNotiSetting(subscribe);
             }
         });
 
@@ -109,5 +127,25 @@ public class NotificationSettingActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void setNotificationInfo() {
+        scNoti.setChecked(true);
+    }
+
+    private void changeNotiSetting(boolean subscribe) {
+        if (subscribe) {
+            btnTime.setEnabled(true);
+            btnDay.setEnabled(true);
+
+            tvTime.setTextColor(Color.parseColor("#212529"));
+            tvDay.setTextColor(Color.parseColor("#212529"));
+        } else {
+            btnTime.setEnabled(false);
+            btnDay.setEnabled(false);
+
+            tvTime.setTextColor(Color.parseColor("#ADB5BD"));
+            tvDay.setTextColor(Color.parseColor("#ADB5BD"));
+        }
     }
 }

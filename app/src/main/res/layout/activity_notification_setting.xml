@@ -79,8 +79,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="16dp"
-            android:textColorHighlight="#0DC9B9"
             android:theme="@style/SCBSwitch"
+            android:textColorHighlight="#0DC9B9"
+            android:textColorLink="#0DC9B9"
             app:switchMinWidth="34dp" />
 
     </LinearLayout>
@@ -115,7 +116,7 @@
             android:fontFamily="@font/spoqa_han_sans_neo_medium"
             android:includeFontPadding="false"
             android:text="12:00"
-            android:textColor="#ADB5BD"
+            android:textColor="#212529"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -149,7 +150,7 @@
             android:fontFamily="@font/spoqa_han_sans_neo_medium"
             android:includeFontPadding="false"
             android:text="월,화,수,목,금,토,일"
-            android:textColor="#ADB5BD"
+            android:textColor="#212529"
             android:textSize="14sp" />
     </LinearLayout>
 
