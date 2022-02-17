@@ -17,6 +17,12 @@
         android:theme="@style/Theme.MoneyRoutine"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".NotificationSettingActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SettingActivity"
+            android:exported="true" />
+        <activity
             android:name=".AddExpenseCatActivity"
             android:exported="true" />
         <activity

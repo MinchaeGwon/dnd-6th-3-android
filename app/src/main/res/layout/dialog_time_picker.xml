@@ -16,7 +16,7 @@
         android:fontFamily="@font/spoqa_han_sans_neo_medium"
         android:gravity="center_horizontal"
         android:includeFontPadding="false"
-        android:text="날짜 선택"
+        android:text="알림 시간 선택"
         android:textColor="#212529"
         android:textSize="16sp"
         android:textStyle="normal"
@@ -34,7 +34,7 @@
         android:fontFamily="@font/spoqa_han_sans_neo_regular"
         android:gravity="center_horizontal"
         android:includeFontPadding="false"
-        android:text="연도와 월을 선택해주세요"
+        android:text="선택한 시간에 소비 기록 알림을 보내드립니다"
         android:textColor="#868E96"
         android:textSize="12sp"
         android:textStyle="normal"
@@ -42,33 +42,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_dialog_title" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="23dp"
+    <TimePicker
+        android:id="@+id/tp_time"
+        android:layout_width="wrap_content"
+        android:layout_height="184dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="23dp"
-        android:orientation="horizontal"
+        android:theme="@style/CustomPicker"
+        android:timePickerMode="spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_content">
-
-        <NumberPicker
-            android:id="@+id/picker_year"
-            android:layout_width="wrap_content"
-            android:layout_height="184dp"
-            android:theme="@style/CustomPicker" />
-
-        <NumberPicker
-            android:id="@+id/picker_month"
-            android:layout_width="match_parent"
-            android:layout_height="184dp"
-            android:layout_marginStart="16dp"
-            android:theme="@style/CustomPicker" />
-
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_content" />
 
     <Button
         android:id="@+id/btn_dialog_cancel"
@@ -91,7 +74,7 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_dialog_confirm"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+        app:layout_constraintTop_toBottomOf="@+id/tp_time" />
 
     <Button
         android:id="@+id/btn_dialog_confirm"
@@ -115,7 +98,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toEndOf="@+id/btn_dialog_cancel"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+        app:layout_constraintTop_toBottomOf="@+id/tp_time" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,14 +6,6 @@
     android:layout_height="match_parent"
     android:background="#F8F9FA">
 
-    <Button
-        android:id="@+id/btn_main_logout"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:text="로그아웃"
-        app:layout_constraintEnd_toStartOf="@+id/ib_main_update_budget"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageButton
         android:id="@+id/ib_main_update_budget"
         android:layout_width="44dp"
