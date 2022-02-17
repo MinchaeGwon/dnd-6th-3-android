@@ -91,25 +91,25 @@
         app:layout_constraintTop_toBottomOf="@+id/textView11">
 
         <CheckBox
-            android:id="@+id/cb_add_satisfaction"
+            android:id="@+id/cb_add_good"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:button="@drawable/feeling_satisfaction_selector" />
+            android:button="@drawable/feeling_good_selector" />
 
         <CheckBox
-            android:id="@+id/cb_add_normal"
+            android:id="@+id/cb_add_soso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:button="@drawable/feeling_normal_selector" />
+            android:button="@drawable/feeling_soso_selector" />
 
         <CheckBox
-            android:id="@+id/cb_add_dissatisfaction"
+            android:id="@+id/cb_add_bad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:button="@drawable/feeling_dissatisfaction_selector" />
+            android:button="@drawable/feeling_bad_selector" />
 
     </LinearLayout>
 

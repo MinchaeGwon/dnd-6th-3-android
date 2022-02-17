@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Window window;
 
-    private String[] tabName = {"홈", "소비내역", "다이어리", "목표달성"};
-
     private List<Fragment> fragmentList;
     private List<ImageView> bottomIconList;
     private List<TextView> bottomTextList;
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             tvName.setOnClickListener(getViewOnClick(i));
 
             imgIcon.setImageResource(mappingUnpressedIcon(i));
-            tvName.setText(tabName[i]);
+            tvName.setText(FooterEnum.findByOrderingNumber(i).getName());
 
             tlMain.addTab(tlMain.newTab().setCustomView(view));
             bottomIconList.add(i, imgIcon);
@@ -147,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
     // fragment setting
     private void setFragment(int position) {
-        if (position == 0) {
+        if (position == FooterEnum.HOME.getOrderingNumber()|| position == FooterEnum.DIARY.getOrderingNumber()) {
             window.setStatusBarColor(Color.parseColor("#F8F9FA"));
         } else {
             window.setStatusBarColor(ContextCompat.getColor(MainActivity.this, android.R.color.white));

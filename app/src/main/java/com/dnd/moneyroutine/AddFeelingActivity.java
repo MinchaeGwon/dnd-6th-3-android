@@ -4,11 +4,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -55,6 +56,15 @@ public class AddFeelingActivity extends AppCompatActivity {
     private ExpenseForm expenseForm;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(newBase);
+
+        Configuration configuration = new Configuration(newBase.getResources().getConfiguration());
+        configuration.fontScale = 1;
+        applyOverrideConfiguration(configuration);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_feeling);
@@ -73,9 +83,9 @@ public class AddFeelingActivity extends AppCompatActivity {
         ivPencil = findViewById(R.id.iv_feeling_pencil);
         etContent = findViewById(R.id.et_feeling_content);
 
-        cbSatisfaction = findViewById(R.id.cb_add_satisfaction);
-        cbNormal = findViewById(R.id.cb_add_normal);
-        cbDissatisfaction = findViewById(R.id.cb_add_dissatisfaction);
+        cbSatisfaction = findViewById(R.id.cb_add_good);
+        cbNormal = findViewById(R.id.cb_add_soso);
+        cbDissatisfaction = findViewById(R.id.cb_add_bad);
 
         btnConfirm = findViewById(R.id.btn_add_feeling_confirm);
     }
@@ -122,8 +132,6 @@ public class AddFeelingActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
                 if (isCheck) {
-                    Log.d(TAG, "!1111111111");
-
                     if (etContent.length() > 0) {
                         if (inputManager.isAcceptingText()) {
                             btnConfirm.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
@@ -137,11 +145,7 @@ public class AddFeelingActivity extends AppCompatActivity {
                     }
 
                     selectFeeling = (CheckBox) compoundButton;
-
-                    Log.d(TAG, "선택된 아이디 : " + selectFeeling.getId());
                 } else {
-                    Log.d(TAG, "2222222");
-
                     if (inputManager.isAcceptingText()) {
                         btnConfirm.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
                     } else {
@@ -278,14 +282,13 @@ public class AddFeelingActivity extends AppCompatActivity {
 
     private String mappingFeeling() {
         switch (selectFeeling.getId()) {
-            case R.id.cb_add_satisfaction:
-                return "만족";
-            case R.id.cb_add_normal:
-                return "보통";
-            case R.id.cb_add_dissatisfaction:
-                return "불만족";
+            case R.id.cb_add_good:
+                return "GOOD";
+            case R.id.cb_add_soso:
+                return "SOSO";
+            case R.id.cb_add_bad:
+                return "BAD";
         }
-
         return null;
     }
 
