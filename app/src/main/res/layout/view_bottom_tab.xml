@@ -2,18 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="10dp">
+    android:orientation="vertical">
 
     <ImageButton
         android:id="@+id/btn_tab_image"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="12dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         android:src="@drawable/tab_select_color" />
 
+    <TextView
+        android:id="@+id/tv_tab_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/spoqa_han_sans_neo_medium"
+        android:gravity="center_horizontal"
+        android:includeFontPadding="false"
+        android:text="홈"
+        android:textColor="#CED4DA"
+        android:textSize="10sp"
+        android:textStyle="normal" />
 </LinearLayout>

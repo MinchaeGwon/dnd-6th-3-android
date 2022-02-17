@@ -13,8 +13,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dnd.moneyroutine.enums.FooterEnum;
 import com.dnd.moneyroutine.fragment.ChallengeFragment;
 import com.dnd.moneyroutine.fragment.DiaryFragment;
 import com.dnd.moneyroutine.fragment.ExpenditureFragment;
@@ -32,8 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
     private Window window;
 
+    private String[] tabName = {"홈", "소비내역", "다이어리", "목표달성"};
+
     private List<Fragment> fragmentList;
     private List<ImageView> bottomIconList;
+    private List<TextView> bottomTextList;
 
     private int nowTabPosition = 0;
     private long backPressedTime = 0;
@@ -67,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentList = new ArrayList<>();
         bottomIconList = new ArrayList<>();
+        bottomTextList = new ArrayList<>();
     }
 
     // custom tab view 만들기
@@ -76,11 +82,17 @@ public class MainActivity extends AppCompatActivity {
             view.setOnClickListener(getViewOnClick(i));
 
             ImageButton imgIcon = view.findViewById(R.id.btn_tab_image);
+            TextView tvName = view.findViewById(R.id.tv_tab_name);
+
             imgIcon.setOnClickListener(getViewOnClick(i));
+            tvName.setOnClickListener(getViewOnClick(i));
+
             imgIcon.setImageResource(mappingUnpressedIcon(i));
+            tvName.setText(tabName[i]);
 
             tlMain.addTab(tlMain.newTab().setCustomView(view));
             bottomIconList.add(i, imgIcon);
+            bottomTextList.add(i, tvName);
         }
     }
 
@@ -150,9 +162,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().add(R.id.fl_main_select, fragmentList.get(position)).commit();
     }
 
-    // 하단바 아이콘 정보 바인딩
+    // 하단바 탭 정보 바인딩
     private void setBottomIcon(int position, boolean pressed) {
         bottomIconList.get(position).setImageResource(pressed ? mappingPressedIcon(position) : mappingUnpressedIcon(position));
+        bottomTextList.get(position).setTextColor(pressed ? Color.parseColor("#343A40") : Color.parseColor("#CED4DA"));
     }
 
     // fragment 만들기
