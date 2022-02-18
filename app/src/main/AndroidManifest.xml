@@ -17,7 +17,6 @@
         android:theme="@style/Theme.MoneyRoutine"
         android:usesCleartextTraffic="true">
         <activity android:name=".MonthlyDetailActivity"></activity>
-        <activity android:name=".custom.RecommendInformationDialog" />
         <activity
             android:name=".NotificationSettingActivity"
             android:exported="true" />
@@ -49,7 +48,7 @@
             android:name=".OnboardingEntireBudgetActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".MainActivity"
             android:exported="true" />
         <activity
             android:name=".SignupStep2Activity"
@@ -77,7 +76,7 @@
         <!-- android:exported="true" -->
         <!-- android:screenOrientation="portrait" /> -->
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
