@@ -5,7 +5,7 @@
         <layer-list>
             <!-- 이미지 영역 -->
             <item
-                android:drawable="@drawable/icon_normal_off"
+                android:drawable="@drawable/icon_soso_off"
                 android:width="104dp" android:height="120dp" />
         </layer-list>
     </item>
@@ -15,7 +15,7 @@
         <layer-list>
             <!-- 이미지 영역 -->
             <item
-                android:drawable="@drawable/icon_normal_on"
+                android:drawable="@drawable/icon_soso_on"
                 android:width="104dp" android:height="120dp" />
         </layer-list>
     </item>

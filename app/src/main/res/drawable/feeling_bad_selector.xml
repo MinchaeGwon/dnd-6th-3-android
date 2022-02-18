@@ -5,7 +5,7 @@
         <layer-list>
             <!-- 이미지 영역 -->
             <item
-                android:drawable="@drawable/icon_dissatisfaction_off"
+                android:drawable="@drawable/icon_bad_off"
                 android:width="104dp" android:height="120dp" />
         </layer-list>
     </item>
@@ -15,7 +15,7 @@
         <layer-list>
             <!-- 이미지 영역 -->
             <item
-                android:drawable="@drawable/icon_dissatisfaction_on"
+                android:drawable="@drawable/icon_bad_on"
                 android:width="104dp" android:height="120dp" />
         </layer-list>
     </item>
