@@ -64,6 +64,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
+    <RadioGroup
+        android:id="@+id/rg_feeling"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11">
+
+        <RadioButton
+            android:id="@+id/rb_feeling_good"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@drawable/feeling_good_selector" />
+
+        <RadioButton
+            android:id="@+id/rb_feeling_soso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:button="@drawable/feeling_soso_selector" />
+
+        <RadioButton
+            android:id="@+id/rb_feeling_bad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@drawable/feeling_bad_selector" />
+    </RadioGroup>
+
     <TextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
@@ -76,42 +107,7 @@
         android:textColor="#212529"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11">
-
-        <CheckBox
-            android:id="@+id/cb_add_good"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@drawable/feeling_good_selector" />
-
-        <CheckBox
-            android:id="@+id/cb_add_soso"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@drawable/feeling_soso_selector" />
-
-        <CheckBox
-            android:id="@+id/cb_add_bad"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@drawable/feeling_bad_selector" />
-
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/rg_feeling" />
 
     <LinearLayout
         android:id="@+id/ll_feeling_content"

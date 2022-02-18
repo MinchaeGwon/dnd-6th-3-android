@@ -32,7 +32,7 @@
         android:text="소비 입력"
         android:textColor="#212529"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/ib_add_expense_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

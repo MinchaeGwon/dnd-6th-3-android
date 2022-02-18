@@ -138,7 +138,33 @@ public class DiaryWeeklyFragment extends Fragment {
                     ivGoodMore.setRotationX(180);
                 } else {
                     rvGood.setVisibility(View.GONE);
-                    ivGoodMore.setRotationY(180);
+                    ivGoodMore.setRotationX(360);
+                }
+            }
+        });
+
+        btnSoso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (rvSoso.getVisibility() == View.GONE) {
+                    rvSoso.setVisibility(View.VISIBLE);
+                    ivSosoMore.setRotationX(180);
+                } else {
+                    rvSoso.setVisibility(View.GONE);
+                    ivSosoMore.setRotationX(360);
+                }
+            }
+        });
+
+        btnBad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (rvBad.getVisibility() == View.GONE) {
+                    rvBad.setVisibility(View.VISIBLE);
+                    ivBadMore.setRotationX(180);
+                } else {
+                    rvBad.setVisibility(View.GONE);
+                    ivBadMore.setRotationX(360);
                 }
             }
         });
