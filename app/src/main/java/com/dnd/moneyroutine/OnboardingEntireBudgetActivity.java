@@ -89,7 +89,7 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
 
     //달의 마지막 날 구하기
     private void getEndDate() {
-        DecimalFormat df = new DecimalFormat("00");
+        DecimalFormat df = new DecimalFormat("0");
         Calendar cal = Calendar.getInstance();
 
         String month = df.format(cal.get(Calendar.MONTH) + 1); //월

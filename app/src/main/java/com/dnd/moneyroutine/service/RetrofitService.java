@@ -14,6 +14,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 // api interface
@@ -28,15 +29,15 @@ public interface RetrofitService {
     Call<JsonObject> login(@Body UserForm userForm);
 
     @POST("custom-category")
-<<<<<<< HEAD
     Call<CustomCategoryModel> create(@Body CustomCategoryModel customCategoryModel);
 
     @POST("goal")
     Call<BudgetDetailModel> goal(@Body BudgetDetailModel budgetDetailModel);
-=======
-    Call<CustomCategoryModel> create (@Body CustomCategoryModel customCategoryModel);
 
     @GET("goal/info")
     Call<JsonObject> getMainGoalList(@Query("date") LocalDate date);
->>>>>>> d3a93a7bd849cdb3802c578878398cbce3e62545
+
+    @GET("expenditure/statics/weekly/{startDate}/{endDate}")
+    Call<JsonObject> getWeeklyStatics(@Path("startDate") String startDate,
+                                      @Path("endDate") String endDate);
 }

@@ -32,7 +32,9 @@ android {
     buildFeatures {
         viewBinding true
     }
+
 }
+
 
 dependencies {
 
@@ -100,10 +102,17 @@ dependencies {
 
     // 카카오 로그인
 //    implementation "com.kakao.sdk:v2-user:2.4.2"
-    
+
     // 네이버 로그인
 //    implementation 'com.naver.nid:naveridlogin-android-sdk:4.2.6'
 
     // 구글 로그인
     implementation 'com.google.android.gms:play-services-auth:20.1.0'
+
+    //원형 차트
+    implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
+
+    //그래프
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
 }

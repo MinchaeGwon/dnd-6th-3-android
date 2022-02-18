@@ -169,7 +169,7 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
             public void onShowSoftKeyboard() {
 
                 if (tvAlert.getText().toString().contains("남음")) {
-                    tvAlert.setTextColor(Color.parseColor("##047E74"));
+                    tvAlert.setTextColor(Color.parseColor("#047E74"));
                 } else if (tvAlert.getText().toString().contains("초과")) {
                     tvAlert.setTextColor(Color.parseColor("#E70621"));
                 }

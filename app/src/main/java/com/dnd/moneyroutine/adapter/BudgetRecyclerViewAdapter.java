@@ -235,6 +235,7 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
 
     }
 
+    //서버로 categoryid, budget, iscustom, 전체 budget 보냄
     private void goaltoServer(){
         Call<BudgetDetailModel> call = RequestService.getInstance().goal(budgetDetailModel);
         call.enqueue(new Callback<BudgetDetailModel>() {
