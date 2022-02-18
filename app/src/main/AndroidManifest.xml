@@ -17,11 +17,25 @@
         android:theme="@style/Theme.MoneyRoutine"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".AddFeelingActivity"
+            android:name=".NotificationSettingActivity"
             android:exported="true" />
         <activity
-            android:name=".AddExpenseActivity"
+            android:name=".SettingActivity"
             android:exported="true" />
+        <activity
+            android:name=".AddExpenseCatActivity"
+            android:exported="true" />
+        <activity
+            android:name=".BudgetUpdateActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AddFeelingActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".AddExpenseActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".NewCategoryActivity"
             android:windowSoftInputMode="adjustResize" />

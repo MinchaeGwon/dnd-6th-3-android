@@ -21,7 +21,6 @@
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -31,7 +30,7 @@
                 android:elevation="5dp">
 
                 <TextView
-                    android:id="@+id/tv_current_month"
+                    android:id="@+id/tv_current_year_month"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -56,7 +55,7 @@
                     android:textColor="#ADB5BD"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_current_month" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_current_year_month" />
 
                 <ProgressBar
                     android:id="@+id/pb_current_remain_budget"
@@ -86,7 +85,6 @@
                     app:layout_constraintTop_toTopOf="@+id/pb_current_remain_budget">
 
                     <TextView
-                        android:id="@+id/textView13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
