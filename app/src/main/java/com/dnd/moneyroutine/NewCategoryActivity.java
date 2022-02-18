@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -18,11 +19,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
+import com.dnd.moneyroutine.dto.CustomCategoryModel;
 import com.dnd.moneyroutine.item.CategoryItem;
+import com.dnd.moneyroutine.service.RequestService;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static java.util.regex.Pattern.compile;
 
@@ -42,6 +50,7 @@ public class NewCategoryActivity extends AppCompatActivity {
     Button btnConfirm;
 
     CategoryItem newItem;
+    CustomCategoryModel customCategoryModel;
 
     private SoftKeyboardDetector softKeyboardDetector;
     private InputMethodManager inputManager;
@@ -98,6 +107,10 @@ public class NewCategoryActivity extends AppCompatActivity {
                     finish();
                 }
 
+                customCategoryModel =new CustomCategoryModel(ex, name);
+                customCategoryServer();
+
+
             }
         });
 
@@ -116,6 +129,7 @@ public class NewCategoryActivity extends AppCompatActivity {
         tvNewEmoji = findViewById(R.id.tv_emoji);
         bgBlack = findViewById(R.id.bg_black);
         inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
     }
 
 
@@ -315,6 +329,7 @@ public class NewCategoryActivity extends AppCompatActivity {
                     if (isEmoji(et_emoji.getText().toString())) {
                         if (tvNewEmoji.getText() != et_emoji.getText()) {
                             tvNewEmoji.setText(et_emoji.getText());
+//                            tvNewEmoji.setText(et_emoji.getText().toString().charAt(et_emoji.length()-1));
                             et_emoji.setText("");
                             inputManager.hideSoftInputFromWindow(NewCategoryActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                         } else {
@@ -323,21 +338,47 @@ public class NewCategoryActivity extends AppCompatActivity {
                         }
                         bgBlack.setVisibility(View.GONE);
                     }
-//                    else{
-//                        et_emoji.setText(""); ->설정하면 오류나서 이모지가 아닌 값을 누른 뒤 이모지를 누르면 이모지 아닌 값이 표시돼버림
+//                    if(isLetter(et_emoji.getText().toString())){
+//                        et_emoji.setText("");
 //                    }
-
                 }
             }
         });
     }
 
-    //입력된 값이 이모지인지 확인 -> 모든 이모지가 인식되지 않음
     private static boolean isEmoji(String message) {
-        Pattern rex = Pattern.compile("[\\x{10000}-\\x{10ffff}\ud800-\udfff]");
+//        Pattern rex = Pattern.compile("[\\x{10000}-\\x{10ffff}\ud800-\udfff]");
+        Pattern rex = Pattern.compile("[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]");
         Matcher matcher = rex.matcher(message);
 
         return matcher.find();
+    }
+//    private static boolean isLetter(String message){
+//        Pattern rex = Pattern.compile("^[0-9a-zA-Z가-힣]*$");
+//        Matcher matcher = rex.matcher(message);
+//
+//        return matcher.find();
+//    }
+
+    private void customCategoryServer() {
+        Call<CustomCategoryModel> call = RequestService.getInstance().create(customCategoryModel);
+        call.enqueue(new Callback<CustomCategoryModel>() {
+
+            @Override
+            public void onResponse(Call<CustomCategoryModel> call, Response<CustomCategoryModel> response) {
+                if (response.isSuccessful()) {
+                    CustomCategoryModel post = response.body();
+                    Log.d("custom category", post.toString());
+                } else {
+                    Log.e("custom category", "error: " + response.code());
+                    return;
+                }
+            }
+            @Override
+            public void onFailure(Call<CustomCategoryModel> call, Throwable t) {
+                Log.e("custom category", "fail: " + t.getMessage());
+            }
+        });
     }
 
 }

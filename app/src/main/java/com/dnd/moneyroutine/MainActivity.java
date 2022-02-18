@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.dnd.moneyroutine.enums.FooterEnum;
 import com.dnd.moneyroutine.fragment.ChallengeFragment;
-import com.dnd.moneyroutine.fragment.DiaryFragment;
+//import com.dnd.moneyroutine.fragment.DiaryFragment;
 import com.dnd.moneyroutine.fragment.ExpenditureFragment;
 import com.dnd.moneyroutine.fragment.MainFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
             case 1:
                 return new ExpenditureFragment();
             case 2:
-                return new DiaryFragment();
+//                return new DiaryFragment();
             case 3:
                 return new ChallengeFragment();
         }
