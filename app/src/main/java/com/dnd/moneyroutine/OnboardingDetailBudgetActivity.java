@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.dnd.moneyroutine.adapter.BudgetRecyclerViewAdapter;
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
 import com.dnd.moneyroutine.dto.CustomCategoryModel;
+import com.dnd.moneyroutine.dto.GoalCategoryCreateDtoList;
 import com.dnd.moneyroutine.item.BudgetItem;
 import com.dnd.moneyroutine.item.CategoryItem;
 import com.dnd.moneyroutine.service.RequestService;
@@ -47,6 +48,7 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
     private ArrayList<CategoryItem> cList;
     private ArrayList<BudgetItem> bgList;
     private ArrayList<CategoryItem> newItem;
+    private ArrayList<GoalCategoryCreateDtoList> goalCategoryCreateDtoList;
 
     private BudgetRecyclerViewAdapter adapter;
 
@@ -65,8 +67,8 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding_detail_budget);
 
-        Intent intent = getIntent();
-        entireBudget = intent.getStringExtra("Budget");
+
+        entireBudget = getIntent().getStringExtra("Budget");
         cList = (ArrayList<CategoryItem>) getIntent().getSerializableExtra("BudgetItem");
         newItem = (ArrayList<CategoryItem>) getIntent().getSerializableExtra("NewItem");
 
@@ -92,6 +94,9 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
                 if (imm != null)
                     imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
                 focusView.clearFocus();
+            }
+            if (tvAlert.getText().toString().contains("남음")) {
+                tvAlert.setTextColor(Color.parseColor("#212529"));
             }
 
         }
@@ -123,7 +128,6 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
         }
         adapter = new BudgetRecyclerViewAdapter(bgList);
         rcBudget.setAdapter(adapter);
-
     }
 
     private void setTextView() {
@@ -154,7 +158,7 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
 
                 contentLayoutParams.setMarginStart((int) (16 * scale + 0.2f));
                 contentLayoutParams.setMarginEnd((int) (16 * scale + 0.2f));
-                contentLayoutParams.bottomMargin = (int) (8 * scale + 0.2f);
+                contentLayoutParams.bottomMargin = (int) (56 * scale + 0.2f);
                 btnNext.setLayoutParams(contentLayoutParams);
             }
         });
@@ -165,9 +169,9 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
             public void onShowSoftKeyboard() {
 
                 if (tvAlert.getText().toString().contains("남음")) {
-                    tvAlert.setTextColor(Color.parseColor("#0DC9B9"));
+                    tvAlert.setTextColor(Color.parseColor("#047E74"));
                 } else if (tvAlert.getText().toString().contains("초과")) {
-                    tvAlert.setTextColor(Color.parseColor("#FD5E6E"));
+                    tvAlert.setTextColor(Color.parseColor("#E70621"));
                 }
 
                 if (btnNext.isEnabled()) {
@@ -195,43 +199,9 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
             }
         });
 
-        //다음 버튼
-        btnNext.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(OnboardingDetailBudgetActivity.this, MainActivity.class);
-                finish();
-                startActivity(intent);
-                for (int i = 0; i < newItem.size(); i++) {
-                    customCategoryServer(newItem.get(i).getCategoryEx(), newItem.get(i).getCategoryName());
-                }
-            }
-        });
-
     }
 
-    private void customCategoryServer(String detail, String name) {
-        Call<CustomCategoryModel> call = RequestService.getInstance().create(new CustomCategoryModel(detail, name));
-        call.enqueue(new Callback<CustomCategoryModel>() {
 
-            @Override
-            public void onResponse(Call<CustomCategoryModel> call, Response<CustomCategoryModel> response) {
-                if (response.isSuccessful()) {
-                    CustomCategoryModel post = response.body();
-                    Log.d("server res", post.toString());
-                } else {
-                    Log.e("server res", "error: " + response.code());
-                    return;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CustomCategoryModel> call, Throwable t) {
-                Log.e("server res", "fail: " + t.getMessage());
-            }
-        });
-    }
 
 
 }

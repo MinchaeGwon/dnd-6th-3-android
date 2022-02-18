@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
+import com.dnd.moneyroutine.dto.GoalCategoryCreateDtoList;
 import com.dnd.moneyroutine.item.BudgetItem;
 import com.dnd.moneyroutine.item.CategoryItem;
 
@@ -47,6 +48,7 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
 
     private ArrayList<BudgetItem> bgList;
     private ArrayList<CategoryItem> newItem;
+    private ArrayList<GoalCategoryCreateDtoList> goalCategoryCreateDtoList;
 
     private SoftKeyboardDetector softKeyboardDetector;
     private InputMethodManager inputManager;
@@ -87,7 +89,7 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
 
     //달의 마지막 날 구하기
     private void getEndDate() {
-        DecimalFormat df = new DecimalFormat("00");
+        DecimalFormat df = new DecimalFormat("0");
         Calendar cal = Calendar.getInstance();
 
         String month = df.format(cal.get(Calendar.MONTH) + 1); //월
@@ -119,7 +121,7 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
 
                 contentLayoutParams.setMarginStart((int) (16 * scale + 0.2f));
                 contentLayoutParams.setMarginEnd((int) (16 * scale + 0.2f));
-                contentLayoutParams.bottomMargin = (int) (8 * scale + 0.2f);
+                contentLayoutParams.bottomMargin = (int) (56 * scale + 0.2f);
                 btnNext.setLayoutParams(contentLayoutParams);
             }
         });
@@ -261,12 +263,15 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
 
                 bgList = (ArrayList<BudgetItem>) getIntent().getSerializableExtra("BudgetItem");
                 newItem = (ArrayList<CategoryItem>) getIntent().getSerializableExtra("NewItem");
+                goalCategoryCreateDtoList=(ArrayList<GoalCategoryCreateDtoList>) getIntent().getSerializableExtra("goalCategoryCreateDtoList");
+
 
 
                 Intent intent = new Intent(getApplicationContext(), OnboardingDetailBudgetActivity.class);
                 intent.putExtra("Budget", budgetToString);
                 intent.putExtra("BudgetItem", bgList);
                 intent.putExtra("NewItem", newItem);
+                intent.putExtra("goalCategoryCreateDtoList", goalCategoryCreateDtoList);
 
 
                 startActivity(intent);
