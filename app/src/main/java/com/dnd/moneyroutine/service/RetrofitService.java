@@ -40,4 +40,14 @@ public interface RetrofitService {
     @GET("expenditure/statics/weekly/{startDate}/{endDate}")
     Call<JsonObject> getWeeklyStatics(@Path("startDate") String startDate,
                                       @Path("endDate") String endDate);
+
+    @GET("expenditure/statics/monthly/{startDate}/{endDate}")
+    Call<JsonObject> getMonthlyStatics(@Path("startDate") String startDate,
+                                       @Path("endDate") String endDate);
+
+    @POST("goal/continue")
+    Call<JsonObject> continueGoal();
+
+    @GET("goal-category/")
+    Call<JsonObject> getGoalCategory();
 }

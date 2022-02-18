@@ -1,6 +1,8 @@
 package com.dnd.moneyroutine.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,9 +14,11 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dnd.moneyroutine.MonthlyDetailActivity;
 import com.dnd.moneyroutine.R;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -43,6 +47,12 @@ public class ExpenditureMonthlyFragment extends Fragment {
     private ImageView ivPrevious;
     private ImageView ivNext;
 
+    private ImageView ivDetail1;
+    private ImageView ivDetail2;
+    private ImageView ivDetail3;
+    private ImageView ivDetail4;
+
+
     private LocalDate now;
 
     public ExpenditureMonthlyFragment() {
@@ -64,6 +74,7 @@ public class ExpenditureMonthlyFragment extends Fragment {
         setTextView();
         drawPieChart();
         setMonth();
+        showDetail();
     }
 
     private void initView(View v) {
@@ -72,6 +83,12 @@ public class ExpenditureMonthlyFragment extends Fragment {
         tvDate = v.findViewById(R.id.tv_start_end_month);
         ivPrevious = v.findViewById(R.id.iv_previous_month);
         ivNext = v.findViewById(R.id.iv_next_month);
+
+        ivDetail1 = v.findViewById(R.id.iv_detail1_month);
+        ivDetail2 = v.findViewById(R.id.iv_detail2_month);
+        ivDetail3 = v.findViewById(R.id.iv_detail3_month);
+        ivDetail4 = v.findViewById(R.id.iv_detail4_month);
+
 
         calendar = Calendar.getInstance();
         formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -119,34 +136,66 @@ public class ExpenditureMonthlyFragment extends Fragment {
     }
 
     private Date getStartDay() {
-        calendar.set(calendar.YEAR, calendar.MONTH, 1);
+        //1일
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), 1);
         return calendar.getTime();
     }
 
     private Date getEndDay() {
-        calendar.set(calendar.YEAR, calendar.MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        //마지막날
+        calendar.set(calendar.get(Calendar.YEAR),  calendar.get(Calendar.MONTH), calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         return calendar.getTime();
 
     }
 
-    private Date setDate(){
+    private void setDate(){
+        //다음달
         ivNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 calendar.add(Calendar.MONTH,1);
-                tvMonth.setText(calendar.MONTH+ "월");
+                getStartDay();
+                getEndDay();
+                setTextView();
             }
         });
-        return  calendar.getTime();
+
+        //이전달
+        ivPrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calendar.add(Calendar.MONTH,-1);
+                getStartDay();
+                getEndDay();
+                setTextView();
+            }
+        });
+
+
     }
 
     private void setTextView() {
-        tvMonth.setText(calendar.MONTH+ "월");
+        tvMonth.setText(calendar.get(Calendar.MONTH)+1+ "월");
         tvDate.setText(tvFormatter.format(getStartDay()) + "~" + tvFormatter.format(getEndDay()));
     }
 
     private void setMonth(){
 
 
+    }
+
+    private void showDetail(){
+        View.OnClickListener ivListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
+                startActivity(intent);
+            }
+        };
+
+        ivDetail1.setOnClickListener(ivListener);
+        ivDetail2.setOnClickListener(ivListener);
+        ivDetail3.setOnClickListener(ivListener);
+        ivDetail4.setOnClickListener(ivListener);
     }
 }

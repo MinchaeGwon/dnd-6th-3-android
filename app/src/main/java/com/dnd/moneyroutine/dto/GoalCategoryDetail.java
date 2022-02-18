@@ -7,6 +7,7 @@ import lombok.Setter;
 
 @Setter @Getter
 public class GoalCategoryDetail {
+    private int categoryId;
     private String name;
     private int budget;
 

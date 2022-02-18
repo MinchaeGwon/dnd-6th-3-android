@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".OnboardingCategoryActivity">
 
@@ -14,12 +15,12 @@
 
         <ImageView
             android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginStart="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/arrow_back" />
+            app:srcCompat="@drawable/btn_black_back" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -116,11 +117,11 @@
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginRight="7dp"
                     android:layout_weight="0"
-                    app:srcCompat="@drawable/add" />
+                    app:srcCompat="@drawable/icon_add" />
 
                 <TextView
                     android:id="@+id/textView9"

@@ -243,11 +243,11 @@
                     android:textColor="#212529"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView18"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_detail1_month"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageView18"
+                    android:id="@+id/iv_detail1_month"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/icon_right_22x22"
@@ -330,11 +330,11 @@
                     android:textColor="#212529"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView19"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_detail2_month"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageView19"
+                    android:id="@+id/iv_detail2_month"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/icon_right_22x22"
@@ -417,11 +417,11 @@
                     android:textColor="#212529"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView20"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_detail3_month"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageView20"
+                    android:id="@+id/iv_detail3_month"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/icon_right_22x22"
@@ -504,11 +504,11 @@
                     android:textColor="#212529"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView21"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_detail4_month"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageView21"
+                    android:id="@+id/iv_detail4_month"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/icon_right_22x22"

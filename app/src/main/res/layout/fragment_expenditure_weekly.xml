@@ -35,7 +35,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/iv_previous_month"
+                        android:id="@+id/iv_previous_week"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/icon_left"
@@ -51,12 +51,12 @@
                         android:text="5주차"
                         android:textColor="#212529"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/imageView17"
-                        app:layout_constraintStart_toEndOf="@+id/iv_previous_month"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_next_week"
+                        app:layout_constraintStart_toEndOf="@+id/iv_previous_week"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:id="@+id/imageView17"
+                        android:id="@+id/iv_next_week"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/icon_right"
@@ -535,11 +535,11 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="0">
 
                 <TextView
-                    android:id="@+id/textView34"
+                    android:id="@+id/tv_nth_history"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -552,7 +552,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView41"
+                    android:id="@+id/tv_amount_diffrence"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -562,7 +562,7 @@
                     android:textColor="#fc3781"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView34" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_nth_history" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout6"
@@ -576,12 +576,241 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView41">
+                    app:layout_constraintTop_toBottomOf="@+id/tv_amount_diffrence">
+
+                    <View
+                        android:id="@+id/view_line_dotted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="50dp"
+                        android:background="@drawable/line_dotted"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_chart1_week"
+                        android:layout_width="42dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="11dp"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <View
+                            android:id="@+id/bar_chart_1"
+                            android:layout_width="42dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/bar_chart_previous"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView42"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:gravity="center"
+                            android:text="1주차"
+                            android:textColor="#868e96  "
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toTopOf="@+id/bar_chart_1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView43"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                            android:text="0"
+                            android:textColor="#868e96  "
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView42"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_chart2_week"
+                        android:layout_width="42dp"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/cl_chart3_week"
+                        app:layout_constraintStart_toEndOf="@+id/cl_chart1_week"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <View
+                            android:id="@+id/bar_chart_2"
+                            android:layout_width="42dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/bar_chart_previous"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView50"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="2주차"
+                            android:textColor="#868e96"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toTopOf="@+id/bar_chart_2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView51"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                            android:text="0"
+                            android:textColor="#868e96"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView50"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_chart3_week"
+                        android:layout_width="42dp"
+                        android:layout_height="match_parent"
+                        app:layout_constraintEnd_toStartOf="@+id/cl_chart5_week"
+                        app:layout_constraintStart_toEndOf="@+id/cl_chart1_week"
+                        tools:layout_editor_absoluteY="152dp">
+
+                        <View
+                            android:id="@+id/bar_chart_3"
+                            android:layout_width="42dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/bar_chart_previous"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView52"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="3주차"
+                            android:textColor="#868e96"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toTopOf="@+id/bar_chart_3"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView53"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                            android:text="0"
+                            android:textColor="#868e96"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView52"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_chart4_week"
+                        android:layout_width="42dp"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/cl_chart5_week"
+                        app:layout_constraintStart_toEndOf="@+id/cl_chart3_week">
+
+                        <View
+                            android:id="@+id/bar_chart_4"
+                            android:layout_width="42dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/bar_chart_previous"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView54"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="4주차"
+                            android:textColor="#868e96"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toTopOf="@+id/bar_chart_4"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView55"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                            android:text="0"
+                            android:textColor="#868e96"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView54"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_chart5_week"
+                        android:layout_width="42dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0">
+
+                        <View
+                            android:id="@+id/bar_chart_5"
+                            android:layout_width="42dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/bar_chart_now_high"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView44"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="5주차"
+                            android:textColor="#868e96  "
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toTopOf="@+id/bar_chart_5"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView45"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                            android:text="0"
+                            android:textColor="#868e96  "
+                            app:layout_constraintBottom_toTopOf="@+id/textView44"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
-                    android:id="@+id/textView42"
+                    android:id="@+id/tv_100_week"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -591,10 +820,10 @@
                     android:textColor="#adb5bd"
                     android:textSize="10sp"
                     app:layout_constraintStart_toEndOf="@+id/constraintLayout6"
-                    app:layout_constraintTop_toBottomOf="@+id/textView41" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_amount_diffrence" />
 
                 <TextView
-                    android:id="@+id/textView43"
+                    android:id="@+id/tv_75_week"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -604,10 +833,10 @@
                     android:textColor="#adb5bd"
                     android:textSize="10sp"
                     app:layout_constraintStart_toEndOf="@+id/constraintLayout6"
-                    app:layout_constraintTop_toBottomOf="@+id/textView42" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_100_week" />
 
                 <TextView
-                    android:id="@+id/textView44"
+                    android:id="@+id/tv_50_week"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -617,10 +846,10 @@
                     android:textColor="#adb5bd"
                     android:textSize="10sp"
                     app:layout_constraintStart_toEndOf="@+id/constraintLayout6"
-                    app:layout_constraintTop_toBottomOf="@+id/textView43" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_75_week" />
 
                 <TextView
-                    android:id="@+id/textView45"
+                    android:id="@+id/tv_25_week"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -630,10 +859,10 @@
                     android:textColor="#adb5bd"
                     android:textSize="10sp"
                     app:layout_constraintStart_toEndOf="@+id/constraintLayout6"
-                    app:layout_constraintTop_toBottomOf="@+id/textView44" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_50_week" />
 
                 <TextView
-                    android:id="@+id/textView46"
+                    android:id="@+id/tv_0_week"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -643,9 +872,104 @@
                     android:textColor="#adb5bd"
                     android:textSize="10sp"
                     app:layout_constraintStart_toEndOf="@+id/constraintLayout6"
-                    app:layout_constraintTop_toBottomOf="@+id/textView45" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_25_week" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout6"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_50_week"
+                    app:layout_constraintStart_toStartOf="@+id/constraintLayout6"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
+
+                    <TextView
+                        android:id="@+id/tv_week_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:gravity="center"
+                        android:text="12.25~12.31"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/tv_week_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:gravity="center"
+                        android:text="12.25~12.31"
+                        android:textColor="#868e96"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/tv_week_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:gravity="center"
+                        android:text="12.25~12.31"
+                        android:textColor="#868e96"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/tv_week_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:gravity="center"
+                        android:text="12.25~12.31"
+                        android:textColor="#868e96"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/tv_week_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:gravity="center"
+                        android:text="12.25~12.31"
+                        android:textColor="#868e96"
+                        android:textSize="10sp" />
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_week_recommend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="72dp"
+                android:layout_weight="0">
+
+                <ImageView
+                    android:id="@+id/iv_week_recommend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:duplicateParentState="true"
+                    android:src="@drawable/icon_info" />
+
+                <TextView
+                    android:id="@+id/tv_week_recommend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:duplicateParentState="true"
+                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                    android:gravity="right"
+                    android:text="주별 권장 지출액 250,000원"
+                    android:textColor="#296ef4  "
+                    android:textSize="12sp" />
+            </LinearLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

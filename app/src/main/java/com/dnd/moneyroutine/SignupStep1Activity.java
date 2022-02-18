@@ -122,10 +122,10 @@ public class SignupStep1Activity extends AppCompatActivity {
             @Override
             public void onHiddenSoftKeyboard() {
                 if (etEmail.length() == 0) {
-                    btnNext.setBackgroundResource(R.drawable.rectangle_adb5bd_radius_8);
+                    btnNext.setBackgroundResource(R.drawable.button_enabled_false);
                     btnNext.setEnabled(false);
                 } else {
-                    btnNext.setBackgroundResource(R.drawable.rectangle_343a40_radius_8);
+                    btnNext.setBackgroundResource(R.drawable.button_enabled_true);
                     btnNext.setEnabled(true);
                 }
 
@@ -141,7 +141,7 @@ public class SignupStep1Activity extends AppCompatActivity {
             @Override
             public void onShowSoftKeyboard() {
                 if (etEmail.length() == 0) {
-                    btnNext.setBackgroundColor(Color.parseColor("#ced4da"));
+                    btnNext.setBackgroundColor(Color.parseColor("#ADB5BD"));
                     btnNext.setEnabled(false);
                 } else {
                     btnNext.setBackgroundColor(Color.parseColor("#343a40"));
@@ -190,9 +190,9 @@ public class SignupStep1Activity extends AppCompatActivity {
 
                     // 키보드가 활성화 되지 않은 경우에만 둥글게 표시
                     if (inputManager.isAcceptingText()) {
-                        btnNext.setBackgroundColor(Color.parseColor("#ced4da"));
+                        btnNext.setBackgroundColor(Color.parseColor("#ADB5BD"));
                     } else {
-                        btnNext.setBackgroundResource(R.drawable.rectangle_adb5bd_radius_8);
+                        btnNext.setBackgroundResource(R.drawable.button_enabled_false);
                     }
 
                     btnNext.setEnabled(false);
@@ -202,7 +202,7 @@ public class SignupStep1Activity extends AppCompatActivity {
                     if (inputManager.isAcceptingText()) {
                         btnNext.setBackgroundColor(Color.parseColor("#343a40"));
                     } else {
-                        btnNext.setBackgroundResource(R.drawable.rectangle_343a40_radius_8);
+                        btnNext.setBackgroundResource(R.drawable.button_enabled_true);
                     }
 
                     btnNext.setEnabled(true);
@@ -220,13 +220,13 @@ public class SignupStep1Activity extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean focus) {
                 if (focus) {
-                    view.setBackgroundResource(R.drawable.rectangle_495057_stroke_radius_8);
+                    view.setBackgroundResource(R.drawable.textbox_typing);
 
                     if (etEmail.length() != 0) {
                         ibRemove.setVisibility(View.VISIBLE);
                     }
                 } else {
-                    view.setBackgroundResource(R.drawable.rectangle_f8f9fa_radius_8);
+                    view.setBackgroundResource(R.drawable.textbox_default);
                     ibRemove.setVisibility(View.INVISIBLE);
                 }
             }

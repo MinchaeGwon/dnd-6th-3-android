@@ -132,10 +132,10 @@ public class SignupStep2Activity extends AppCompatActivity {
             @Override
             public void onHiddenSoftKeyboard() {
                 if (tvPasswordConfirm.getText().equals("비밀번호가 일치하지 않습니다")) {
-                    btnNext.setBackgroundResource(R.drawable.rectangle_adb5bd_radius_8);
+                    btnNext.setBackgroundResource(R.drawable.button_enabled_false);
                     btnNext.setEnabled(false);
                 } else {
-                    btnNext.setBackgroundResource(R.drawable.rectangle_343a40_radius_8);
+                    btnNext.setBackgroundResource(R.drawable.button_enabled_true);
                     btnNext.setEnabled(true);
                 }
 
@@ -151,7 +151,7 @@ public class SignupStep2Activity extends AppCompatActivity {
             @Override
             public void onShowSoftKeyboard() {
                 if (tvPasswordConfirm.getVisibility() == View.VISIBLE) {
-                    btnNext.setBackgroundColor(Color.parseColor("#ced4da"));
+                    btnNext.setBackgroundColor(Color.parseColor("#ADB5BD"));
                     btnNext.setEnabled(false);
                 } else {
                     btnNext.setBackgroundColor(Color.parseColor("#343a40"));
@@ -200,29 +200,29 @@ public class SignupStep2Activity extends AppCompatActivity {
                 switch (view.getId()) {
                     case R.id.et_signup2_password:
                         if (focus) {
-                            view.setBackgroundResource(R.drawable.rectangle_495057_stroke_radius_8);
+                            view.setBackgroundResource(R.drawable.textbox_typing);
 
                             if (etPassword.length() != 0) {
                                 ibPwRemove.setVisibility(View.VISIBLE);
                             }
                         } else {
-                            view.setBackgroundResource(R.drawable.rectangle_f8f9fa_radius_8);
+                            view.setBackgroundResource(R.drawable.textbox_default);
                             ibPwRemove.setVisibility(View.INVISIBLE);
                         }
                         break;
                     case R.id.et_signup2_password_repeat:
                         if (focus) {
-                            view.setBackgroundResource(R.drawable.rectangle_495057_stroke_radius_8);
+                            view.setBackgroundResource(R.drawable.textbox_typing);
 
                             if (etPasswordRepeat.length() != 0) {
                                 ibPwRepeatRemove.setVisibility(View.VISIBLE);
 
                                 if (!etPasswordRepeat.getText().toString().equals(etPassword.getText().toString())) {
-                                    etPasswordRepeat.setBackgroundResource(R.drawable.rectangle_e70621_stroke_radius_8);
+                                    etPasswordRepeat.setBackgroundResource(R.drawable.textbox_error);
                                 }
                             }
                         } else {
-                            view.setBackgroundResource(R.drawable.rectangle_f8f9fa_radius_8);
+                            view.setBackgroundResource(R.drawable.textbox_default);
                             ibPwRepeatRemove.setVisibility(View.INVISIBLE);
                         }
                         break;
@@ -246,16 +246,16 @@ public class SignupStep2Activity extends AppCompatActivity {
                     tvPasswordConfirm.setVisibility(View.INVISIBLE);
 
                     if (etPasswordRepeat.isFocused()) {
-                        etPasswordRepeat.setBackgroundResource(R.drawable.rectangle_495057_stroke_radius_8);
+                        etPasswordRepeat.setBackgroundResource(R.drawable.textbox_typing);
                     } else {
-                        etPasswordRepeat.setBackgroundResource(R.drawable.rectangle_f8f9fa_radius_8);
+                        etPasswordRepeat.setBackgroundResource(R.drawable.textbox_default);
                     }
 
                     // 키보드가 활성화 되지 않은 경우에만 둥글게 표시
                     if (inputManager.isAcceptingText()) {
-                        btnNext.setBackgroundColor(Color.parseColor("#ced4da"));
+                        btnNext.setBackgroundColor(Color.parseColor("#ADB5BD"));
                     } else {
-                        btnNext.setBackgroundResource(R.drawable.rectangle_adb5bd_radius_8);
+                        btnNext.setBackgroundResource(R.drawable.button_enabled_false);
                     }
 
                     btnNext.setEnabled(false);
@@ -264,26 +264,26 @@ public class SignupStep2Activity extends AppCompatActivity {
                         tvPasswordConfirm.setVisibility(View.INVISIBLE);
 
                         if (etPasswordRepeat.isFocused()) {
-                            etPasswordRepeat.setBackgroundResource(R.drawable.rectangle_495057_stroke_radius_8);
+                            etPasswordRepeat.setBackgroundResource(R.drawable.textbox_typing);
                         } else {
-                            etPasswordRepeat.setBackgroundResource(R.drawable.rectangle_f8f9fa_radius_8);
+                            etPasswordRepeat.setBackgroundResource(R.drawable.textbox_default);
                         }
 
                         if (inputManager.isAcceptingText()) {
                             btnNext.setBackgroundColor(Color.parseColor("#343a40"));
                         } else {
-                            btnNext.setBackgroundResource(R.drawable.rectangle_343a40_radius_8);
+                            btnNext.setBackgroundResource(R.drawable.button_enabled_true);
                         }
 
                         btnNext.setEnabled(true);
                     } else {
                         tvPasswordConfirm.setVisibility(View.VISIBLE);
-                        etPasswordRepeat.setBackgroundResource(R.drawable.rectangle_e70621_stroke_radius_8);
+                        etPasswordRepeat.setBackgroundResource(R.drawable.textbox_error);
 
                         if (inputManager.isAcceptingText()) {
-                            btnNext.setBackgroundColor(Color.parseColor("#ced4da"));
+                            btnNext.setBackgroundColor(Color.parseColor("#ADB5BD"));
                         } else {
-                            btnNext.setBackgroundResource(R.drawable.rectangle_adb5bd_radius_8);
+                            btnNext.setBackgroundResource(R.drawable.button_enabled_false);
                         }
 
                         btnNext.setEnabled(false);

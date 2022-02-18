@@ -1,7 +1,7 @@
 package com.dnd.moneyroutine.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +9,11 @@ import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.adapter.CalendarAdapter;
@@ -25,19 +25,32 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import retrofit2.Retrofit;
-
 // 지출 날짜 bottom sheet fragment
 public class ExpenseCalendarFragment extends BottomSheetDialogFragment {
 
+    public interface OnSelectListener {
+        void onSelect(View view, Calendar selectDate);
+    }
+
     private static final int DAYS_COUNT = 42;
 
+    private ImageButton ibCancel;
     private GridView gvCalendar;
     private TextView tvHeader;
 
-    private Calendar currentDate;
-    private int year;
-    private int month;
+    private Calendar selectDate;
+
+    private OnSelectListener onSelectListener;
+
+    public void setOnSelectListener(OnSelectListener onSelectListener) {
+        this.onSelectListener = onSelectListener;
+    }
+
+    public ExpenseCalendarFragment() {}
+
+    public ExpenseCalendarFragment(Calendar selectDate) {
+        this.selectDate = selectDate;
+    }
 
     @Nullable
     @Override
@@ -66,40 +79,48 @@ public class ExpenseCalendarFragment extends BottomSheetDialogFragment {
 
     private void init(View v) {
         initView(v);
-        initField();
         setBtnClickListeners();
     }
 
     // UI 초기화
     private void initView(View v) {
+        ibCancel = v.findViewById(R.id.ib_calendar_cancel);
         tvHeader = v.findViewById(R.id.tv_calendar_header);
         gvCalendar = v.findViewById(R.id.gv_calendar);
     }
 
-    // 필드 초기화
-    private void initField() {
-        currentDate = Calendar.getInstance();
-    }
-
     // 리스너 설정
     private void setBtnClickListeners() {
+        ibCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+
         gvCalendar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Date date = (Date) adapterView.getItemAtPosition(position);
-                Calendar selectDate = Calendar.getInstance();
+
+                Log.d("CalendarAdapter", date.toString());
+
+                selectDate = Calendar.getInstance();
                 selectDate.setTime(date);
+
+                dismiss();
+                onSelectListener.onSelect(view, selectDate);
             }
         });
     }
 
-    // 월별 캘린더 업데이트
+    // 캘린더 설정
     public void setCalendar() {
         ArrayList<Date> cells = new ArrayList<>();
-        Calendar calendar = (Calendar) currentDate.clone();
+        Calendar calendar = (Calendar) selectDate.clone();
 
-        year = currentDate.get(Calendar.YEAR);
-        month = currentDate.get(Calendar.MONTH) + 1;
+        int year = selectDate.get(Calendar.YEAR);
+        int month = selectDate.get(Calendar.MONTH) + 1;
 
         // determine the cell for current month's beginning
         calendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -115,7 +136,7 @@ public class ExpenseCalendarFragment extends BottomSheetDialogFragment {
         }
 
         // update grid
-        CalendarAdapter calendarAdapter = new CalendarAdapter(getContext(), cells, year, month);
+        CalendarAdapter calendarAdapter = new CalendarAdapter(getContext(), cells, year, month, selectDate);
         gvCalendar.setAdapter(calendarAdapter);
 
         // update title
