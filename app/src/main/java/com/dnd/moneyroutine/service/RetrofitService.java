@@ -1,13 +1,11 @@
 package com.dnd.moneyroutine.service;
 
 import com.dnd.moneyroutine.dto.BudgetDetailModel;
-import com.dnd.moneyroutine.dto.CustomCategoryModel;
+import com.dnd.moneyroutine.dto.CustomCategoryCreateDto;
 import com.dnd.moneyroutine.dto.UserForm;
-import com.dnd.moneyroutine.item.BudgetItem;
 import com.google.gson.JsonObject;
 
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
 
 import retrofit2.Call;
@@ -29,21 +27,27 @@ public interface RetrofitService {
     Call<JsonObject> login(@Body UserForm userForm);
 
     @POST("custom-category")
-    Call<CustomCategoryModel> create(@Body CustomCategoryModel customCategoryModel);
+    Call<JsonObject> create(@Body CustomCategoryCreateDto customCategoryCreateDto);
 
     @POST("goal")
-    Call<BudgetDetailModel> goal(@Body BudgetDetailModel budgetDetailModel);
+    Call<JsonObject> goal(@Body BudgetDetailModel budgetDetailModel);
 
     @GET("goal/info")
     Call<JsonObject> getMainGoalList(@Query("date") LocalDate date);
 
-    @GET("expenditure/statics/weekly/{startDate}/{endDate}")
-    Call<JsonObject> getWeeklyStatics(@Path("startDate") String startDate,
-                                      @Path("endDate") String endDate);
+    @GET("expenditure/statistics/weekly/{startDate}/{endDate}")
+    Call<JsonObject> getWeeklyStatistics(@Path("startDate") LocalDate startDate,
+                                         @Path("endDate") LocalDate endDate);
 
-    @GET("expenditure/statics/monthly/{startDate}/{endDate}")
-    Call<JsonObject> getMonthlyStatics(@Path("startDate") String startDate,
-                                       @Path("endDate") String endDate);
+    @GET("expenditure/weekly/{currentDate}")
+    Call<JsonObject> getWeeklyTrend(@Path("currentDate") LocalDate currentDate);
+
+    @GET("expenditure/statistics/monthly/{startDate}/{endDate}")
+    Call<JsonObject> getMonthlyStatistics(@Path("startDate") LocalDate startDate,
+                                          @Path("endDate") LocalDate endDate);
+
+    @GET("expenditure/monthly/{currentDate}")
+    Call<JsonObject> getMonthlyTrend(@Path("currentDate") LocalDate currentDate);
 
     @POST("goal/continue")
     Call<JsonObject> continueGoal();

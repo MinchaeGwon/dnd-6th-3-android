@@ -1,13 +1,13 @@
 package com.dnd.moneyroutine.fragment;
 
-import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,8 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dnd.moneyroutine.NotificationSettingActivity;
 import com.dnd.moneyroutine.R;
+import com.dnd.moneyroutine.adapter.WeeklyDetailAdapter;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
@@ -33,9 +33,11 @@ import com.google.gson.JsonObject;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,8 +47,8 @@ import retrofit2.Retrofit;
 public class ExpenditureWeeklyFragment extends Fragment {
 
     private PieChart pieChart;
-    private String startDate;
-    private String endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String token;
     private int userId;
     private Calendar calendar;
@@ -54,12 +56,25 @@ public class ExpenditureWeeklyFragment extends Fragment {
     private SimpleDateFormat tvFormatter;
     private LocalDate now;
 
+    private WeeklyDetailAdapter adapter;
+
     private InformationDialogFragment dialog;
 
     private TextView tvShowWeekDate;
     private TextView tvWeekNum;
     private ImageView ivPreviousWeek;
     private ImageView ivNextWeek;
+
+    private ImageView ivDetail1;
+    private ImageView ivDetail2;
+    private ImageView ivDetail3;
+    private ImageView ivDetail4;
+
+    private RecyclerView rcDetai1;
+    private RecyclerView rcDetai2;
+    private RecyclerView rcDetai3;
+    private RecyclerView rcDetai4;
+
 
     private ConstraintLayout c1Chart1;
     private ConstraintLayout c1Chart2;
@@ -96,8 +111,10 @@ public class ExpenditureWeeklyFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initView(view);
+        setRecyclerView();
         setWeekNumber();
         setDate();
+        setWeekBtnListener();
         setPieChart();
         showDialog();
 
@@ -106,16 +123,19 @@ public class ExpenditureWeeklyFragment extends Fragment {
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);
 
-        startDate = formatter.format(getStartDay());
-        endDate = formatter.format(getEndDay());
+//        startDate = formatter.format(getStartDay());
+//        endDate = formatter.format(getEndDay());
 
-        Call<JsonObject> call = retroService.getWeeklyStatics(startDate, endDate);
+        Call<JsonObject> call = retroService.getWeeklyStatistics(startDate, endDate);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     JsonObject responseJson = response.body();
                     Log.d("week", responseJson.toString());
+                } else {
+                    Log.e("week", "error: " + response.code());
+                    return;
                 }
             }
 
@@ -126,21 +146,35 @@ public class ExpenditureWeeklyFragment extends Fragment {
             }
         });
 
-        Log.d("ddd", startDate);
+//        Log.d("ddd", startDate);
     }
 
     private void initView(View v) {
         token = PreferenceManager.getToken(getContext(), Constants.tokenKey);
         userId = JWTUtils.getUserId(token);
 
+        calendar = Calendar.getInstance();
 
         pieChart = v.findViewById(R.id.pie_chart_week);
         tvShowWeekDate = v.findViewById(R.id.tv_start_end_week);
         tvWeekNum = v.findViewById(R.id.tv_week_num);
         formatter = new SimpleDateFormat("yyyy-MM-dd");
 
+
+        adapter = new WeeklyDetailAdapter();
+
         ivPreviousWeek = v.findViewById(R.id.iv_previous_week);
         ivNextWeek = v.findViewById(R.id.iv_next_week);
+
+        ivDetail1 = v.findViewById(R.id.iv_show_content_first);
+        ivDetail2 = v.findViewById(R.id.iv_show_content_second);
+        ivDetail3 = v.findViewById(R.id.iv_show_content_third);
+        ivDetail4 = v.findViewById(R.id.iv_show_content_else);
+
+        rcDetai1 = v.findViewById(R.id.rc_first_content_week);
+        rcDetai2 = v.findViewById(R.id.rc_second_content_week);
+        rcDetai3 = v.findViewById(R.id.rc_third_content_week);
+        rcDetai4 = v.findViewById(R.id.rc_content_else_week);
 
         c1Chart1 = v.findViewById(R.id.cl_chart1_week);
         c1Chart2 = v.findViewById(R.id.cl_chart2_week);
@@ -157,6 +191,80 @@ public class ExpenditureWeeklyFragment extends Fragment {
         info = v.findViewById(R.id.ll_week_recommend);
 
         now = LocalDate.now();
+    }
+
+    private void setRecyclerView() {
+
+        //첫번째
+        rcDetai1.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rcDetai1.setAdapter(adapter);
+
+        ivDetail1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (rcDetai1.getVisibility() == View.GONE) {
+                    ivDetail1.setImageResource(R.drawable.icon_up);
+                    rcDetai1.setVisibility(View.VISIBLE);
+                } else if (rcDetai1.getVisibility() == View.VISIBLE) {
+                    ivDetail1.setImageResource(R.drawable.icon_down);
+                    rcDetai1.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
+        //두번째
+        rcDetai2.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rcDetai2.setAdapter(adapter);
+
+        ivDetail2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (rcDetai2.getVisibility() == View.GONE) {
+                    ivDetail2.setImageResource(R.drawable.icon_up);
+                    rcDetai2.setVisibility(View.VISIBLE);
+                } else if (rcDetai2.getVisibility() == View.VISIBLE) {
+                    ivDetail2.setImageResource(R.drawable.icon_down);
+                    rcDetai2.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
+        //세번째
+        rcDetai3.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rcDetai3.setAdapter(adapter);
+
+        ivDetail3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (rcDetai3.getVisibility() == View.GONE) {
+                    ivDetail3.setImageResource(R.drawable.icon_up);
+                    rcDetai3.setVisibility(View.VISIBLE);
+                } else if (rcDetai3.getVisibility() == View.VISIBLE) {
+                    ivDetail3.setImageResource(R.drawable.icon_down);
+                    rcDetai3.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        //나머지
+        rcDetai4.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rcDetai4.setAdapter(adapter);
+
+        ivDetail4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (rcDetai4.getVisibility() == View.GONE) {
+                    ivDetail4.setImageResource(R.drawable.icon_up);
+                    rcDetai4.setVisibility(View.VISIBLE);
+                } else if (rcDetai4.getVisibility() == View.VISIBLE) {
+                    ivDetail4.setImageResource(R.drawable.icon_down);
+                    rcDetai4.setVisibility(View.GONE);
+                }
+            }
+        });
+
     }
 
     private void setPieChart() {
@@ -198,15 +306,17 @@ public class ExpenditureWeeklyFragment extends Fragment {
     }
 
     private Date getStartDay() {
+
+
         //시작일 설정
-        Calendar cal = Calendar.getInstance();
+//        Calendar cal = Calendar.getInstance();
 
 
-        if (cal.get(Calendar.WEEK_OF_MONTH) == 1) { //첫째주라면 1일부터 시작
-            cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 1);
-        } else { //아니라면 일요일 부터 시작
-            cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-        }
+//        if (cal.get(Calendar.WEEK_OF_MONTH) == 1) { //첫째주라면 1일부터 시작
+//            cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 1);
+//        } else { //아니라면 일요일 부터 시작
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+//        }
 
 //        ivNextWeek.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -215,44 +325,103 @@ public class ExpenditureWeeklyFragment extends Fragment {
 //            }
 //        });
 
-        return cal.getTime();
+        return calendar.getTime();
     }
 
     private Date getEndDay() {
         //마지막일 설정
-        Calendar cal = Calendar.getInstance();
+//        Calendar cal = Calendar.getInstance();
 
 
-        if (cal.get(Calendar.WEEK_OF_MONTH) == cal.getActualMaximum(Calendar.WEEK_OF_MONTH)) { //마지막주라면 말일을 마지막일로 설정
-            cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-        }
+//        if (cal.get(Calendar.WEEK_OF_MONTH) == cal.getActualMaximum(Calendar.WEEK_OF_MONTH)) { //마지막주라면 말일을 마지막일로 설정
+//            cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+//        }
         //아니라면 토요일을 마지막일로
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 
-        Log.d("ddd", cal.get(Calendar.WEEK_OF_MONTH) + " " + cal.getActualMaximum(Calendar.WEEK_OF_MONTH));
+//        Log.d("ddd", cal.get(Calendar.WEEK_OF_MONTH) + " " + cal.getActualMaximum(Calendar.WEEK_OF_MONTH));
 
 //        if(calendar.DATE<7){
 //            calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY-calendar.DATE);
 //        }
 
-        return cal.getTime();
+        return calendar.getTime();
     }
 
     private void setDate() {
+
+//        startDate = now
+
+//        startDate = now.with(WeekFields.of(Locale.KOREA).dayOfWeek(),2);
+//        endDate = startDate.plusDays(6);
+
+//        ;
+        switch (now.getDayOfWeek()) {
+            case SUNDAY:
+                startDate = now.minusDays(6);
+                break;
+            case MONDAY:
+                startDate = now;
+                break;
+            case TUESDAY:
+                startDate = now.minusDays(1);
+                break;
+            case WEDNESDAY:
+                startDate = now.minusDays(2);
+                break;
+            case THURSDAY:
+                startDate = now.minusDays(3);
+                break;
+            case FRIDAY:
+                startDate = now.minusDays(4);
+                break;
+            case SATURDAY:
+                startDate = now.minusDays(5);
+                break;
+
+        }
+
+        endDate = startDate.plusDays(6);
         //textview에 설정
-        tvFormatter = new SimpleDateFormat("M.d");
-        tvShowWeekDate.setText(tvFormatter.format(getStartDay()) + "~" + tvFormatter.format(getEndDay()));
+        setWeekTextView();
+    }
+
+    private void setWeekBtnListener(){
+        ivNextWeek.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startDate=startDate.plusDays(7);
+                endDate=endDate.plusDays(7);
+                calendar.add(Calendar.DATE,7);
+                setWeekTextView();
+                setWeekNumber();
+            }
+        });
+
+        ivPreviousWeek.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startDate=startDate.minusDays(7);
+                endDate=endDate.minusDays(7);
+                calendar.add(Calendar.DATE,-7);
+
+                setWeekTextView();
+                setWeekNumber();
+            }
+        });
+    }
+
+    private void setWeekTextView(){
+        tvShowWeekDate.setText(startDate.getMonthValue() + "." + startDate.getDayOfMonth() + "-" + endDate.getMonthValue() + "." + endDate.getDayOfMonth());
+
     }
 
     private void setWeekNumber() {
         //몇번째 주인지 가져오기
-        calendar = Calendar.getInstance();
-        calendar.setFirstDayOfWeek(Calendar.SUNDAY);
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
         calendar.setMinimalDaysInFirstWeek(7);
-        tvWeekNum.setText(calendar.get(Calendar.WEEK_OF_MONTH) + 1 + "주차");
+        tvWeekNum.setText(calendar.get(Calendar.WEEK_OF_MONTH)  + "주차");
     }
-
-
 
     private void showDialog() { //주별 권장 지출액 다이얼로그
         info.setOnClickListener(new View.OnClickListener() {

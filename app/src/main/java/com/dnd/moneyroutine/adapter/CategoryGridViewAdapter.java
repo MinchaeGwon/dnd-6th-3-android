@@ -1,18 +1,15 @@
 package com.dnd.moneyroutine.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 //import com.dnd.moneyroutine.CategoryGridItemView;
-import com.dnd.moneyroutine.OnboardingCategoryActivity;
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.item.CategoryItem;
+import com.dnd.moneyroutine.dto.CategoryItem;
 
 import java.util.ArrayList;
 
