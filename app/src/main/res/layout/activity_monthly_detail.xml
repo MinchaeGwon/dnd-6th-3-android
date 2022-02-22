@@ -97,6 +97,7 @@
                 android:background="#F8F9FA" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rc_monthly_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp" />

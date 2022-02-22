@@ -9,7 +9,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
@@ -17,19 +16,16 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 
+import com.dnd.moneyroutine.NewCategoryActivity;
+import com.dnd.moneyroutine.OnboardingEntireBudgetActivity;
+import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.adapter.CategoryGridViewAdapter;
 import com.dnd.moneyroutine.custom.ExpandableHeightGridView;
-import com.dnd.moneyroutine.dto.CustomCategoryModel;
+import com.dnd.moneyroutine.dto.CategoryItem;
 import com.dnd.moneyroutine.dto.GoalCategoryCreateDtoList;
-import com.dnd.moneyroutine.item.CategoryItem;
-import com.dnd.moneyroutine.service.RequestService;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class OnboardingCategoryActivity extends AppCompatActivity {
 

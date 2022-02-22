@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView49"
+        android:id="@+id/tv_name_content_monthly_detail"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:fontFamily="@font/spoqa_han_sans_neo_regular"

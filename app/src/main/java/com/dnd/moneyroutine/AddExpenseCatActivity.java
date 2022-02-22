@@ -16,7 +16,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.dnd.moneyroutine.adapter.CategoryGridViewAdapter;
-import com.dnd.moneyroutine.item.CategoryItem;
+import com.dnd.moneyroutine.dto.CategoryItem;
 
 import java.util.ArrayList;
 
