@@ -320,15 +320,14 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_past_empty_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:layout_marginBottom="96dp"
+                    android:layout_marginBottom="93dp"
                     android:fontFamily="@font/spoqa_han_sans_neo_regular"
                     android:includeFontPadding="false"
                     android:text="지난 기록이 없어요"
-                    android:textColor="#ADB5BD"
+                    android:textColor="#495057"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

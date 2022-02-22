@@ -54,4 +54,7 @@ public interface RetrofitService {
 
     @GET("goal-category/")
     Call<JsonObject> getGoalCategory();
+
+    @GET("goal/check")
+    Call<JsonObject> checkGoal();
 }
