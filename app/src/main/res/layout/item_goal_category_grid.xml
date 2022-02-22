@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_category_item"
+    android:layout_width="104dp"
+    android:layout_height="110dp"
+    android:background="@drawable/button_category_unclicked">
+
+    <ImageView
+        android:id="@+id/iv_basic_category"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/coffee" />
+
+    <TextView
+        android:id="@+id/tv_custom_category"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:height="35dp"
+        android:gravity="bottom"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="0dp"
+        android:text="📚"
+        android:textColor="#FF000000"
+        android:textSize="28sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_category_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:fontFamily="@font/spoqa_han_sans_neo_medium"
+        android:text="이름"
+        android:textColor="#343A40"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_custom_category" />
+
+    <TextView
+        android:id="@+id/tv_category_ex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:text="설명"
+        android:textColor="#868E96"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_category_name" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,9 +24,26 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.dnd.moneyroutine.custom.Constants;
+import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
 import com.dnd.moneyroutine.dto.ExpenseForm;
+import com.dnd.moneyroutine.dto.GoalCategoryCompact;
+import com.dnd.moneyroutine.service.HeaderRetrofit;
+import com.dnd.moneyroutine.service.RetrofitService;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 // 소비 감정 입력 activity
 public class AddFeelingActivity extends AppCompatActivity {
@@ -49,6 +66,8 @@ public class AddFeelingActivity extends AppCompatActivity {
 
     private Button btnConfirm;
     private AlertDialog cancelDialog;
+
+    private String token;
 
     private InputMethodManager inputManager;
     private SoftKeyboardDetector softKeyboardDetector;
@@ -94,6 +113,8 @@ public class AddFeelingActivity extends AppCompatActivity {
     }
 
     private void initField() {
+        token = PreferenceManager.getToken(this, Constants.tokenKey);
+
         inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         softKeyboardDetector = new SoftKeyboardDetector(this);
@@ -124,20 +145,20 @@ public class AddFeelingActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 expenseForm.setEmotion(mappingFeeling());
                 expenseForm.setEmotionDetail(etContent.getText().toString());
 
-                Log.d(TAG, "emotion : " + expenseForm.getEmotion());
-
-                addExpense();
+                addExpenseToServer();
             }
         });
 
         rgFeeling.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                if (etContent.isFocused()) {
+                    inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    etContent.clearFocus();
+                }
 
                 switch (i) {
                     case R.id.rb_feeling_good:
@@ -268,8 +289,31 @@ public class AddFeelingActivity extends AppCompatActivity {
     }
 
     // 지출 내역 추가
-    private void addExpense() {
-//        moveActivity();
+    private void addExpenseToServer() {
+        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+        RetrofitService retroService = retrofit.create(RetrofitService.class);
+
+        Call<JsonObject> call = retroService.addExpenditure(expenseForm);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject responseJson = response.body();
+
+                    Log.d(TAG, responseJson.toString());
+
+                    if (responseJson.get("statusCode").getAsInt() == 200) {
+                        moveActivity();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(AddFeelingActivity.this, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private String mappingFeeling() {

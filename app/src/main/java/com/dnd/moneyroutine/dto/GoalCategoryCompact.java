@@ -5,13 +5,12 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter @Getter
-public class GoalCategory implements Serializable {
+@Setter
+@Getter
+public class GoalCategoryCompact implements Serializable {
     private int categoryId;
     private String emoji;
     private String name;
     private String detail;
-    private int budget;
-    private int totalExpense;
     private boolean isCustom;
 }

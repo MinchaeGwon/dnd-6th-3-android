@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.dto.GoalCategory;
+import com.dnd.moneyroutine.dto.GoalCategoryDetail;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -20,10 +20,10 @@ import java.util.ArrayList;
 public class ExpenseCategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private ArrayList<GoalCategory> categoryList;
+    private ArrayList<GoalCategoryDetail> categoryList;
     private boolean current;
 
-    public ExpenseCategoryAdapter(ArrayList<GoalCategory> categoryList, boolean current) {
+    public ExpenseCategoryAdapter(ArrayList<GoalCategoryDetail> categoryList, boolean current) {
         this.categoryList = categoryList;
         this.current = current;
     }
@@ -39,7 +39,7 @@ public class ExpenseCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof CategoryViewHolder) {
-            GoalCategory category = categoryList.get(position);
+            GoalCategoryDetail category = categoryList.get(position);
             ((CategoryViewHolder) holder).setItem(category);
         }
     }
@@ -74,8 +74,8 @@ public class ExpenseCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             pbExpense = itemView.findViewById(R.id.pb_expense);
         }
 
-        // 실제 view에 PostCompact 객체 내용을 적용시키는 메소드
-        public void setItem(GoalCategory category) {
+        // 실제 view에 객체 내용을 적용시키는 메소드
+        public void setItem(GoalCategoryDetail category) {
             if (category.isCustom()) {
                 ivCategory.setVisibility(View.INVISIBLE);
                 tvEmoji.setVisibility(View.VISIBLE);
@@ -103,6 +103,9 @@ public class ExpenseCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             tvBudget.setText("예산 " + budget + "원");
+
+            pbExpense.setMax(category.getBudget());
+            pbExpense.setProgress(category.getTotalExpense());
         }
     }
 }

@@ -3,6 +3,7 @@ package com.dnd.moneyroutine;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -22,17 +24,37 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.dnd.moneyroutine.adapter.GoalCategoryGridAdapter;
 import com.dnd.moneyroutine.custom.Common;
+import com.dnd.moneyroutine.custom.Constants;
+import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
 import com.dnd.moneyroutine.dto.ExpenseForm;
+import com.dnd.moneyroutine.dto.GoalCategoryCompact;
+import com.dnd.moneyroutine.dto.GoalInfo;
 import com.dnd.moneyroutine.fragment.ExpenseCalendarFragment;
+import com.dnd.moneyroutine.service.HeaderRetrofit;
+import com.dnd.moneyroutine.service.RetrofitService;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 // 소비 입력 activity
 public class AddExpenseActivity extends AppCompatActivity {
+
+    private static final String TAG = "AddExpenseActivity";
 
     private ImageButton ibBack;
     private ImageButton ibCancel;
@@ -52,6 +74,8 @@ public class AddExpenseActivity extends AppCompatActivity {
 
     private AlertDialog cancelDialog;
 
+    private String token;
+
     private InputMethodManager inputManager;
     private SoftKeyboardDetector softKeyboardDetector;
     private ConstraintLayout.LayoutParams contentLayoutParams;
@@ -60,6 +84,7 @@ public class AddExpenseActivity extends AppCompatActivity {
     private DecimalFormat decimalFormat;
     private String result = "";
     private Calendar expenseDate;
+    private GoalCategoryCompact selectCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +95,8 @@ public class AddExpenseActivity extends AppCompatActivity {
         initField();
         setListener();
         setButtonSize();
+
+        getGoalCategory();
     }
 
     private void initView() {
@@ -91,6 +118,8 @@ public class AddExpenseActivity extends AppCompatActivity {
     }
 
     private void initField() {
+        token = PreferenceManager.getToken(this, Constants.tokenKey);
+
         inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         softKeyboardDetector = new SoftKeyboardDetector(this);
@@ -220,7 +249,7 @@ public class AddExpenseActivity extends AppCompatActivity {
                     etExpense.setSelection(result.length());
                 }
 
-                if (etExpense.length() > 0 && etContent.length() > 0) {
+                if (etExpense.length() > 0 && etContent.length() > 0 && selectCategory != null) {
                     btnNext.setEnabled(true);
                     if (inputManager.isAcceptingText()) {
                         btnNext.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
@@ -252,7 +281,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
             @Override
             public void onHiddenSoftKeyboard() {
-                if (etExpense.length() > 0 && etContent.length() > 0) {
+                if (etExpense.length() > 0 && etContent.length() > 0 && selectCategory != null) {
                     btnNext.setEnabled(true);
                     btnNext.setBackgroundResource(R.drawable.button_enabled_true);
                 } else {
@@ -272,7 +301,7 @@ public class AddExpenseActivity extends AppCompatActivity {
             @Override
             public void onShowSoftKeyboard() {
 
-                if (etExpense.length() > 0 && etContent.length() > 0) {
+                if (etExpense.length() > 0 && etContent.length() > 0 && selectCategory != null) {
                     btnNext.setEnabled(true);
                     btnNext.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
                 } else {
@@ -288,12 +317,79 @@ public class AddExpenseActivity extends AppCompatActivity {
         });
     }
 
+    // 사용자가 선택한 카테고리 가져오기
+    private void getGoalCategory() {
+        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+        RetrofitService retroService = retrofit.create(RetrofitService.class);
+
+        Call<JsonObject> call = retroService.getGoalCategory();
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject responseJson = response.body();
+
+                    Log.d(TAG, responseJson.toString());
+
+                    if (responseJson.get("statusCode").getAsInt() == 200) {
+                        if (responseJson.get("data") != null) {
+                            JsonArray jsonArray = responseJson.get("data").getAsJsonArray();
+
+                            Gson gson = new Gson();
+                            ArrayList<GoalCategoryCompact> responseCategory = gson.fromJson(jsonArray, new TypeToken<ArrayList<GoalCategoryCompact>>() {}.getType());
+
+                            if (responseCategory != null) {
+                                setGoalCategory(responseCategory);
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(AddExpenseActivity.this, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setGoalCategory(ArrayList<GoalCategoryCompact> categoryList) {
+        GoalCategoryGridAdapter goalCategoryGridAdapter = new GoalCategoryGridAdapter(categoryList);
+        goalCategoryGridAdapter.setOnItemClickListener(new GoalCategoryGridAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(GoalCategoryCompact category) {
+                selectCategory = category;
+
+                if (etContent.isFocused() || etExpense.isFocused()) {
+                    inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                    if (etContent.isFocused()) {
+                        etContent.clearFocus();
+                    }
+
+                    if (etExpense.isFocused()) {
+                        etExpense.clearFocus();
+                    }
+                }
+            }
+        });
+
+        rvCategory.setLayoutManager(new GridLayoutManager(this, 3));
+        rvCategory.setAdapter(goalCategoryGridAdapter);
+    }
+
     private ExpenseForm setExpenseForm() {
         ExpenseForm expenseForm = new ExpenseForm();
 
+        expenseForm.setCategoryId(selectCategory.getCategoryId());
+        expenseForm.setCustom(selectCategory.isCustom());
         expenseForm.setDate(Common.getCalendarToString(expenseDate));
+
+        String expense = etExpense.getText().toString().replaceAll("\\,", "");
+        expenseForm.setExpense(Integer.parseInt(expense));
+
         expenseForm.setExpenseDetail(etContent.getText().toString());
-        expenseForm.setExpense(Integer.parseInt(etExpense.getText().toString()));
 
         return expenseForm;
     }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +24,7 @@ import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.adapter.ExpenseCategoryAdapter;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
-import com.dnd.moneyroutine.dto.GoalCategory;
+import com.dnd.moneyroutine.dto.GoalCategoryDetail;
 import com.dnd.moneyroutine.dto.GoalInfo;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.RetrofitService;
@@ -52,6 +53,7 @@ public class MainCurrentMonthFragment extends Fragment {
     private TextView tvEmptyDate;
     private Button btnAddGoal;
 
+    private ProgressBar pbExpense;
     private ConstraintLayout btnAddExpense;
     private TextView tvYearMonth;
     private TextView tvDate;
@@ -90,6 +92,8 @@ public class MainCurrentMonthFragment extends Fragment {
 
         tvEmptyYearMonth = v.findViewById(R.id.tv_empty_year_month);
         tvEmptyDate = v.findViewById(R.id.tv_empty_date);
+
+        pbExpense = v.findViewById(R.id.pb_current_remain_budget);
 
         tvYearMonth = v.findViewById(R.id.tv_current_year_month);
         tvDate = v.findViewById(R.id.tv_current_date);
@@ -150,7 +154,7 @@ public class MainCurrentMonthFragment extends Fragment {
 
     // 이번 달 목표 정보 가져오기
     private void getCurrentGoalInfo() {
-        // 헤더에 토큰 추가하는 코드
+        // 헤더에 토큰 추가
         HeaderRetrofit headerRetrofit = new HeaderRetrofit();
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);
@@ -179,13 +183,15 @@ public class MainCurrentMonthFragment extends Fragment {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d(TAG, t.getMessage());
                 Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void setGoalInfo(GoalInfo goalInfo) {
+        pbExpense.setMax(goalInfo.getTotalBudget());
+        pbExpense.setProgress(goalInfo.getTotalBudget() - goalInfo.getRemainder());
+
         DecimalFormat myFormatter = new DecimalFormat("###,###");
 
         String remain = myFormatter.format(goalInfo.getRemainder());
@@ -195,7 +201,7 @@ public class MainCurrentMonthFragment extends Fragment {
         tvTotalBudget.setText(totalBudget + "원 중");
 
         int totalExpense = 0;
-        for (GoalCategory goalCategoryDetail : goalInfo.getGoalCategoryList()) {
+        for (GoalCategoryDetail goalCategoryDetail : goalInfo.getGoalCategoryList()) {
             totalExpense += goalCategoryDetail.getTotalExpense();
         }
 

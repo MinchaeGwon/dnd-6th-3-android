@@ -24,7 +24,7 @@ import com.dnd.moneyroutine.custom.Common;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.YearMonthPickerDialog;
-import com.dnd.moneyroutine.dto.GoalCategory;
+import com.dnd.moneyroutine.dto.GoalCategoryDetail;
 import com.dnd.moneyroutine.dto.GoalInfo;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.RetrofitService;
@@ -201,7 +201,6 @@ public class MainPastRecordFragment extends Fragment  {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d(TAG, t.getMessage());
                 Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -244,7 +243,7 @@ public class MainPastRecordFragment extends Fragment  {
         tvPastBudget.setText(totalBudget + "원 중");
 
         int totalExpense = 0;
-        for (GoalCategory goalCategoryDetail : goalInfo.getGoalCategoryList()) {
+        for (GoalCategoryDetail goalCategoryDetail : goalInfo.getGoalCategoryList()) {
             totalExpense += goalCategoryDetail.getTotalExpense();
         }
 

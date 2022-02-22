@@ -17,5 +17,5 @@ public class GoalInfo implements Serializable {
     private int totalBudget;
 
     @SerializedName("goalCategoryDetailDtoList")
-    private ArrayList<GoalCategory> goalCategoryList;
+    private ArrayList<GoalCategoryDetail> goalCategoryList;
 }
