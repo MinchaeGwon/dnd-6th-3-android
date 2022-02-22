@@ -1,28 +1,23 @@
-package com.dnd.moneyroutine.item;
+package com.dnd.moneyroutine.dto;
 
 import java.io.Serializable;
 
-public class BudgetItem implements Serializable {
+public class CategoryItem implements Serializable {
 
-    int id;
     String categoryIcon;
     //    int categoryIcon;
     String categoryName;
+    String categoryEx;
+//    boolean isSelected;
 
 
-    public BudgetItem(int id, String categoryIcon, String categoryName) {
-        this.id = id;
+    public CategoryItem(String categoryIcon, String categoryName, String categoryEx) {
         this.categoryIcon = categoryIcon;
         this.categoryName = categoryName;
+        this.categoryEx = categoryEx;
+//        this.isSelected=isSelected;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getCategoryIcon() {
         return categoryIcon;
@@ -40,6 +35,12 @@ public class BudgetItem implements Serializable {
         this.categoryName = categoryName;
     }
 
+    public String getCategoryEx() {
+        return categoryEx;
+    }
+
+    public void setCategoryEx(String categoryEx) {
+        this.categoryEx = categoryEx;
+    }
 
 }
-

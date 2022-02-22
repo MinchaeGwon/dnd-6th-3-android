@@ -5,12 +5,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.hardware.input.InputManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -22,8 +20,8 @@ import android.widget.TextView;
 
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
 import com.dnd.moneyroutine.dto.GoalCategoryCreateDtoList;
-import com.dnd.moneyroutine.item.BudgetItem;
-import com.dnd.moneyroutine.item.CategoryItem;
+import com.dnd.moneyroutine.dto.BudgetItem;
+import com.dnd.moneyroutine.dto.CategoryItem;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

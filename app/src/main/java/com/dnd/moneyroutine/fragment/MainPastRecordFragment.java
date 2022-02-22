@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 
 import com.dnd.moneyroutine.OnboardingCategoryActivity;
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.WelcomeActivity;
 import com.dnd.moneyroutine.custom.Common;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;

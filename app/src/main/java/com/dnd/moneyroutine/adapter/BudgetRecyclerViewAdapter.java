@@ -1,7 +1,6 @@
 package com.dnd.moneyroutine.adapter;
 
 import android.app.Activity;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,13 +23,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.MainActivity;
+import com.dnd.moneyroutine.NewCategoryActivity;
 import com.dnd.moneyroutine.OnboardingDetailBudgetActivity;
 import com.dnd.moneyroutine.R;
+import com.dnd.moneyroutine.custom.Constants;
+import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.dto.BudgetDetailModel;
-import com.dnd.moneyroutine.dto.CustomCategoryModel;
 import com.dnd.moneyroutine.dto.GoalCategoryCreateDtoList;
-import com.dnd.moneyroutine.item.BudgetItem;
+import com.dnd.moneyroutine.dto.BudgetItem;
+import com.dnd.moneyroutine.service.HeaderRetrofit;
+import com.dnd.moneyroutine.service.JWTUtils;
 import com.dnd.moneyroutine.service.RequestService;
+import com.dnd.moneyroutine.service.RetrofitService;
+import com.google.gson.JsonObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -38,6 +43,7 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecyclerViewAdapter.ViewHolder> {
 
@@ -49,6 +55,8 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
     private TextView tvAlert;
     private Button btnNext;
 
+    private String token;
+    private int userId;
 
     private ArrayList<String> totalAmountArray = new ArrayList<>();
     private ArrayList<BudgetItem> mBudgetItem;
@@ -84,6 +92,9 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
         goalCategoryCreateDtoList=(ArrayList<GoalCategoryCreateDtoList>) ((Activity)context).getIntent().getSerializableExtra("goalCategoryCreateDtoList");
         entireBudget = ((Activity)context).getIntent().getStringExtra("Budget");
 
+
+        token = PreferenceManager.getToken(context, Constants.tokenKey);
+        userId = JWTUtils.getUserId(token);
 
         return new ViewHolder(view);
     }
@@ -209,17 +220,21 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                     }else{
                         goalCategoryCreateDtoList.get(position).setBudget(0);
                     }
-
                 }
+
+
 
             }
         });
 
-        budgetDetailModel=new BudgetDetailModel(goalCategoryCreateDtoList, mbudget);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+                budgetDetailModel=new BudgetDetailModel();
+                budgetDetailModel.setTotal_budget(mbudget);
 
 
                 Intent intent = new Intent(view.getContext(), MainActivity.class);
@@ -237,13 +252,19 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
 
     //서버로 categoryid, budget, iscustom, 전체 budget 보냄
     private void goaltoServer(){
-        Call<BudgetDetailModel> call = RequestService.getInstance().goal(budgetDetailModel);
-        call.enqueue(new Callback<BudgetDetailModel>() {
+
+        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+        RetrofitService retroService = retrofit.create(RetrofitService.class);
+
+
+        Call<JsonObject> call = retroService.goal(budgetDetailModel);
+        call.enqueue(new Callback<JsonObject>() {
 
             @Override
-            public void onResponse(Call<BudgetDetailModel> call, Response<BudgetDetailModel> response) {
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
-                    BudgetDetailModel post = response.body();
+                    JsonObject post = response.body();
                     Log.d("BudgetDetailModel", post.toString());
                 } else {
                     Log.e("BudgetDetailModel", "error: " + response.code());
@@ -251,7 +272,7 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                 }
             }
             @Override
-            public void onFailure(Call<BudgetDetailModel> call, Throwable t) {
+            public void onFailure(Call<JsonObject> call, Throwable t) {
                 Log.e("custom category", "fail: " + t.getMessage());
             }
         });

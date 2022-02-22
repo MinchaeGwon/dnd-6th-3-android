@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,39 +17,51 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.dnd.moneyroutine.custom.Constants;
+import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
-import com.dnd.moneyroutine.dto.CustomCategoryModel;
-import com.dnd.moneyroutine.item.CategoryItem;
+import com.dnd.moneyroutine.dto.CustomCategoryCreateDto;
+import com.dnd.moneyroutine.dto.CategoryItem;
+import com.dnd.moneyroutine.service.HeaderRetrofit;
+import com.dnd.moneyroutine.service.JWTUtils;
 import com.dnd.moneyroutine.service.RequestService;
+import com.dnd.moneyroutine.service.RetrofitService;
 import com.google.gson.JsonObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lombok.SneakyThrows;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 import static java.util.regex.Pattern.compile;
 
 public class NewCategoryActivity extends AppCompatActivity {
 
-    LinearLayout linearNewCategory;
-    LinearLayout linearNewEx;
-    LinearLayout linearNewIcon;
-    ConstraintLayout bgBlack;
-    TextView tvNewEmoji;
-    EditText etNewCategory;
-    EditText etNewEx;
+    private LinearLayout linearNewCategory;
+    private LinearLayout linearNewEx;
+    private LinearLayout linearNewIcon;
+    private ConstraintLayout bgBlack;
+    private TextView tvNewEmoji;
+    private EditText etNewCategory;
+    private EditText etNewEx;
     //    ImageView btnEditEmoji;
-    ImageView ivEraseName;
-    ImageView ivEraseEx;
-    ImageView ivBack;
-    Button btnConfirm;
+    private ImageView ivEraseName;
+    private ImageView ivEraseEx;
+    private ImageView ivBack;
 
-    CategoryItem newItem;
-    CustomCategoryModel customCategoryModel;
+    private Button btnConfirm;
+
+    private CategoryItem newItem;
+    private CustomCategoryCreateDto customCategoryCreateDto;
+
+    private String token;
+    private int userId;
 
     private SoftKeyboardDetector softKeyboardDetector;
     private InputMethodManager inputManager;
@@ -94,9 +105,23 @@ public class NewCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                String iconToByte = "";
                 String name = etNewCategory.getText().toString();
                 String ex = etNewEx.getText().toString();
                 String icon = tvNewEmoji.getText().toString();
+
+                customCategoryCreateDto =new CustomCategoryCreateDto();
+                customCategoryCreateDto.setDetail(ex);
+                try {
+                    iconToByte  = icon.getBytes("UTF-8").toString(); //이모지 서버로 보낼 수 있는 형태로 변환
+                } catch (IOException e) {
+                    iconToByte="";
+                    e.printStackTrace();
+                }
+                customCategoryCreateDto.setEmoji(iconToByte);
+
+                customCategoryCreateDto.setName(name);
+                customCategoryServer();
 
                 if (name.length() > 0) {
                     Intent intent = new Intent(getApplicationContext(), OnboardingCategoryActivity.class);
@@ -107,9 +132,6 @@ public class NewCategoryActivity extends AppCompatActivity {
                     finish();
                 }
 
-                customCategoryModel =new CustomCategoryModel(ex, name);
-                customCategoryServer();
-
 
             }
         });
@@ -117,6 +139,10 @@ public class NewCategoryActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        token = PreferenceManager.getToken(NewCategoryActivity.this, Constants.tokenKey);
+        userId = JWTUtils.getUserId(token);
+
+
         linearNewCategory = findViewById(R.id.linear_new_category);
         linearNewEx = findViewById(R.id.linear_new_category_ex);
         etNewCategory = findViewById(R.id.et_new_category);
@@ -361,13 +387,17 @@ public class NewCategoryActivity extends AppCompatActivity {
 //    }
 
     private void customCategoryServer() {
-        Call<CustomCategoryModel> call = RequestService.getInstance().create(customCategoryModel);
-        call.enqueue(new Callback<CustomCategoryModel>() {
+        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+        RetrofitService retroService = retrofit.create(RetrofitService.class);
 
+
+        Call<JsonObject> call = retroService.create(customCategoryCreateDto);
+        call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<CustomCategoryModel> call, Response<CustomCategoryModel> response) {
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
-                    CustomCategoryModel post = response.body();
+                    JsonObject post = response.body();
                     Log.d("custom category", post.toString());
                 } else {
                     Log.e("custom category", "error: " + response.code());
@@ -375,7 +405,7 @@ public class NewCategoryActivity extends AppCompatActivity {
                 }
             }
             @Override
-            public void onFailure(Call<CustomCategoryModel> call, Throwable t) {
+            public void onFailure(Call<JsonObject> call, Throwable t) {
                 Log.e("custom category", "fail: " + t.getMessage());
             }
         });

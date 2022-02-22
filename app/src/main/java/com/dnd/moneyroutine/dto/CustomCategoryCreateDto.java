@@ -1,8 +1,5 @@
 package com.dnd.moneyroutine.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +8,10 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BudgetDetailModel {
+public class CustomCategoryCreateDto {
 
-    private List<GoalCategoryCreateDtoList> goalCategoryCreateDtoList = new ArrayList<>();
-    private int total_budget;
+    private String detail;
+    private String emoji;
+    private String name;
 
 }

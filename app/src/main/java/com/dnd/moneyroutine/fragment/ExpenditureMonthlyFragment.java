@@ -11,30 +11,48 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dnd.moneyroutine.MonthlyDetailActivity;
 import com.dnd.moneyroutine.R;
+import com.dnd.moneyroutine.custom.Constants;
+import com.dnd.moneyroutine.custom.PreferenceManager;
+import com.dnd.moneyroutine.service.HeaderRetrofit;
+import com.dnd.moneyroutine.service.JWTUtils;
+import com.dnd.moneyroutine.service.RetrofitService;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.gson.JsonObject;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 
 public class ExpenditureMonthlyFragment extends Fragment {
+
+    private String token;
+    private int userId;
 
     private PieChart pieChart;
     private TextView tvMonth;
@@ -43,6 +61,9 @@ public class ExpenditureMonthlyFragment extends Fragment {
     private Calendar calendar;
     private SimpleDateFormat formatter;
     private SimpleDateFormat tvFormatter;
+
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     private ImageView ivPrevious;
     private ImageView ivNext;
@@ -73,11 +94,17 @@ public class ExpenditureMonthlyFragment extends Fragment {
         setDate();
         setTextView();
         drawPieChart();
-        setMonth();
         showDetail();
+        getMonthlyStatistics();
+        getMonthlyTrend(now);
+
     }
 
     private void initView(View v) {
+        token = PreferenceManager.getToken(getContext(), Constants.tokenKey);
+        userId = JWTUtils.getUserId(token);
+
+
         pieChart = v.findViewById(R.id.pie_chart_month);
         tvMonth = v.findViewById(R.id.tv_expenditure_month);
         tvDate = v.findViewById(R.id.tv_start_end_month);
@@ -135,56 +162,109 @@ public class ExpenditureMonthlyFragment extends Fragment {
         pieChart.setData(data);
     }
 
-    private Date getStartDay() {
-        //1일
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), 1);
-        return calendar.getTime();
+    private void getMonthlyStatistics(){
+        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+        RetrofitService retroService = retrofit.create(RetrofitService.class);
+
+        Call<JsonObject> call = retroService.getMonthlyStatistics(startDate, endDate);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject responseJson = response.body();
+                    Log.d("month", responseJson.toString());
+                } else {
+                    Log.e("month", "error: " + response.code());
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.d("month", t.getMessage());
+                Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    private Date getEndDay() {
-        //마지막날
-        calendar.set(calendar.get(Calendar.YEAR),  calendar.get(Calendar.MONTH), calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        return calendar.getTime();
+    private void getMonthlyTrend(LocalDate currentDate){
+        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+        RetrofitService retroService = retrofit.create(RetrofitService.class);
 
+        Call<JsonObject> call = retroService.getMonthlyTrend(currentDate);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject responseJson = response.body();
+                    Log.d("monthly Trend", responseJson.toString());
+                } else {
+                    Log.e("monthly Trend", "error: " + response.code());
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.d("monthly Trend", t.getMessage());
+                Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
+
+
 
     private void setDate(){
-        //다음달
+        startDate = YearMonth.now().atDay(1);
+        endDate = YearMonth.now().atEndOfMonth();
+
         ivNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                calendar.add(Calendar.MONTH,1);
-                getStartDay();
-                getEndDay();
+                startDate = startDate.plusMonths(1);
+                LocalDate end = endDate.plusMonths(1);
+                endDate=end.withDayOfMonth(end.lengthOfMonth());
+
                 setTextView();
+                getMonthlyStatistics();
+                getMonthlyTrend(endDate);
+
             }
         });
 
-        //이전달
         ivPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                calendar.add(Calendar.MONTH,-1);
-                getStartDay();
-                getEndDay();
+                startDate=startDate.minusMonths(1);
+                LocalDate end = endDate.minusMonths(1);
+                endDate = end.withDayOfMonth(end.lengthOfMonth());
                 setTextView();
+                getMonthlyStatistics();
+                getMonthlyTrend(endDate);
             }
         });
-
 
     }
 
     private void setTextView() {
-        tvMonth.setText(calendar.get(Calendar.MONTH)+1+ "월");
-        tvDate.setText(tvFormatter.format(getStartDay()) + "~" + tvFormatter.format(getEndDay()));
+//        tvMonth.setText(calendar.get(Calendar.MONTH)+1+ "월");
+//        tvDate.setText(tvFormatter.format(getStartDay()) + "~" + tvFormatter.format(getEndDay()));
+        String start = startDate.format(DateTimeFormatter.ofPattern("M.d"));
+        String end = endDate.format(DateTimeFormatter.ofPattern("M.d"));
+        tvMonth.setText(startDate.getYear()+". "+startDate.getMonthValue()+"월");
+        tvDate.setText(start+ "-" + end);
+
     }
 
-    private void setMonth(){
+    private void setMonth() {
 
 
     }
 
-    private void showDetail(){
+    private void showDetail() {
         View.OnClickListener ivListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
