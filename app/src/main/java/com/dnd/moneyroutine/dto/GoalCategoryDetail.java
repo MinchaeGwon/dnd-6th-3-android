@@ -7,11 +7,12 @@ import lombok.Setter;
 
 @Setter @Getter
 public class GoalCategoryDetail implements Serializable {
+    private int goalCategoryId;
     private int categoryId;
     private String emoji;
     private String name;
     private String detail;
     private int budget;
     private int totalExpense;
-    private boolean isCustom;
+    private boolean custom;
 }

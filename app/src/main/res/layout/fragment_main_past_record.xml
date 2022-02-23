@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#F8F9FA">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,7 +28,6 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="12dp"
                 android:background="@drawable/rectangle_white_radius_24"
-                android:elevation="5dp"
                 android:visibility="gone">
 
                 <TextView
@@ -135,8 +134,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="64dp"
-                android:background="@drawable/rectangle_white_radius_24"
-                android:elevation="5dp">
+                android:background="@drawable/rectangle_white_radius_24">
 
                 <TextView
                     android:id="@+id/tv_past_year_month"
@@ -281,11 +279,12 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_past_category"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="18dp"
                     android:layout_marginEnd="6dp"
                     android:layout_marginBottom="32dp"
+                    app:layout_constrainedHeight="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -302,7 +301,6 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/rectangle_white_radius_24"
-                android:elevation="5dp"
                 android:visibility="gone">
 
                 <TextView
@@ -336,5 +334,5 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

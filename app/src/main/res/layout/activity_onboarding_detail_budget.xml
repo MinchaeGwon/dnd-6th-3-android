@@ -76,7 +76,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="55dp"
-        android:layout_marginBottom="10dp"
         android:layout_weight="1"
         android:fillViewport="true">
 
@@ -164,11 +163,13 @@
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="56dp"
         android:background="@drawable/button_enabled_false"
         android:enabled="false"
         android:fontFamily="@font/spoqa_han_sans_neo_bold"
+        android:stateListAnimator="@null"
         android:text="다음"
         android:textColor="@color/white"
         android:textSize="16dp" />

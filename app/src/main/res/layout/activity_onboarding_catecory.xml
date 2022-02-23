@@ -86,6 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
+        android:layout_marginBottom="10dp"
         android:layout_weight="1"
         android:fillViewport="true">
 
@@ -152,6 +153,7 @@
         android:enabled="false"
         android:fontFamily="@font/spoqa_han_sans_neo_bold"
         android:text="다음"
+        android:stateListAnimator="@null"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold" />
