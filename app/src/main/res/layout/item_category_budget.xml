@@ -25,7 +25,7 @@
             android:lineSpacingExtra="0dp"
             android:text="🥘"
             android:textColor="#FF000000"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -44,12 +44,24 @@
             android:id="@+id/tv_category_item_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
             android:fontFamily="@font/spoqa_han_sans_neo_medium"
             android:text="식비"
             android:textColor="#343A40"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ic_category_item_detail" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_category_item_detail" />
+
+        <ImageView
+            android:id="@+id/iv_category_item_detail"
+            android:layout_width="24sp"
+            android:layout_height="24dp"
+            android:layout_marginTop="7dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/food_color" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout

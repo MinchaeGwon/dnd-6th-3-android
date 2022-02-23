@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/ic_category_icon"
-        android:layout_width="40dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:height="35dp"
         android:gravity="bottom"
@@ -17,7 +17,7 @@
         android:lineSpacingExtra="0dp"
         android:text="📚"
         android:textColor="#FF000000"
-        android:textSize="30dp"
+        android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -47,7 +47,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_category_name" />
 
-<!--    <ImageView-->
+    <ImageView
+        android:id="@+id/iv_category_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="9dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_category_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/book_color" />
+
+    <!--    <ImageView-->
 <!--        android:id="@+id/iv_category_icon"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->

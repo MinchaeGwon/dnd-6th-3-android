@@ -1,5 +1,7 @@
 package com.dnd.moneyroutine.dto;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +15,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class BudgetDetailModel {
 
-    private List<GoalCategoryCreateDtoList> goalCategoryCreateDtoList = new ArrayList<>();
+//    private List<GoalCategoryCreateDtoList> goalCategoryCreateDtoList=null;
+    private List<GoalCategoryCreateDto>  goalCategoryCreateDtoList;
     private int total_budget;
 
 }

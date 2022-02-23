@@ -372,6 +372,7 @@ public class NewCategoryActivity extends AppCompatActivity {
         });
     }
 
+
     private static boolean isEmoji(String message) {
 //        Pattern rex = Pattern.compile("[\\x{10000}-\\x{10ffff}\ud800-\udfff]");
         Pattern rex = Pattern.compile("[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]");

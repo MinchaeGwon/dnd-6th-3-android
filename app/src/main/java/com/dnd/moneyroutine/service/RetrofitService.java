@@ -6,7 +6,6 @@ import com.dnd.moneyroutine.dto.UserForm;
 import com.google.gson.JsonObject;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -30,7 +29,7 @@ public interface RetrofitService {
     Call<JsonObject> create(@Body CustomCategoryCreateDto customCategoryCreateDto);
 
     @POST("goal")
-    Call<JsonObject> goal(@Body BudgetDetailModel budgetDetailModel);
+    Call<BudgetDetailModel> goal(@Body BudgetDetailModel budgetDetailModel);
 
     @GET("goal/info")
     Call<JsonObject> getMainGoalList(@Query("date") LocalDate date);
