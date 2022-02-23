@@ -230,39 +230,32 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
             }
         });
 
+        holder.bindView(position, mBudgetItem.get(position));
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 budgetDetailModel = new BudgetDetailModel();
-
 //                budgetDetailModel.setGoalCategoryCreateDtoList(goalCategoryCreateDtoList); //list
-
                 budgetDetailModel.setTotal_budget(mbudget); //budget
+                goaltoServer();
 
                 Intent intent = new Intent(view.getContext(), MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
-                goaltoServer();
-
 
             }
 
         });
 
-        holder.bindView(position, mBudgetItem.get(position));
-
     }
 
     //서버로 categoryid, budget, iscustom, 전체 budget 보냄
     private void goaltoServer() {
-
-
         HeaderRetrofit headerRetrofit = new HeaderRetrofit();
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);
-
 
         Call<BudgetDetailModel> call = retroService.goal(budgetDetailModel);
         call.enqueue(new Callback<BudgetDetailModel>() {

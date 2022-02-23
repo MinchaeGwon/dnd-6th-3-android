@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="17dp"
+    android:background="@color/white"
     tools:context=".fragment.ExpenditureMonthlyFragment">
 
     <androidx.core.widget.NestedScrollView
