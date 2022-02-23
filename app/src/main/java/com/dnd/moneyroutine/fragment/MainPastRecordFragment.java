@@ -184,7 +184,7 @@ public class MainPastRecordFragment extends Fragment  {
                     Log.d(TAG, responseJson.toString());
 
                     if (responseJson.get("statusCode").getAsInt() == 200) {
-                        if (responseJson.get("data") != null) {
+                        if (!responseJson.get("data").isJsonNull()) {
                             Gson gson = new Gson();
                             GoalInfo responseGoal = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<GoalInfo>() {}.getType());
 

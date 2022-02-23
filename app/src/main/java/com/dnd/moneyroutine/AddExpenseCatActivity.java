@@ -104,7 +104,7 @@ public class AddExpenseCatActivity extends AppCompatActivity {
                     Log.d(TAG, responseJson.toString());
 
                     if (responseJson.get("statusCode").getAsInt() == 200) {
-                        if (responseJson.get("data") != null) {
+                        if (!responseJson.get("data").isJsonNull()) {
                             JsonArray jsonArray = responseJson.get("data").getAsJsonArray();
 
                             Gson gson = new Gson();

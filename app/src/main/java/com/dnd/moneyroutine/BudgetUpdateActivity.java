@@ -339,7 +339,7 @@ public class BudgetUpdateActivity extends AppCompatActivity {
                     Log.d(TAG, responseJson.toString());
 
                     if (responseJson.get("statusCode").getAsInt() == 200) {
-                        if (responseJson.get("data") != null) {
+                        if (!responseJson.get("data").isJsonNull()) {
                             Gson gson = new Gson();
                             goalInfo = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<GoalInfo>() {}.getType());
 
