@@ -21,9 +21,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
+import com.dnd.moneyroutine.custom.Common;
 import com.dnd.moneyroutine.dto.GoalCategoryCompact;
 import com.dnd.moneyroutine.dto.GoalCategoryDetail;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -124,10 +127,19 @@ public class GoalCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
                 ivCategory.setVisibility(View.INVISIBLE);
                 tvEmoji.setVisibility(View.VISIBLE);
 
-                tvEmoji.setText(category.getEmoji());
+                String emoji = null;
+                try {
+                    emoji = URLDecoder.decode(category.getEmoji(), "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                tvEmoji.setText(emoji);
             } else {
                 ivCategory.setVisibility(View.VISIBLE);
                 tvEmoji.setVisibility(View.INVISIBLE);
+
+                ivCategory.setImageResource(Common.getBasicColorCategoryResId(category.getName()));
             }
 
             tvCategory.setText(category.getName());

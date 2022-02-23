@@ -30,6 +30,8 @@ import com.dnd.moneyroutine.service.RetrofitService;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -113,12 +115,13 @@ public class NewCategoryActivity extends AppCompatActivity {
 
                 customCategoryCreateDto =new CustomCategoryCreateDto();
                 customCategoryCreateDto.setDetail(ex);
+
                 try {
-                    iconToByte  = icon.getBytes("UTF-8").toString(); //이모지 서버로 보낼 수 있는 형태로 변환
-                } catch (IOException e) {
-                    iconToByte="";
+                    iconToByte = URLEncoder.encode(icon, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
+
                 customCategoryCreateDto.setEmoji(iconToByte);
 
                 customCategoryCreateDto.setName(name);

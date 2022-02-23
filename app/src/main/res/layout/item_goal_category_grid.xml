@@ -19,15 +19,14 @@
 
     <TextView
         android:id="@+id/tv_custom_category"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:height="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="bottom"
         android:includeFontPadding="false"
         android:lineSpacingExtra="0dp"
         android:text="📚"
         android:textColor="#FF000000"
-        android:textSize="28sp"
+        android:textSize="20sp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

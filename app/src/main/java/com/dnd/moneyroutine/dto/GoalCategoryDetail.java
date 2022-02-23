@@ -14,5 +14,5 @@ public class GoalCategoryDetail implements Serializable {
     private String detail;
     private int budget;
     private int totalExpense;
-    private boolean isCustom;
+    private boolean custom;
 }

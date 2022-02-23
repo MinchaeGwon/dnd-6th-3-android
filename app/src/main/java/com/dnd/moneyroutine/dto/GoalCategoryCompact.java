@@ -12,5 +12,5 @@ public class GoalCategoryCompact implements Serializable {
     private String emoji;
     private String name;
     private String detail;
-    private boolean isCustom;
+    private boolean custom;
 }

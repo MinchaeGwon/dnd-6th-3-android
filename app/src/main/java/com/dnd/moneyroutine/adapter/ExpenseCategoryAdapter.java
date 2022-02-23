@@ -1,6 +1,8 @@
 package com.dnd.moneyroutine.adapter;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
+import com.dnd.moneyroutine.custom.Common;
 import com.dnd.moneyroutine.dto.GoalCategoryDetail;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -22,6 +28,7 @@ public class ExpenseCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private Context context;
     private ArrayList<GoalCategoryDetail> categoryList;
     private boolean current;
+    private TypedArray basicCategory;
 
     public ExpenseCategoryAdapter(ArrayList<GoalCategoryDetail> categoryList, boolean current) {
         this.categoryList = categoryList;
@@ -33,6 +40,7 @@ public class ExpenseCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.item_expense_category, parent, false);
+        basicCategory = context.getResources().obtainTypedArray(R.array.basicColorCategory);
         return new CategoryViewHolder(view);
     }
 
@@ -80,10 +88,19 @@ public class ExpenseCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ivCategory.setVisibility(View.INVISIBLE);
                 tvEmoji.setVisibility(View.VISIBLE);
 
-                tvEmoji.setText(category.getEmoji());
+                String emoji = null;
+                try {
+                    emoji = URLDecoder.decode(category.getEmoji(), "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                tvEmoji.setText(emoji);
             } else {
                 ivCategory.setVisibility(View.VISIBLE);
                 tvEmoji.setVisibility(View.INVISIBLE);
+
+                ivCategory.setImageResource(Common.getBasicColorCategoryResId(category.getName()));
             }
 
             tvCategory.setText(category.getName());

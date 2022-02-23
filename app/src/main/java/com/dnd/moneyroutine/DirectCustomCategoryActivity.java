@@ -38,6 +38,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -141,7 +143,7 @@ public class DirectCustomCategoryActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String iconToByte;
+                String iconToByte = null;
                 String name = etCategoryName.getText().toString();
                 String ex = etDetail.getText().toString();
                 String icon = tvEmoji.getText().toString();
@@ -157,11 +159,11 @@ public class DirectCustomCategoryActivity extends AppCompatActivity {
                 customCategoryForm.setBudget(Integer.parseInt(budget));
 
                 try {
-                    iconToByte  = icon.getBytes("UTF-8").toString(); // 이모지 서버로 보낼 수 있는 형태로 변환
-                } catch (IOException e) {
-                    iconToByte = "";
+                    iconToByte = URLEncoder.encode(icon, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
+
                 customCategoryForm.setEmoji(iconToByte);
 
                 directAddCustomCategoryServer();
