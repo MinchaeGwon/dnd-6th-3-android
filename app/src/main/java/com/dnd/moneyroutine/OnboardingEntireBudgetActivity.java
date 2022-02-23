@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
-import com.dnd.moneyroutine.dto.GoalCategoryCreateDtoList;
+import com.dnd.moneyroutine.dto.GoalCategoryCreateDto;
 import com.dnd.moneyroutine.dto.BudgetItem;
 import com.dnd.moneyroutine.dto.CategoryItem;
 
@@ -46,7 +46,7 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
 
     private ArrayList<BudgetItem> bgList;
     private ArrayList<CategoryItem> newItem;
-    private ArrayList<GoalCategoryCreateDtoList> goalCategoryCreateDtoList;
+    private ArrayList<GoalCategoryCreateDto> goalCategoryCreateDtoList;
 
     private SoftKeyboardDetector softKeyboardDetector;
     private InputMethodManager inputManager;
@@ -261,7 +261,7 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
 
                 bgList = (ArrayList<BudgetItem>) getIntent().getSerializableExtra("BudgetItem");
                 newItem = (ArrayList<CategoryItem>) getIntent().getSerializableExtra("NewItem");
-                goalCategoryCreateDtoList=(ArrayList<GoalCategoryCreateDtoList>) getIntent().getSerializableExtra("goalCategoryCreateDtoList");
+                goalCategoryCreateDtoList=(ArrayList<GoalCategoryCreateDto>) getIntent().getSerializableExtra("goalCategoryCreateDtoList");
 
 
 

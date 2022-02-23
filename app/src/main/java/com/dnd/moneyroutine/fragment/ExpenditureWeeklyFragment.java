@@ -117,36 +117,9 @@ public class ExpenditureWeeklyFragment extends Fragment {
         setWeekBtnListener();
         setPieChart();
         showDialog();
+        getWeeklyStatistics(startDate, endDate);
+        getWeeklyTrend(now);
 
-
-        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
-        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
-        RetrofitService retroService = retrofit.create(RetrofitService.class);
-
-//        startDate = formatter.format(getStartDay());
-//        endDate = formatter.format(getEndDay());
-
-        Call<JsonObject> call = retroService.getWeeklyStatistics(startDate, endDate);
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.isSuccessful()) {
-                    JsonObject responseJson = response.body();
-                    Log.d("week", responseJson.toString());
-                } else {
-                    Log.e("week", "error: " + response.code());
-                    return;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d("week", t.getMessage());
-                Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-//        Log.d("ddd", startDate);
     }
 
     private void initView(View v) {
@@ -267,6 +240,60 @@ public class ExpenditureWeeklyFragment extends Fragment {
 
     }
 
+    private void getWeeklyStatistics(LocalDate startDate, LocalDate endDate){
+        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+        RetrofitService retroService = retrofit.create(RetrofitService.class);
+
+        Call<JsonObject> call = retroService.getWeeklyStatistics(startDate, endDate);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject responseJson = response.body();
+                    Log.d("week", responseJson.toString());
+                } else {
+                    Log.e("week", "error: " + response.code());
+
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.d("week", "failure"+ t.getMessage());
+                Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getWeeklyTrend(LocalDate currentDate){
+        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+        RetrofitService retroService = retrofit.create(RetrofitService.class);
+
+        Call<JsonObject> call = retroService.getWeeklyTrend(currentDate);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject responseJson = response.body();
+                    Log.d("week", responseJson.toString());
+                } else {
+                    Log.e("week", "error: " + response.code());
+
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.d("week", "failure"+ t.getMessage());
+                Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void setPieChart() {
 
         pieChart.setRotationAngle(-100); //시작 위치 설정 (3시방향이 기본)
@@ -305,57 +332,9 @@ public class ExpenditureWeeklyFragment extends Fragment {
         pieChart.setData(data);
     }
 
-    private Date getStartDay() {
-
-
-        //시작일 설정
-//        Calendar cal = Calendar.getInstance();
-
-
-//        if (cal.get(Calendar.WEEK_OF_MONTH) == 1) { //첫째주라면 1일부터 시작
-//            cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 1);
-//        } else { //아니라면 일요일 부터 시작
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-//        }
-
-//        ivNextWeek.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-
-        return calendar.getTime();
-    }
-
-    private Date getEndDay() {
-        //마지막일 설정
-//        Calendar cal = Calendar.getInstance();
-
-
-//        if (cal.get(Calendar.WEEK_OF_MONTH) == cal.getActualMaximum(Calendar.WEEK_OF_MONTH)) { //마지막주라면 말일을 마지막일로 설정
-//            cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-//        }
-        //아니라면 토요일을 마지막일로
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-
-//        Log.d("ddd", cal.get(Calendar.WEEK_OF_MONTH) + " " + cal.getActualMaximum(Calendar.WEEK_OF_MONTH));
-
-//        if(calendar.DATE<7){
-//            calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY-calendar.DATE);
-//        }
-
-        return calendar.getTime();
-    }
 
     private void setDate() {
 
-//        startDate = now
-
-//        startDate = now.with(WeekFields.of(Locale.KOREA).dayOfWeek(),2);
-//        endDate = startDate.plusDays(6);
-
-//        ;
         switch (now.getDayOfWeek()) {
             case SUNDAY:
                 startDate = now.minusDays(6);
@@ -382,6 +361,7 @@ public class ExpenditureWeeklyFragment extends Fragment {
         }
 
         endDate = startDate.plusDays(6);
+
         //textview에 설정
         setWeekTextView();
     }
@@ -395,6 +375,8 @@ public class ExpenditureWeeklyFragment extends Fragment {
                 calendar.add(Calendar.DATE,7);
                 setWeekTextView();
                 setWeekNumber();
+                getWeeklyStatistics(startDate, endDate);
+                getWeeklyTrend(endDate);
             }
         });
 
@@ -407,6 +389,8 @@ public class ExpenditureWeeklyFragment extends Fragment {
 
                 setWeekTextView();
                 setWeekNumber();
+                getWeeklyStatistics(startDate, endDate);
+                getWeeklyTrend(endDate);
             }
         });
     }

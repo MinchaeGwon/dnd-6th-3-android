@@ -14,15 +14,14 @@ import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.dnd.moneyroutine.NewCategoryActivity;
-import com.dnd.moneyroutine.OnboardingEntireBudgetActivity;
-import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.adapter.CategoryGridViewAdapter;
 import com.dnd.moneyroutine.custom.ExpandableHeightGridView;
 import com.dnd.moneyroutine.dto.CategoryItem;
-import com.dnd.moneyroutine.dto.GoalCategoryCreateDtoList;
+import com.dnd.moneyroutine.dto.GoalCategoryCreateDto;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,7 +46,10 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
     private ArrayList<Integer> selectedItem = new ArrayList<>();
 
 //    private GoalCategoryCreateDtoList goalCategoryCreateDtoList;
-    private ArrayList<GoalCategoryCreateDtoList> goalCategoryCreateDtoList;
+    private ArrayList<GoalCategoryCreateDto> goalCategoryCreateDtoList;
+//    private JsonArray goalCategoryCreateDtoList;
+
+    private JsonObject jsonObject =new JsonObject();
     private boolean isCustom = false;
     private int budget;
     private int categoryId = 0;
@@ -79,8 +81,8 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
     }
 
     private void initAdapter() {
-        //        int[] categoryIcons = {R.drawable.coffee, R.drawable.food, R.drawable.beer, R.drawable.book, R.drawable.bus, R.drawable.bag, R.drawable.computer, R.drawable.life, R.drawable.pill};
-        String[] categoryIcons = {"☕", "🥘", "🍻", "📚 ", "🚌", "👜", "🖥", "🧻", "💊"};
+        String [] categoryIcons = {"@drawable/coffee_gray", "@drawable/food_gray", "@drawable/beer_gray", "@drawable/book_gray", "@drawable/bus_gray", "@drawable/bag_gray", "@drawable/computer_gray","@drawable/tissue_gray", "@drawable/pill_gray"};
+//        String[] categoryIcons = {"☕", "🥘", "🍻", "📚 ", "🚌", "👜", "🖥", "🧻", "💊"};
         String[] categoryNames = {"카페", "식비", "유흥비", "자기계발", "교통비", "쇼핑", "정기구독", "생활용품", "건강"};
         String[] categoryExs = {"커피 및 디저트", "밥값", "주류비, 취미", "책 및 강의", "택시, 버스, 지하철", "의류, 화장품", "넷플릭스 등", "가전제품 등", "병원비, 운동"};
 
@@ -110,6 +112,10 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                ImageView ivIcon = view.findViewById(R.id.iv_category_icon);
+                String [] colorIcons = {"@drawable/coffee_color", "@drawable/food_color", "@drawable/beer_color", "@drawable/book_color", "@drawable/bus_color", "@drawable/bag_color", "@drawable/computer_color","@drawable/tissue_color", "@drawable/pill_color"};
+                String [] grayIcons = {"@drawable/coffee_gray", "@drawable/food_gray", "@drawable/beer_gray", "@drawable/book_gray", "@drawable/bus_gray", "@drawable/bag_gray", "@drawable/computer_gray","@drawable/tissue_gray", "@drawable/pill_gray"};
+
 
                 background = (ConstraintLayout) view;
                 gridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
@@ -125,13 +131,21 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
                     selectedItem.add(position);
                 }
 
-                //선택해제시
+                //선택시
                 if (background.isSelected()) {
                     background.setBackgroundResource(R.drawable.button_category_clicked);
+                    if(position<9){ //기본 카테고리는 컬러 이미지로
+                        int resId = getResources().getIdentifier( colorIcons[position], "drawable", getPackageName());
+                        ivIcon.setImageResource(resId);
+                    }
                 }
-                //선택시
+                //선택해제시
                 else {
                     background.setBackgroundResource(R.drawable.button_category_unclicked);
+                    if(position<9){ //기본 카테고리는 흑백 이미지로
+                        int resId = getResources().getIdentifier( grayIcons[position], "drawable", getPackageName());
+                        ivIcon.setImageResource(resId);
+                    }
                 }
 
                 //하나라도 선택되면 다음 버튼 활성화
@@ -147,6 +161,7 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
     }
 
 
+
     private void setButtonListener() {
         //카테고리 추가 버튼
         linearAddcategory.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +169,6 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), NewCategoryActivity.class);
                 startActivityResult.launch(intent);
-
             }
         });
 
@@ -166,20 +180,21 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
 
                 bgList = new ArrayList<>();
                 Collections.sort(selectedItem);
+                String [] colorIcons = {"@drawable/coffee_color", "@drawable/food_color", "@drawable/beer_color", "@drawable/book_color", "@drawable/bus_color", "@drawable/bag_color", "@drawable/computer_color","@drawable/tissue_color", "@drawable/pill_color"};
 
                 //선택된 아이템
                 for (int i = 0; i < selectedItem.size(); i++) {
                     int index = selectedItem.get(i);
-                    bgList.add(new CategoryItem(icon.get(index), name.get(index), ex.get(index)));
-                    if(selectedItem.get(i)<9){
-                        goalCategoryCreateDtoList.add(i, new GoalCategoryCreateDtoList(0, index, false));
+                    if(index<9){
+                        bgList.add(new CategoryItem(colorIcons[index], name.get(index), ex.get(index))); //기본카테고리는 drawable로
+                        goalCategoryCreateDtoList.add(i, new GoalCategoryCreateDto(0, Long.valueOf(index), false));
                     }
                     else{
-                        goalCategoryCreateDtoList.add(i, new GoalCategoryCreateDtoList(0, categoryId, true));
+                        bgList.add(new CategoryItem(icon.get(index), name.get(index), ex.get(index))); //새로 생성한 카테고리는 아이콘으로
+                        goalCategoryCreateDtoList.add(i, new GoalCategoryCreateDto(0, Long.valueOf(categoryId), true));
                         categoryId++;
                     }
                 }
-
 
 
                 Intent intent = new Intent(getApplicationContext(), OnboardingEntireBudgetActivity.class);
@@ -190,6 +205,8 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     //새로운 아이템 추가 페이지에서 입력된 값 받아오기
     ActivityResultLauncher<Intent> startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -222,9 +239,17 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
                         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                             @Override
                             public void onGlobalLayout() {
+                                String [] colorIcons = {"@drawable/coffee_color", "@drawable/food_color", "@drawable/beer_color", "@drawable/book_color", "@drawable/bus_color", "@drawable/bag_color", "@drawable/computer_color","@drawable/tissue_color", "@drawable/pill_color"};
+
                                 for (int x = 0; x < selectedItem.size(); x++) {
                                     ConstraintLayout cl = (ConstraintLayout) gridView.getChildAt(selectedItem.get(x));
+                                    ImageView iv = (ImageView) cl.findViewById(R.id.iv_category_icon);
                                     cl.setBackgroundResource(R.drawable.button_category_clicked);
+                                    if(selectedItem.get(x)<9){
+                                        int resId = getResources().getIdentifier( colorIcons[selectedItem.get(x)], "drawable", getPackageName());
+                                        iv.setImageResource(resId); //컬러 이미지로
+                                    }
+
                                 }
                             }
                         });
