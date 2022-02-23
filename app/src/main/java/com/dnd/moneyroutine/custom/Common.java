@@ -1,5 +1,9 @@
 package com.dnd.moneyroutine.custom;
 
+import android.util.Log;
+
+import com.dnd.moneyroutine.R;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -94,8 +98,53 @@ public class Common {
         return result;
     }
 
-//    public static String getCalendarToString(Calendar calendar) {
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy년MM월");
-//        return format.format(calendar.getTime());
-//    }
+    public static int getBasicColorCategoryResId(String category) {
+        switch (category) {
+            case "카페":
+                return R.drawable.coffee_color;
+            case "식비":
+                return R.drawable.food_color;
+            case "유흥비":
+                return R.drawable.beer_color;
+            case "자기계발":
+                return R.drawable.book_color;
+            case "교통비":
+                return R.drawable.bus_color;
+            case "쇼핑":
+                return R.drawable.bag_color;
+            case "정기구독":
+                return R.drawable.computer_color;
+            case "생활용품":
+                return R.drawable.tissue_color;
+            case "건강":
+                return R.drawable.pill_color;
+        }
+
+        return -1;
+    }
+
+    public static int getBasicGrayCategoryResId(String category) {
+        switch (category) {
+            case "카페":
+                return R.drawable.coffee_gray;
+            case "식비":
+                return R.drawable.food_gray;
+            case "유흥비":
+                return R.drawable.beer_gray;
+            case "자기계발":
+                return R.drawable.book_gray;
+            case "교통비":
+                return R.drawable.bus_gray;
+            case "쇼핑":
+                return R.drawable.bag_gray;
+            case "정기구독":
+                return R.drawable.computer_gray;
+            case "생활용품":
+                return R.drawable.tissue_gray;
+            case "건강":
+                return R.drawable.pill_gray;
+        }
+
+        return -1;
+    }
 }

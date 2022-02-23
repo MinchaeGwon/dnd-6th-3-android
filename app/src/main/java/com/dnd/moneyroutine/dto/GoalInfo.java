@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Getter @Setter
 public class GoalInfo implements Serializable {
-    private Long goalId;
+    private int goalId;
     private GoalState goalState;
     private int remainder;
     private int totalBudget;

@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
@@ -29,6 +30,8 @@ import com.dnd.moneyroutine.service.RetrofitService;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -112,12 +115,13 @@ public class NewCategoryActivity extends AppCompatActivity {
 
                 customCategoryCreateDto =new CustomCategoryCreateDto();
                 customCategoryCreateDto.setDetail(ex);
+
                 try {
-                    iconToByte  = icon.getBytes("UTF-8").toString(); //이모지 서버로 보낼 수 있는 형태로 변환
-                } catch (IOException e) {
-                    iconToByte="";
+                    iconToByte = URLEncoder.encode(icon, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
+
                 customCategoryCreateDto.setEmoji(iconToByte);
 
                 customCategoryCreateDto.setName(name);
@@ -330,12 +334,14 @@ public class NewCategoryActivity extends AppCompatActivity {
         et_emoji.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                flag = true;
+                if (et_emoji.length() > 0 ) {
+                    flag = true;
+                }
             }
 
             @Override
@@ -344,21 +350,19 @@ public class NewCategoryActivity extends AppCompatActivity {
                 //입력된 값이 이모지라면 이모지 부분 textview에 선택한 값 띄움
                 if (flag) {
                     flag = false;
+
                     if (isEmoji(et_emoji.getText().toString())) {
                         if (tvNewEmoji.getText() != et_emoji.getText()) {
                             tvNewEmoji.setText(et_emoji.getText());
-//                            tvNewEmoji.setText(et_emoji.getText().toString().charAt(et_emoji.length()-1));
-                            et_emoji.setText("");
-                            inputManager.hideSoftInputFromWindow(NewCategoryActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                        } else {
-                            et_emoji.setText("");
-                            inputManager.hideSoftInputFromWindow(NewCategoryActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                         }
+
+                        inputManager.hideSoftInputFromWindow(NewCategoryActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                         bgBlack.setVisibility(View.GONE);
+                    } else {
+                        Toast.makeText(NewCategoryActivity.this, "이모지만 입력해 주세요", Toast.LENGTH_SHORT).show();
                     }
-//                    if(isLetter(et_emoji.getText().toString())){
-//                        et_emoji.setText("");
-//                    }
+
+                    et_emoji.setText("");
                 }
             }
         });
@@ -366,12 +370,13 @@ public class NewCategoryActivity extends AppCompatActivity {
 
 
     private static boolean isEmoji(String message) {
-//        Pattern rex = Pattern.compile("[\\x{10000}-\\x{10ffff}\ud800-\udfff]");
-        Pattern rex = Pattern.compile("[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]");
+        Pattern rex = Pattern.compile("[\\x{10000}-\\x{10ffff}\ud800-\udfff]");
+//        Pattern rex = Pattern.compile("[^\uAC00-\uD7A3xfe0-9a-zA-Z가-힣\\s]");
         Matcher matcher = rex.matcher(message);
 
-        return matcher.find();
+        return matcher.matches();
     }
+
 //    private static boolean isLetter(String message){
 //        Pattern rex = Pattern.compile("^[0-9a-zA-Z가-힣]*$");
 //        Matcher matcher = rex.matcher(message);

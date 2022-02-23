@@ -14,8 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
+import com.dnd.moneyroutine.custom.Common;
 import com.dnd.moneyroutine.dto.GoalCategoryCompact;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 
 public class GoalCategoryGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -53,8 +56,17 @@ public class GoalCategoryGridAdapter extends RecyclerView.Adapter<RecyclerView.V
             ((CategoryViewHolder) holder).setItem(category);
 
             int categoryId = selectCat != null ? selectCat.getCategoryId() : -1;
+
             holder.itemView.setBackgroundResource(categoryId == category.getCategoryId() ?
                     R.drawable.button_category_clicked : R.drawable.button_category_unclicked);
+
+            ((CategoryViewHolder) holder).tvDetail.setTextColor(categoryId == category.getCategoryId() ?
+                    Color.parseColor("#212529") : Color.parseColor("#868E96"));
+
+            if (!category.isCustom()) {
+                ((CategoryViewHolder) holder).ivCategory.setImageResource(categoryId == category.getCategoryId() ?
+                        Common.getBasicColorCategoryResId(category.getName()) : Common.getBasicGrayCategoryResId(category.getName()));
+            }
         }
     }
 
@@ -86,7 +98,7 @@ public class GoalCategoryGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                         notifyItemChanged(categoryList.indexOf(selectCat));
                     }
 
-                    selectCat = categoryList.get(getAdapterPosition());
+                    selectCat = categoryList.get(getBindingAdapterPosition());
                     notifyItemChanged(categoryList.indexOf(selectCat));
 
                     onItemClickListener.onClick(selectCat);
@@ -100,10 +112,19 @@ public class GoalCategoryGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                 ivCategory.setVisibility(View.INVISIBLE);
                 tvEmoji.setVisibility(View.VISIBLE);
 
-                tvEmoji.setText(category.getEmoji());
+                String emoji = null;
+                try {
+                    emoji = URLDecoder.decode(category.getEmoji(), "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                tvEmoji.setText(emoji);
             } else {
                 ivCategory.setVisibility(View.VISIBLE);
                 tvEmoji.setVisibility(View.INVISIBLE);
+
+                ivCategory.setImageResource(Common.getBasicGrayCategoryResId(category.getName()));
             }
 
             tvCategory.setText(category.getName());
