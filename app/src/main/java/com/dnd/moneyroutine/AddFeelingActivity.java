@@ -31,6 +31,7 @@ import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
 import com.dnd.moneyroutine.dto.ExpenseForm;
 import com.dnd.moneyroutine.dto.GoalCategoryCompact;
+import com.dnd.moneyroutine.enums.EmotionEnum;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.RetrofitService;
 import com.google.gson.Gson;
@@ -319,11 +320,11 @@ public class AddFeelingActivity extends AppCompatActivity {
     private String mappingFeeling() {
         switch (rgFeeling.getCheckedRadioButtonId()) {
             case R.id.rb_feeling_good:
-                return "GOOD";
+                return EmotionEnum.GOOD.getEmotion();
             case R.id.rb_feeling_soso:
-                return "SOSO";
+                return EmotionEnum.SOSO.getEmotion();
             case R.id.rb_feeling_bad:
-                return "BAD";
+                return EmotionEnum.BAD.getEmotion();
         }
         return null;
     }

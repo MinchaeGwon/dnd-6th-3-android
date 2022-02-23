@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,12 +21,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.adapter.WeeklyCalendarAdapter;
 import com.dnd.moneyroutine.custom.Common;
+import com.dnd.moneyroutine.custom.Constants;
+import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.WeekPickerDialog;
+import com.dnd.moneyroutine.dto.GoalInfo;
+import com.dnd.moneyroutine.dto.WeeklyDiaryCompact;
+import com.dnd.moneyroutine.service.HeaderRetrofit;
+import com.dnd.moneyroutine.service.RetrofitService;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TreeMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class DiaryWeeklyFragment extends Fragment {
 
@@ -56,6 +74,7 @@ public class DiaryWeeklyFragment extends Fragment {
     private ImageView ivBadMore;
     private RecyclerView rvBad;
 
+    private String token;
     private Calendar currentDate;
 
     @Override
@@ -69,6 +88,7 @@ public class DiaryWeeklyFragment extends Fragment {
         initField();
         setListener();
 
+        getWeeklyDiary();
         setCalendar();
     }
 
@@ -99,6 +119,8 @@ public class DiaryWeeklyFragment extends Fragment {
     }
 
     private void initField() {
+        token = PreferenceManager.getToken(getContext(), Constants.tokenKey);
+
         currentDate = Calendar.getInstance();
         tvDate.setText((currentDate.get(Calendar.MONTH) + 1) + "월 " + currentDate.get(Calendar.DATE) + "일 소비 다이어리");
     }
@@ -199,5 +221,60 @@ public class DiaryWeeklyFragment extends Fragment {
 
         // update title
         tvSelectWeek.setText(Common.getWeeklyCalendarToString(currentDate));
+    }
+
+    private void getWeeklyDiary() {
+        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+        RetrofitService retroService = retrofit.create(RetrofitService.class);
+
+        int year = currentDate.get(Calendar.YEAR);
+        int month = currentDate.get(Calendar.MONTH) + 1;
+        int week = currentDate.get(Calendar.WEEK_OF_MONTH);
+
+        Call<JsonObject> call = retroService.getWeeklyDiary(year, month, week);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject responseJson = response.body();
+
+                    Log.d(TAG, responseJson.toString());
+
+                    if (responseJson.get("statusCode").getAsInt() == 200) {
+                        if (!responseJson.get("data").isJsonNull()) {
+//                            JsonObject data = responseJson.get("data").getAsJsonObject();
+//
+//                            Log.d(TAG, data.toString());
+//
+//                            ArrayList<WeeklyDiaryCompact> weeklyDiary = new ArrayList<>();
+//                            LocalDate date = LocalDate.of(year, month, currentDate.get(Calendar.DAY_OF_WEEK));
+//
+//                            Gson gson = new Gson();
+//                            for (int i = 0; i < 7; i++) {
+//                                date.plusDays(i);
+//
+//                                String formatDate = date.plusDays(i).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//                                Log.d(TAG, "포맷!!! " + formatDate);
+////                                Log.d(TAG, data.get(formatDate).toString());
+//
+//                                WeeklyDiaryCompact test = gson.fromJson(data.getAsJsonObject(formatDate), new TypeToken<WeeklyDiaryCompact>() {}.getType());
+////                                Log.d(TAG, test.getEmotion().getEmotion());
+////
+////                                test.setDate(formatDate);
+////                                Log.d(TAG, test.toString());
+////
+////                                weeklyDiary.add(test);
+//                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

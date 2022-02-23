@@ -351,6 +351,11 @@ public class AddExpenseActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.d(TAG, t.getMessage());
+                for (int i = 0; i < t.getStackTrace().length; i++) {
+                    Log.d(TAG, t.getStackTrace()[i].toString());
+                }
+
                 Toast.makeText(AddExpenseActivity.this, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
