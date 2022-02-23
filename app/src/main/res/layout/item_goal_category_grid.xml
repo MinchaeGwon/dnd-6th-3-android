@@ -5,6 +5,7 @@
     android:id="@+id/cl_category_item"
     android:layout_width="104dp"
     android:layout_height="110dp"
+    android:layout_marginBottom="8dp"
     android:background="@drawable/button_category_unclicked">
 
     <ImageView

@@ -63,14 +63,16 @@ public class MainCurrentMonthFragment extends Fragment {
     private TextView tvTotalExpense;
     private RecyclerView rvCategory;
 
+    private GoalInfo goalInfo;
     private boolean isGoalExist;
     private String token;
     private LocalDate today;
 
     public MainCurrentMonthFragment() {}
 
-    public MainCurrentMonthFragment(boolean isGoalExist) {
+    public MainCurrentMonthFragment(boolean isGoalExist, GoalInfo goalInfo) {
         this.isGoalExist = isGoalExist;
+        this.goalInfo = goalInfo;
     }
 
     @Override
@@ -144,7 +146,7 @@ public class MainCurrentMonthFragment extends Fragment {
             clGoalBudget.setVisibility(View.VISIBLE);
             clGoalCat.setVisibility(View.VISIBLE);
 
-            getCurrentGoalInfo();
+            setGoalInfo();
         } else {
             clEmpty.setVisibility(View.VISIBLE);
             clGoalBudget.setVisibility(View.GONE);
@@ -152,43 +154,7 @@ public class MainCurrentMonthFragment extends Fragment {
         }
     }
 
-    // 이번 달 목표 정보 가져오기
-    private void getCurrentGoalInfo() {
-        // 헤더에 토큰 추가
-        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
-        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
-        RetrofitService retroService = retrofit.create(RetrofitService.class);
-
-        Call<JsonObject> call = retroService.getMainGoalList(today);
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.isSuccessful()) {
-                    JsonObject responseJson = response.body();
-
-                    Log.d(TAG, responseJson.toString());
-
-                    if (responseJson.get("statusCode").getAsInt() == 200) {
-                        if (responseJson.get("data") != null) {
-                            Gson gson = new Gson();
-                            GoalInfo responseGoal = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<GoalInfo>() {}.getType());
-
-                            if (responseGoal != null) {
-                                setGoalInfo(responseGoal);
-                            }
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void setGoalInfo(GoalInfo goalInfo) {
+    private void setGoalInfo() {
         pbExpense.setMax(goalInfo.getTotalBudget());
         pbExpense.setProgress(goalInfo.getTotalBudget() - goalInfo.getRemainder());
 

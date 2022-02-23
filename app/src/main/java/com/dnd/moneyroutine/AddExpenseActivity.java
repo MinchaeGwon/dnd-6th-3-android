@@ -289,6 +289,7 @@ public class AddExpenseActivity extends AppCompatActivity {
                     btnNext.setBackgroundResource(R.drawable.button_enabled_false);
                 }
 
+                contentLayoutParams.topMargin = (int) (10 * scale + 0.2f);
                 contentLayoutParams.setMarginStart((int) (16 * scale + 0.2f));
                 contentLayoutParams.setMarginEnd((int) (16 * scale + 0.2f));
                 contentLayoutParams.bottomMargin = (int) (56 * scale + 0.2f);
@@ -309,6 +310,7 @@ public class AddExpenseActivity extends AppCompatActivity {
                     btnNext.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
                 }
 
+                contentLayoutParams.topMargin = 0;
                 contentLayoutParams.setMarginStart(0);
                 contentLayoutParams.setMarginEnd(0);
                 contentLayoutParams.bottomMargin = 0;

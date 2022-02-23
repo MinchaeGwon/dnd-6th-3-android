@@ -2,6 +2,7 @@ package com.dnd.moneyroutine.service;
 
 import com.dnd.moneyroutine.dto.BudgetDetailModel;
 import com.dnd.moneyroutine.dto.CustomCategoryCreateDto;
+import com.dnd.moneyroutine.dto.DirectCustomCategoryForm;
 import com.dnd.moneyroutine.dto.ExpenseForm;
 import com.dnd.moneyroutine.dto.UserForm;
 import com.google.gson.JsonObject;
@@ -34,6 +35,9 @@ public interface RetrofitService {
     @POST("goal")
     Call<BudgetDetailModel> goal(@Body BudgetDetailModel budgetDetailModel);
 
+    @GET("goal/check")
+    Call<JsonObject> checkGoal();
+
     @GET("goal/info")
     Call<JsonObject> getMainGoalList(@Query("date") LocalDate date);
 
@@ -63,12 +67,16 @@ public interface RetrofitService {
     @PATCH("goal-category")
     Call<JsonObject> updateGoalCategory();
 
-    @POST("goal-category")
-    Call<JsonObject> directAddGoalCategory();
+    @POST("goal-category/custom")
+    Call<JsonObject> directAddGoalCategory(@Body DirectCustomCategoryForm categoryForm);
 
-    @GET("goal/check")
-    Call<JsonObject> checkGoal();
+
+    @PATCH("goal/budget")
+    Call<JsonObject> updateTotalBudget();
 
     @POST("expenditure")
     Call<JsonObject> addExpenditure(@Body ExpenseForm expenseForm);
+
+    @GET("category/except-list")
+    Call<JsonObject> getExceptCategory(@Query("goalId") int goalId);
 }

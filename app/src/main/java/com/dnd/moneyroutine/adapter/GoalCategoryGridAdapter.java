@@ -53,8 +53,12 @@ public class GoalCategoryGridAdapter extends RecyclerView.Adapter<RecyclerView.V
             ((CategoryViewHolder) holder).setItem(category);
 
             int categoryId = selectCat != null ? selectCat.getCategoryId() : -1;
+
             holder.itemView.setBackgroundResource(categoryId == category.getCategoryId() ?
                     R.drawable.button_category_clicked : R.drawable.button_category_unclicked);
+
+            ((CategoryViewHolder) holder).tvDetail.setTextColor(categoryId == category.getCategoryId() ?
+                    Color.parseColor("#212529") : Color.parseColor("#868E96"));
         }
     }
 
@@ -86,7 +90,7 @@ public class GoalCategoryGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                         notifyItemChanged(categoryList.indexOf(selectCat));
                     }
 
-                    selectCat = categoryList.get(getAdapterPosition());
+                    selectCat = categoryList.get(getBindingAdapterPosition());
                     notifyItemChanged(categoryList.indexOf(selectCat));
 
                     onItemClickListener.onClick(selectCat);

@@ -16,42 +16,66 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyRoutine"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MonthlyDetailActivity"></activity>
+
+        <activity
+            android:name=".DirectCustomCategoryActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"
+            android:exported="true" />
+
+        <activity
+            android:name=".MonthlyDetailActivity"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".ExpenseDetailActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".NotificationSettingActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".SettingActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
-        <activity android:name=".OnboardingCategoryActivity" />
+        <activity
+            android:name=".OnboardingCategoryActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".AddExpenseCatActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".BudgetUpdateActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".AddFeelingActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".AddExpenseActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".NewCategoryActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".OnboardingDetailBudgetActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".OnboardingEntireBudgetActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".SignupStep2Activity"
@@ -66,6 +90,7 @@
         <activity
             android:name=".NormalLoginActivity"
             android:exported="true"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait" />
         <activity
             android:name=".SocialLoginActivity"
@@ -74,10 +99,7 @@
         <activity
             android:name=".WelcomeActivity"
             android:exported="true"
-            android:screenOrientation="portrait" /> <!-- <activity -->
-        <!-- android:name=".MainActivity" -->
-        <!-- android:exported="true" -->
-        <!-- android:screenOrientation="portrait" /> -->
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SplashActivity"
             android:exported="true"

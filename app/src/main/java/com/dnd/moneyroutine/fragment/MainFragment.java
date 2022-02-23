@@ -1,5 +1,6 @@
 package com.dnd.moneyroutine.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -21,11 +26,17 @@ import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.SettingActivity;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
+import com.dnd.moneyroutine.dto.CategoryItem;
+import com.dnd.moneyroutine.dto.GoalCategoryCompact;
+import com.dnd.moneyroutine.dto.GoalInfo;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.RetrofitService;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +50,11 @@ public class MainFragment extends Fragment {
 
     private final static String TAG = "MainFragment";
 
+    private View v;
+
+    private String token;
+    private GoalInfo goalInfo;
+
     private AlertDialog goalDialog;
     private List<Fragment> fragmentList;
     private boolean isGoalExist;
@@ -50,16 +66,19 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        initView(view);
-        checkGoal(view, false);
+        v = view;
+        token = PreferenceManager.getToken(getContext(), Constants.tokenKey);
+
+        initView();
+        checkGoal(false);
     }
 
-    private void initView(View v) {
+    private void initView() {
         ImageButton ibUpdateBudget = v.findViewById(R.id.ib_main_update_budget);
         ibUpdateBudget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkGoal(v, true);
+                checkGoal(true);
             }
         });
 
@@ -74,7 +93,7 @@ public class MainFragment extends Fragment {
     }
 
     // tab view 초기화 메소드
-    private void tabInit(View v) {
+    private void tabInit() {
         fragmentList = new ArrayList<>();
         fragmentList.add(null);
         fragmentList.add(null);
@@ -121,7 +140,7 @@ public class MainFragment extends Fragment {
     private Fragment getFragment(int position) {
         switch (position) {
             case 0:
-                return new MainCurrentMonthFragment(isGoalExist);
+                return new MainCurrentMonthFragment(isGoalExist, goalInfo);
             case 1:
                 return new MainPastRecordFragment();
         }
@@ -156,10 +175,8 @@ public class MainFragment extends Fragment {
     }
 
     // 사용자가 목표 설정한 적이 있는지 확인
-    private void checkGoal(View v, boolean update) {
-        String token = PreferenceManager.getToken(getContext(), Constants.tokenKey);
+    private void checkGoal(boolean update) {
         HeaderRetrofit headerRetrofit = new HeaderRetrofit();
-
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);
 
@@ -170,22 +187,23 @@ public class MainFragment extends Fragment {
                 if (response.isSuccessful()) {
                     JsonObject responseJson = response.body();
 
-                    Log.d(TAG, "11111" + responseJson.toString());
+                    Log.d(TAG, responseJson.toString());
 
                     if (responseJson.get("statusCode").getAsInt() == 200) {
                         isGoalExist = responseJson.get("data").getAsBoolean();
 
                         if (update) {
-                            // 목표 설정하지 않았다면 온보딩 화면으로 이동
                             if (isGoalExist) {
                                 Intent intent = new Intent(getContext(), BudgetUpdateActivity.class);
-                                startActivity(intent);
+                                intent.putExtra("goalInfo", goalInfo);
+                                startActivityResult.launch(intent);
                             } else {
+                                // 목표 설정하지 않았다면 다이얼로그 띄우기
                                 setGoalDialog();
                                 goalDialog.show();
                             }
                         } else {
-                            tabInit(v);
+                            getCurrentGoalInfo();
                         }
 
 
@@ -200,4 +218,55 @@ public class MainFragment extends Fragment {
             }
         });
     }
+
+    // 이번 달 목표 정보 가져오기
+    private void getCurrentGoalInfo() {
+        // 헤더에 토큰 추가
+        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+        RetrofitService retroService = retrofit.create(RetrofitService.class);
+
+        Call<JsonObject> call = retroService.getMainGoalList(LocalDate.now());
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject responseJson = response.body();
+
+                    Log.d(TAG, responseJson.toString());
+
+                    if (responseJson.get("statusCode").getAsInt() == 200) {
+                        if (responseJson.get("data") != null) {
+                            Gson gson = new Gson();
+                            goalInfo = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<GoalInfo>() {}.getType());
+
+                            if (goalInfo != null) {
+                                tabInit();
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    ActivityResultLauncher<Intent> startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
+                        boolean update = intent.getBooleanExtra("goalUpdate", true);
+
+                        if (update) {
+                            getCurrentGoalInfo();
+                        }
+                    }
+                }
+            });
 }
