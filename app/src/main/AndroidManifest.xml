@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".MonthlyDetailActivity"></activity>
         <activity
+            android:name=".ExpenseDetailActivity"
+            android:exported="true" />
+        <activity
             android:name=".NotificationSettingActivity"
             android:exported="true" />
         <activity

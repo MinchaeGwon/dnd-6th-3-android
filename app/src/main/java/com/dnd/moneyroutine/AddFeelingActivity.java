@@ -10,22 +10,40 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.dnd.moneyroutine.custom.Constants;
+import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
 import com.dnd.moneyroutine.dto.ExpenseForm;
+import com.dnd.moneyroutine.dto.GoalCategoryCompact;
+import com.dnd.moneyroutine.service.HeaderRetrofit;
+import com.dnd.moneyroutine.service.RetrofitService;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 // 소비 감정 입력 activity
 public class AddFeelingActivity extends AppCompatActivity {
@@ -39,14 +57,17 @@ public class AddFeelingActivity extends AppCompatActivity {
     private ImageView ivPencil;
     private EditText etContent;
 
-    private CheckBox cbSatisfaction;
-    private CheckBox cbNormal;
-    private CheckBox cbDissatisfaction;
+    private RadioGroup rgFeeling;
+    private RadioButton rbGood;
+    private RadioButton rbSoso;
+    private RadioButton rbBad;
+
+    private RadioButton selectFeeling;
 
     private Button btnConfirm;
     private AlertDialog cancelDialog;
 
-    private CheckBox selectFeeling;
+    private String token;
 
     private InputMethodManager inputManager;
     private SoftKeyboardDetector softKeyboardDetector;
@@ -83,14 +104,17 @@ public class AddFeelingActivity extends AppCompatActivity {
         ivPencil = findViewById(R.id.iv_feeling_pencil);
         etContent = findViewById(R.id.et_feeling_content);
 
-        cbSatisfaction = findViewById(R.id.cb_add_good);
-        cbNormal = findViewById(R.id.cb_add_soso);
-        cbDissatisfaction = findViewById(R.id.cb_add_bad);
+        rgFeeling = findViewById(R.id.rg_feeling);
+        rbGood = findViewById(R.id.rb_feeling_good);
+        rbSoso = findViewById(R.id.rb_feeling_soso);
+        rbBad = findViewById(R.id.rb_feeling_bad);
 
         btnConfirm = findViewById(R.id.btn_add_feeling_confirm);
     }
 
     private void initField() {
+        token = PreferenceManager.getToken(this, Constants.tokenKey);
+
         inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         softKeyboardDetector = new SoftKeyboardDetector(this);
@@ -124,42 +148,31 @@ public class AddFeelingActivity extends AppCompatActivity {
                 expenseForm.setEmotion(mappingFeeling());
                 expenseForm.setEmotionDetail(etContent.getText().toString());
 
-                addExpense();
+                addExpenseToServer();
             }
         });
 
-        CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        rgFeeling.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
-                if (isCheck) {
-                    if (etContent.length() > 0) {
-                        if (inputManager.isAcceptingText()) {
-                            btnConfirm.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
-                        } else {
-                            btnConfirm.setBackgroundResource(R.drawable.button_enabled_true);
-                        }
-                    }
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if (etContent.isFocused()) {
+                    inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    etContent.clearFocus();
+                }
 
-                    if (selectFeeling != null) {
-                        selectFeeling.setChecked(false);
-                    }
-
-                    selectFeeling = (CheckBox) compoundButton;
-                } else {
-                    if (inputManager.isAcceptingText()) {
-                        btnConfirm.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
-                    } else {
-                        btnConfirm.setBackgroundResource(R.drawable.button_enabled_false);
-                    }
-
-                    selectFeeling = null;
+                switch (i) {
+                    case R.id.rb_feeling_good:
+                        selectFeeling = rbGood;
+                        break;
+                    case R.id.rb_feeling_soso:
+                        selectFeeling = rbSoso;
+                        break;
+                    case R.id.rb_feeling_bad:
+                        selectFeeling = rbBad;
+                        break;
                 }
             }
-        };
-
-        cbSatisfaction.setOnCheckedChangeListener(onCheckedChangeListener);
-        cbNormal.setOnCheckedChangeListener(onCheckedChangeListener);
-        cbDissatisfaction.setOnCheckedChangeListener(onCheckedChangeListener);
+        });
 
         setEtListener();
     }
@@ -276,17 +289,40 @@ public class AddFeelingActivity extends AppCompatActivity {
     }
 
     // 지출 내역 추가
-    private void addExpense() {
-        moveActivity();
+    private void addExpenseToServer() {
+        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+        RetrofitService retroService = retrofit.create(RetrofitService.class);
+
+        Call<JsonObject> call = retroService.addExpenditure(expenseForm);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject responseJson = response.body();
+
+                    Log.d(TAG, responseJson.toString());
+
+                    if (responseJson.get("statusCode").getAsInt() == 200) {
+                        moveActivity();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(AddFeelingActivity.this, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private String mappingFeeling() {
-        switch (selectFeeling.getId()) {
-            case R.id.cb_add_good:
+        switch (rgFeeling.getCheckedRadioButtonId()) {
+            case R.id.rb_feeling_good:
                 return "GOOD";
-            case R.id.cb_add_soso:
+            case R.id.rb_feeling_soso:
                 return "SOSO";
-            case R.id.cb_add_bad:
+            case R.id.rb_feeling_bad:
                 return "BAD";
         }
         return null;

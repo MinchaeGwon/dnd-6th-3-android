@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,7 +19,7 @@ import android.widget.Toast;
 
 import com.dnd.moneyroutine.enums.FooterEnum;
 import com.dnd.moneyroutine.fragment.ChallengeFragment;
-//import com.dnd.moneyroutine.fragment.DiaryFragment;
+import com.dnd.moneyroutine.fragment.DiaryFragment;
 import com.dnd.moneyroutine.fragment.ExpenditureFragment;
 import com.dnd.moneyroutine.fragment.MainFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -145,13 +146,18 @@ public class MainActivity extends AppCompatActivity {
 
     // fragment setting
     private void setFragment(int position) {
-        if (position == FooterEnum.HOME.getOrderingNumber()|| position == FooterEnum.DIARY.getOrderingNumber()) {
+        if (position == FooterEnum.HOME.getOrderingNumber() || position == FooterEnum.DIARY.getOrderingNumber()) {
             window.setStatusBarColor(Color.parseColor("#F8F9FA"));
         } else {
             window.setStatusBarColor(ContextCompat.getColor(MainActivity.this, android.R.color.white));
         }
 
         if (fragmentList.get(position) != null) {
+            if (position == FooterEnum.DIARY.getOrderingNumber()) {
+                getSupportFragmentManager().beginTransaction().add(R.id.fl_main_select, fragmentList.get(position)).commit();
+                return;
+            }
+
             getSupportFragmentManager().beginTransaction().show(fragmentList.get(position)).commit();
             return;
         }
@@ -174,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
             case 1:
                 return new ExpenditureFragment();
             case 2:
-//                return new DiaryFragment();
+                return new DiaryFragment();
             case 3:
                 return new ChallengeFragment();
         }
@@ -184,6 +190,11 @@ public class MainActivity extends AppCompatActivity {
     // 이전 fragment 숨기기
     private void hidePreviousFragment(int position) {
         if (fragmentList.get(position) != null) {
+            if (position == FooterEnum.DIARY.getOrderingNumber()) {
+                getSupportFragmentManager().beginTransaction().remove(fragmentList.get(position)).commit();
+                return;
+            }
+
             getSupportFragmentManager().beginTransaction().hide(fragmentList.get(position)).commit();
         }
     }

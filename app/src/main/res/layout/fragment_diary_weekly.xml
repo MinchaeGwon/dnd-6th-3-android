@@ -22,7 +22,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/con_calendar"
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
+                android:layout_height="wrap_content"
                 android:background="#F8F9FA">
 
                 <LinearLayout
@@ -37,7 +37,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageButton
-                        android:id="@+id/btn_week_prev"
+                        android:id="@+id/ib_week_prev"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginEnd="5dp"
@@ -47,7 +47,7 @@
                         android:scaleType="centerInside" />
 
                     <TextView
-                        android:id="@+id/tv_header"
+                        android:id="@+id/tv_week_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -59,7 +59,7 @@
                         android:textStyle="normal" />
 
                     <ImageButton
-                        android:id="@+id/btn_week_next"
+                        android:id="@+id/ib_week_next"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginStart="5dp"
@@ -68,10 +68,122 @@
                         android:scaleType="centerInside" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/linearLayout23"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="33dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout24">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="일"
+                        android:textColor="#868E96"
+                        android:textSize="13sp"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="월"
+                        android:textColor="#868E96"
+                        android:textSize="13sp"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="화"
+                        android:textColor="#868E96"
+                        android:textSize="13sp"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="수"
+                        android:textColor="#868E96"
+                        android:textSize="13sp"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="목"
+                        android:textColor="#868E96"
+                        android:textSize="13sp"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="금"
+                        android:textColor="#868E96"
+                        android:textSize="13sp"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="토"
+                        android:textColor="#868E96"
+                        android:textSize="13sp"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <GridView
+                    android:id="@+id/gv_weekly_calendar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginEnd="11dp"
+                    android:layout_marginBottom="40dp"
+                    android:numColumns="7"
+                    app:layout_constrainedHeight="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout23" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/textView22"
+                android:id="@+id/tv_week_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -92,7 +204,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/ll_diary_good"
+                    android:id="@+id/ll_week_good"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -121,6 +233,7 @@
                             android:textStyle="normal" />
 
                         <TextView
+                            android:id="@+id/tv_week_good_cnt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -132,6 +245,7 @@
                             android:textStyle="normal" />
 
                         <TextView
+                            android:id="@+id/tv_week_good_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
@@ -143,22 +257,26 @@
                             android:textStyle="normal" />
 
                         <ImageView
-                            android:id="@+id/iv_diary_good_more"
+                            android:id="@+id/iv_week_good_more"
                             android:layout_width="22dp"
                             android:layout_height="22dp"
                             app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_diary_good_detail"
+                        android:id="@+id/rv_week_good_detail"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="#F8F9FA"
+                        android:clipToPadding="false"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:visibility="gone" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/ll_diary_soso"
+                    android:id="@+id/ll_week_soso"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -187,6 +305,7 @@
                             android:textStyle="normal" />
 
                         <TextView
+                            android:id="@+id/tv_week_soso_cnt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -198,6 +317,7 @@
                             android:textStyle="normal" />
 
                         <TextView
+                            android:id="@+id/tv_week_soso_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
@@ -209,22 +329,26 @@
                             android:textStyle="normal" />
 
                         <ImageView
-                            android:id="@+id/iv_diary_soso_more"
+                            android:id="@+id/iv_week_soso_more"
                             android:layout_width="22dp"
                             android:layout_height="22dp"
                             app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_diary_soso_detail"
+                        android:id="@+id/rv_week_soso_detail"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="#F8F9FA"
+                        android:clipToPadding="false"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:visibility="gone" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/ll_diary_bad"
+                    android:id="@+id/ll_week_bad"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -253,6 +377,7 @@
                             android:textStyle="normal" />
 
                         <TextView
+                            android:id="@+id/tv_week_bad_cnt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -264,6 +389,7 @@
                             android:textStyle="normal" />
 
                         <TextView
+                            android:id="@+id/tv_week_bad_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
@@ -275,16 +401,20 @@
                             android:textStyle="normal" />
 
                         <ImageView
-                            android:id="@+id/iv_diary_bad_more"
+                            android:id="@+id/iv_week_bad_more"
                             android:layout_width="22dp"
                             android:layout_height="22dp"
                             app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_diary_bad_detail"
+                        android:id="@+id/rv_week_bad_detail"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="#F8F9FA"
+                        android:clipToPadding="false"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:visibility="gone" />
 
                 </LinearLayout>

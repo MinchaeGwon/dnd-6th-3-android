@@ -2,6 +2,7 @@ package com.dnd.moneyroutine.service;
 
 import com.dnd.moneyroutine.dto.BudgetDetailModel;
 import com.dnd.moneyroutine.dto.CustomCategoryCreateDto;
+import com.dnd.moneyroutine.dto.ExpenseForm;
 import com.dnd.moneyroutine.dto.UserForm;
 import com.google.gson.JsonObject;
 
@@ -9,7 +10,9 @@ import java.time.LocalDate;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -51,6 +54,21 @@ public interface RetrofitService {
     @POST("goal/continue")
     Call<JsonObject> continueGoal();
 
-    @GET("goal-category/")
+    @GET("goal-category")
     Call<JsonObject> getGoalCategory();
+
+    @DELETE("goal-category")
+    Call<JsonObject> deleteGoalCategory();
+
+    @PATCH("goal-category")
+    Call<JsonObject> updateGoalCategory();
+
+    @POST("goal-category")
+    Call<JsonObject> directAddGoalCategory();
+
+    @GET("goal/check")
+    Call<JsonObject> checkGoal();
+
+    @POST("expenditure")
+    Call<JsonObject> addExpenditure(@Body ExpenseForm expenseForm);
 }

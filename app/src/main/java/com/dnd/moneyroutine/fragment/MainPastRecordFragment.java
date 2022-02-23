@@ -15,18 +15,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.OnboardingCategoryActivity;
 import com.dnd.moneyroutine.R;
+import com.dnd.moneyroutine.adapter.ExpenseCategoryAdapter;
 import com.dnd.moneyroutine.custom.Common;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.YearMonthPickerDialog;
+import com.dnd.moneyroutine.dto.GoalCategoryDetail;
+import com.dnd.moneyroutine.dto.GoalInfo;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
-import com.dnd.moneyroutine.service.JWTUtils;
 import com.dnd.moneyroutine.service.RetrofitService;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 
 import retrofit2.Call;
@@ -44,19 +50,23 @@ public class MainPastRecordFragment extends Fragment  {
     private Button btnNewBudget;
     private Button btnGoalContinue;
 
-    private ConstraintLayout clPastInfo;
     private ConstraintLayout clPastEmpty;
+    private TextView tvEmptyDate;
+
+    private ConstraintLayout clPastInfo;
 
     private LinearLayout btnSelectMonth;
     private TextView tvSelectMonth;
     private TextView tvPastYearMonth;
     private TextView tvPastDate;
     private TextView tvGoalSuccess;
+    private TextView tvPastRemain;
+    private TextView tvPastBudget;
+    private TextView tvPastExpense;
 
-    private TextView tvTitle;
+    private RecyclerView rvCategory;
 
     private String token;
-    private int userId;
 
     private boolean newMonth;
     private LocalDate selectDate;
@@ -87,30 +97,34 @@ public class MainPastRecordFragment extends Fragment  {
         btnNewBudget = v.findViewById(R.id.btn_new_budget);
         btnGoalContinue = v.findViewById(R.id.btn_goal_continue);
 
-        clPastInfo = v.findViewById(R.id.cl_past_month_record);
         clPastEmpty = v.findViewById(R.id.cl_past_empty);
+        tvEmptyDate = v.findViewById(R.id.tv_past_empty_year_month);
+
+        clPastInfo = v.findViewById(R.id.cl_past_month_record);
 
         tvSelectMonth = v.findViewById(R.id.tv_select_month);
         tvPastYearMonth = v.findViewById(R.id.tv_past_year_month);
         tvPastDate = v.findViewById(R.id.tv_past_date);
         tvGoalSuccess = v.findViewById(R.id.tv_past_goal_success);
+        tvPastRemain = v.findViewById(R.id.tv_past_remain);
+        tvPastBudget = v.findViewById(R.id.tv_past_total_budget);
+        tvPastExpense = v.findViewById(R.id.tv_past_total_expense);
 
-        tvTitle = v.findViewById(R.id.tv_past_title);
+        rvCategory = v.findViewById(R.id.rv_past_category);
 
         btnSelectMonth = v.findViewById(R.id.ll_select_month);
     }
 
     private void initField() {
         token = PreferenceManager.getToken(getContext(), Constants.tokenKey);
-        userId = JWTUtils.getUserId(token);
 
         selectDate = LocalDate.now().minusMonths(1); // 이전 달부터 보여주기 때문에 -1 해줌
+
+        tvEmptyDate.setText(selectDate.getYear() + "년 " + selectDate.getMonthValue() + "월");
 
         tvSelectMonth.setText(Common.getLocalDateToString(selectDate));
         tvPastYearMonth.setText(selectDate.getYear() + "년 " + selectDate.getMonthValue() + "월");
         tvPastDate.setText(selectDate.getMonthValue() + "/1 ~ " + selectDate.getMonthValue() + "/" + selectDate.lengthOfMonth());
-
-        tvTitle.setText(Common.getLocalDateToString(selectDate) + " 예산");
     }
 
     private void setListener() {
@@ -140,11 +154,11 @@ public class MainPastRecordFragment extends Fragment  {
                     public void onSelect(LocalDate date) {
                         selectDate = date;
 
+                        tvEmptyDate.setText(date.getYear() + "년 " + date.getMonthValue() + "월");
+
                         tvSelectMonth.setText(Common.getLocalDateToString(date));
                         tvPastYearMonth.setText(date.getYear() + "년 " + date.getMonthValue() + "월");
                         tvPastDate.setText(date.getMonthValue() + "/1 ~ " + date.getMonthValue() + "/" + date.lengthOfMonth());
-
-                        tvTitle.setText(Common.getLocalDateToString(date) + " 예산");
 
                         getPastGoalInfo(date);
                     }
@@ -168,12 +182,25 @@ public class MainPastRecordFragment extends Fragment  {
                     JsonObject responseJson = response.body();
 
                     Log.d(TAG, responseJson.toString());
+
+                    if (responseJson.get("statusCode").getAsInt() == 200) {
+                        if (responseJson.get("data") != null) {
+                            Gson gson = new Gson();
+                            GoalInfo responseGoal = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<GoalInfo>() {}.getType());
+
+                            if (responseGoal != null) {
+                                setGoalInfo(responseGoal);
+                            }
+                        } else {
+                            clPastInfo.setVisibility(View.GONE);
+                            clPastEmpty.setVisibility(View.VISIBLE);
+                        }
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d(TAG, t.getMessage());
                 Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -189,7 +216,7 @@ public class MainPastRecordFragment extends Fragment  {
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     JsonObject responseJson = response.body();
 
                     Log.d(TAG, responseJson.toString());
@@ -202,5 +229,28 @@ public class MainPastRecordFragment extends Fragment  {
                 Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void setGoalInfo(GoalInfo goalInfo) {
+        tvGoalSuccess.setText(goalInfo.getGoalState().getState());
+
+        DecimalFormat myFormatter = new DecimalFormat("###,###");
+
+        String remain = myFormatter.format(goalInfo.getRemainder());
+        tvPastRemain.setText(remain + "원 아낌");
+
+        String totalBudget = myFormatter.format(goalInfo.getTotalBudget());
+        tvPastBudget.setText(totalBudget + "원 중");
+
+        int totalExpense = 0;
+        for (GoalCategoryDetail goalCategoryDetail : goalInfo.getGoalCategoryList()) {
+            totalExpense += goalCategoryDetail.getTotalExpense();
+        }
+
+        String strTotalExpense = myFormatter.format(totalExpense);
+        tvPastExpense.setText("전체 " + strTotalExpense + "원 지출");
+
+        ExpenseCategoryAdapter expenseCategoryAdapter = new ExpenseCategoryAdapter(goalInfo.getGoalCategoryList(), true);
+        rvCategory.setAdapter(expenseCategoryAdapter);
     }
 }
