@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.dnd.moneyroutine.adapter.BudgetRecyclerViewAdapter;
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
-import com.dnd.moneyroutine.dto.GoalCategoryCreateDtoList;
+import com.dnd.moneyroutine.dto.GoalCategoryCreateDto;
 import com.dnd.moneyroutine.dto.BudgetItem;
 import com.dnd.moneyroutine.dto.CategoryItem;
 
@@ -38,7 +38,7 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
     private ArrayList<CategoryItem> cList;
     private ArrayList<BudgetItem> bgList;
     private ArrayList<CategoryItem> newItem;
-    private ArrayList<GoalCategoryCreateDtoList> goalCategoryCreateDtoList;
+    private ArrayList<GoalCategoryCreateDto> goalCategoryCreateDtoList;
 
     private BudgetRecyclerViewAdapter adapter;
 
@@ -188,6 +188,7 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
                 finish();
             }
         });
+
 
     }
 

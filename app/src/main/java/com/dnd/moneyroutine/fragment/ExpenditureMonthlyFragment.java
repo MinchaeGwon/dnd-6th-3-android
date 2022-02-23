@@ -95,7 +95,7 @@ public class ExpenditureMonthlyFragment extends Fragment {
         setTextView();
         drawPieChart();
         showDetail();
-        getMonthlyStatistics();
+        getMonthlyStatistics(startDate, endDate);
         getMonthlyTrend(now);
 
     }
@@ -162,7 +162,7 @@ public class ExpenditureMonthlyFragment extends Fragment {
         pieChart.setData(data);
     }
 
-    private void getMonthlyStatistics(){
+    private void getMonthlyStatistics(LocalDate startDate, LocalDate endDate){
         HeaderRetrofit headerRetrofit = new HeaderRetrofit();
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);
@@ -229,7 +229,7 @@ public class ExpenditureMonthlyFragment extends Fragment {
                 endDate=end.withDayOfMonth(end.lengthOfMonth());
 
                 setTextView();
-                getMonthlyStatistics();
+                getMonthlyStatistics(startDate, endDate);
                 getMonthlyTrend(endDate);
 
             }
@@ -242,7 +242,7 @@ public class ExpenditureMonthlyFragment extends Fragment {
                 LocalDate end = endDate.minusMonths(1);
                 endDate = end.withDayOfMonth(end.lengthOfMonth());
                 setTextView();
-                getMonthlyStatistics();
+                getMonthlyStatistics(startDate, endDate);
                 getMonthlyTrend(endDate);
             }
         });
