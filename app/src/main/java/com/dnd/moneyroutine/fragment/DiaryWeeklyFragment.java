@@ -1,6 +1,7 @@
 package com.dnd.moneyroutine.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.adapter.WeeklyCalendarAdapter;
+import com.dnd.moneyroutine.custom.Common;
+import com.dnd.moneyroutine.custom.WeekPickerDialog;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,9 +32,8 @@ public class DiaryWeeklyFragment extends Fragment {
     private static final String TAG = "DiaryWeekly";
     private static final int DAYS_COUNT = 7;
 
-    private ImageButton ibPrev;
-    private ImageButton ibNext;
-    private TextView tvHeader;
+    private LinearLayout btnSelectWeek;
+    private TextView tvSelectWeek;
     private GridView gvCalendar;
 
     private TextView tvDate;
@@ -70,9 +73,8 @@ public class DiaryWeeklyFragment extends Fragment {
     }
 
     private void initView(View v) {
-        ibPrev = v.findViewById(R.id.ib_week_prev);
-        ibNext = v.findViewById(R.id.ib_week_next);
-        tvHeader = v.findViewById(R.id.tv_week_header);
+        btnSelectWeek = v.findViewById(R.id.ll_select_week);
+        tvSelectWeek = v.findViewById(R.id.tv_week_header);
         gvCalendar = v.findViewById(R.id.gv_weekly_calendar);
 
         tvDate = v.findViewById(R.id.tv_week_date);
@@ -102,19 +104,20 @@ public class DiaryWeeklyFragment extends Fragment {
     }
 
     private void setListener() {
-        ibPrev.setOnClickListener(new View.OnClickListener() {
+        btnSelectWeek.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentDate.add(Calendar.WEEK_OF_MONTH, -1);
-                setCalendar();
-            }
-        });
+                // 연도, 월, 주 선택 다이얼로그 띄우기
+                WeekPickerDialog weekPickerDialog = new WeekPickerDialog(currentDate);
+                weekPickerDialog.show(getActivity().getSupportFragmentManager(), "YearMonthPickerDialog");
 
-        ibNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                currentDate.add(Calendar.WEEK_OF_MONTH, 1);
-                setCalendar();
+                weekPickerDialog.setOnSelectListener(new WeekPickerDialog.OnSelectListener() {
+                    @Override
+                    public void onSelect(Calendar calendar) {
+                        currentDate = calendar;
+                        setCalendar();
+                    }
+                });
             }
         });
 
@@ -195,6 +198,6 @@ public class DiaryWeeklyFragment extends Fragment {
         gvCalendar.setAdapter(weeklyCalendarAdapter);
 
         // update title
-        tvHeader.setText(month + "월 " + week + "주차");
+        tvSelectWeek.setText(Common.getWeeklyCalendarToString(currentDate));
     }
 }

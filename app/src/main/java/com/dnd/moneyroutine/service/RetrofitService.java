@@ -79,4 +79,10 @@ public interface RetrofitService {
 
     @GET("category/except-list")
     Call<JsonObject> getExceptCategory(@Query("goalId") int goalId);
+
+    @GET("diary/weekly")
+    Call<JsonObject> getWeeklyDiary(@Query("year") int year, @Query("month") int month, @Query("week") int week);
+
+    @GET("diary")
+    Call<JsonObject> getDailyDiary(@Query("date") LocalDate date);
 }

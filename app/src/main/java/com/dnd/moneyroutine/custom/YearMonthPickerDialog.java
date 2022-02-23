@@ -3,6 +3,7 @@ package com.dnd.moneyroutine.custom;
 import androidx.appcompat.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -60,10 +61,15 @@ public class YearMonthPickerDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 LocalDate selectDate = LocalDate.of(yearPicker.getValue(), monthPicker.getValue(), 1);
+
                 onSelectListener.onSelect(selectDate);
                 YearMonthPickerDialog.this.getDialog().cancel();
             }
         });
+
+        LocalDate curDate = LocalDate.now().minusMonths(1);
+        int curYear = curDate.getYear();
+        int curMonth = curDate.getMonthValue();
 
         int year = date.getYear();
         int month = date.getMonthValue();
@@ -71,16 +77,20 @@ public class YearMonthPickerDialog extends DialogFragment {
         yearPicker.setMinValue(MIN_YEAR);
         monthPicker.setMinValue(1);
 
-        yearPicker.setMaxValue(year);
-        monthPicker.setMaxValue(month);
+        yearPicker.setMaxValue(curYear);
+
+        if (year != curYear) {
+            monthPicker.setMaxValue(12);
+        } else {
+            monthPicker.setMaxValue(curMonth);
+        }
+
         yearPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                if (numberPicker.getValue() == year) {
-                    yearPicker.setMaxValue(year);
-                    monthPicker.setMaxValue(month);
+                if (numberPicker.getValue() == curYear) {
+                    monthPicker.setMaxValue(curMonth);
                 } else {
-                    yearPicker.setMaxValue(year); // 현재 연도까지만 선택 가능
                     monthPicker.setMaxValue(12); // 12월까지 선택 가능
                 }
             }

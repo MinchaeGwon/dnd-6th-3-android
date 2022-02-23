@@ -125,7 +125,7 @@ public class NormalLoginActivity extends AppCompatActivity {
 
                     if (responseJson.get("statusCode").getAsInt() == 200) {
                         JsonObject data = responseJson.get("data").getAsJsonObject();
-                        String token = data.get("access_token").getAsString();
+                        String token = data.get("accessToken").getAsString();
 
                         saveTokenAndMoveActivity(token);
                     } else {

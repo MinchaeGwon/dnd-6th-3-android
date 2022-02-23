@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.dnd.moneyroutine.R;
+import com.dnd.moneyroutine.custom.Common;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,6 +54,7 @@ public class WeeklyCalendarAdapter extends ArrayAdapter<Date> {
             view = inflater.inflate(R.layout.item_weekly_day, parent, false);
         }
 
+        TextView tvDatOfWeek = view.findViewById(R.id.tv_day_of_week);
         TextView tvDay = view.findViewById(R.id.tv_weekly_day);
         ImageView ivFeel1 = view.findViewById(R.id.iv_weekly_feel1);
         ImageView ivFeel2 = view.findViewById(R.id.iv_weekly_feel2);
@@ -70,8 +72,38 @@ public class WeeklyCalendarAdapter extends ArrayAdapter<Date> {
             tvDay.setTextColor(Color.WHITE);
         }
 
+        tvDatOfWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
         tvDay.setText(String.valueOf(calendar.get(Calendar.DATE)));
 
         return view;
+    }
+
+    private String getDayOfWeek(int day) {
+        String dayOfWeek = "";
+        switch (day) {
+            case 1:
+                dayOfWeek = "일";
+                break;
+            case 2:
+                dayOfWeek = "월";
+                break;
+            case 3:
+                dayOfWeek = "화";
+                break;
+            case 4:
+                dayOfWeek = "수";
+                break;
+            case 5:
+                dayOfWeek = "목";
+                break;
+            case 6:
+                dayOfWeek = "금";
+                break;
+            case 7:
+                dayOfWeek = "토";
+                break;
+        }
+
+        return dayOfWeek;
     }
 }
