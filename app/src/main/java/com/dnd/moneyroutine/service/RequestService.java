@@ -48,9 +48,9 @@ public class RequestService {
         return retrofitService.login(userForm);
     }
 
-    public Call<JsonObject> create(CustomCategoryCreateDto customCategoryCreateDto) { return retrofitService.create(customCategoryCreateDto); }
+//    public Call<JsonObject> create(CustomCategoryCreateDto customCategoryCreateDto) { return retrofitService.create(customCategoryCreateDto); }
 
-    public Call<BudgetDetailModel> goal(BudgetDetailModel budgetDetailModel){ return retrofitService.goal(budgetDetailModel);}
+//    public Call<JsonObject> goal(BudgetDetailModel budgetDetailModel){ return retrofitService.goal(budgetDetailModel);}
 
 
 }

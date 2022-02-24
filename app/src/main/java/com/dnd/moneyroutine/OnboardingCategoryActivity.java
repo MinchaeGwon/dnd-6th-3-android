@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
@@ -25,6 +26,7 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class OnboardingCategoryActivity extends AppCompatActivity {
 
@@ -45,14 +47,9 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
     private ArrayList<CategoryItem> newItem;
     private ArrayList<Integer> selectedItem = new ArrayList<>();
 
-//    private GoalCategoryCreateDtoList goalCategoryCreateDtoList;
-    private ArrayList<GoalCategoryCreateDto> goalCategoryCreateDtoList;
-//    private JsonArray goalCategoryCreateDtoList;
+    private GoalCategoryCreateDto goalCategoryCreateDto = new GoalCategoryCreateDto();
+    private List<GoalCategoryCreateDto> goalCategoryCreateDtoList;
 
-    private JsonObject jsonObject =new JsonObject();
-    private boolean isCustom = false;
-    private int budget;
-    private int categoryId = 0;
 
 
 //    private ArrayList<GoalCategoryCreateDtoList>
@@ -177,6 +174,7 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int categoryId = 0;
 
                 bgList = new ArrayList<>();
                 Collections.sort(selectedItem);
@@ -187,11 +185,18 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
                     int index = selectedItem.get(i);
                     if(index<9){
                         bgList.add(new CategoryItem(colorIcons[index], name.get(index), ex.get(index))); //기본카테고리는 drawable로
-                        goalCategoryCreateDtoList.add(i, new GoalCategoryCreateDto(0, Long.valueOf(index), false));
+                        goalCategoryCreateDto.setBudget(0);
+                        goalCategoryCreateDto.setCategoryId(Long.valueOf(index));
+                        goalCategoryCreateDto.setCustom(false);
+                        goalCategoryCreateDtoList.add(i,goalCategoryCreateDto);
                     }
                     else{
                         bgList.add(new CategoryItem(icon.get(index), name.get(index), ex.get(index))); //새로 생성한 카테고리는 아이콘으로
-                        goalCategoryCreateDtoList.add(i, new GoalCategoryCreateDto(0, Long.valueOf(categoryId), true));
+//                        goalCategoryCreateDtoList.add(i, new GoalCategoryCreateDto(0, Long.valueOf(categoryId), true));
+                        goalCategoryCreateDto.setBudget(0);
+                        goalCategoryCreateDto.setCategoryId(Long.valueOf(categoryId));
+                        goalCategoryCreateDto.setCustom(true);
+                        goalCategoryCreateDtoList.add(i,goalCategoryCreateDto);
                         categoryId++;
                     }
                 }
@@ -200,7 +205,7 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), OnboardingEntireBudgetActivity.class);
                 intent.putExtra("BudgetItem", bgList);
                 intent.putExtra("NewItem", newItem);
-                intent.putExtra("goalCategoryCreateDtoList", goalCategoryCreateDtoList);
+                intent.putExtra("goalCategoryCreateDtoList",  (ArrayList<GoalCategoryCreateDto>)goalCategoryCreateDtoList);
                 startActivity(intent);
             }
         });

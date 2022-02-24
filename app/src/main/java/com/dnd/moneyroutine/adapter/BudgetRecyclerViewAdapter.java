@@ -33,6 +33,7 @@ import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.JWTUtils;
 import com.dnd.moneyroutine.service.RetrofitService;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -62,6 +63,7 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
     private ArrayList<String> totalAmountArray = new ArrayList<>();
     private ArrayList<BudgetItem> mBudgetItem;
     private List<GoalCategoryCreateDto> goalCategoryCreateDtoList;
+
     private InputMethodManager inputManager;
     private BudgetDetailModel budgetDetailModel;
 
@@ -91,7 +93,9 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
         tv_budget_total = rootView.findViewById(R.id.tv_budget_total);
         btnNext = rootView.findViewById(R.id.btn_next_detail_budget);
         inputManager = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
+//        goalCategoryCreateDtoList = (ArrayList<GoalCategoryCreateDto>) ((Activity) context).getIntent().getSerializableExtra("goalCategoryCreateDtoList");
         goalCategoryCreateDtoList = (ArrayList<GoalCategoryCreateDto>) ((Activity) context).getIntent().getSerializableExtra("goalCategoryCreateDtoList");
+
 
         entireBudget = ((Activity) context).getIntent().getStringExtra("Budget");
 
@@ -237,8 +241,9 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
             public void onClick(View view) {
 
                 budgetDetailModel = new BudgetDetailModel();
-//                budgetDetailModel.setGoalCategoryCreateDtoList(goalCategoryCreateDtoList); //list
+                budgetDetailModel.setGoalCategoryCreateDtoList(goalCategoryCreateDtoList); //list
                 budgetDetailModel.setTotal_budget(mbudget); //budget
+
                 goaltoServer();
 
                 Intent intent = new Intent(view.getContext(), MainActivity.class);
@@ -257,13 +262,13 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);
 
-        Call<BudgetDetailModel> call = retroService.goal(budgetDetailModel);
-        call.enqueue(new Callback<BudgetDetailModel>() {
+        Call<JsonObject> call = retroService.goal(budgetDetailModel);
+        call.enqueue(new Callback<JsonObject>() {
 
             @Override
-            public void onResponse(Call<BudgetDetailModel> call, Response<BudgetDetailModel> response) {
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
-                    BudgetDetailModel post = response.body();
+                    JsonObject post = response.body();
                     Log.d("BudgetDetailModel", post.toString());
                 } else {
                     Log.e("BudgetDetailModel", "error: " + response.code());
@@ -272,7 +277,7 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
             }
 
             @Override
-            public void onFailure(Call<BudgetDetailModel> call, Throwable t) {
+            public void onFailure(Call<JsonObject> call, Throwable t) {
                 Log.e("custom category", "fail: " + t.getMessage());
             }
         });

@@ -8,6 +8,7 @@ import com.dnd.moneyroutine.dto.UserForm;
 import com.google.gson.JsonObject;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -33,7 +34,7 @@ public interface RetrofitService {
     Call<JsonObject> create(@Body CustomCategoryCreateDto customCategoryCreateDto);
 
     @POST("goal")
-    Call<BudgetDetailModel> goal(@Body BudgetDetailModel budgetDetailModel);
+    Call<JsonObject> goal(@Body BudgetDetailModel budgetDetailModel);
 
     @GET("goal/check")
     Call<JsonObject> checkGoal();
@@ -54,6 +55,12 @@ public interface RetrofitService {
 
     @GET("expenditure/monthly/{currentDate}")
     Call<JsonObject> getMonthlyTrend(@Path("currentDate") LocalDate currentDate);
+
+    @GET("expenditure/statistics/monthly/detail/{startDate}/{endDate}/{categoryId}/{isCustom}")
+    Call<JsonObject> getMonthlyDetail(@Path("startDate") LocalDate startDate,
+                                      @Path("endDate") LocalDate endDate,
+                                      @Path("categoryId") int categoryId,
+                                      @Path("isCustom") boolean isCustom);
 
     @POST("goal/continue")
     Call<JsonObject> continueGoal();
@@ -79,4 +86,5 @@ public interface RetrofitService {
 
     @GET("category/except-list")
     Call<JsonObject> getExceptCategory(@Query("goalId") int goalId);
+
 }
