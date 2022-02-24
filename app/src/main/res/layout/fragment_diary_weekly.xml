@@ -176,14 +176,6 @@
                         android:visibility="gone"
                         app:layout_constrainedHeight="true" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_week_soso"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -193,6 +185,14 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_week_soso"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -270,14 +270,6 @@
                         android:visibility="gone"
                         app:layout_constrainedHeight="true" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_week_bad"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -287,6 +279,14 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_week_bad"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -363,6 +363,16 @@
                         android:paddingBottom="8dp"
                         android:visibility="gone"
                         app:layout_constrainedHeight="true" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#F8F9FA"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </LinearLayout>
 

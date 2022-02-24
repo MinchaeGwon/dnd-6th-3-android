@@ -114,7 +114,6 @@ public class DiaryMonthlyFragment extends Fragment {
     private RecyclerView rvThirdCat;
 
     private LinearLayout btnEtcCat;
-    private TextView tvEtcCat;
     private TextView tvEtcCnt;
     private TextView tvEtcMore;
     private ImageView ivEtcMore;
@@ -194,7 +193,6 @@ public class DiaryMonthlyFragment extends Fragment {
         rvThirdCat = v.findViewById(R.id.rv_month_third);
 
         btnEtcCat = v.findViewById(R.id.ll_month_etc);
-        tvEtcCat = v.findViewById(R.id.tv_month_etc_cat);
         tvEtcCnt = v.findViewById(R.id.tv_month_etc_cnt);
         tvEtcMore = v.findViewById(R.id.tv_month_more_etc);
         ivEtcMore = v.findViewById(R.id.iv_month_etc_more);
@@ -241,10 +239,10 @@ public class DiaryMonthlyFragment extends Fragment {
                     public void onSelect(EmotionEnum emotion) {
                         selectEmotion = emotion;
 
-                        setGoneRecycler(false, rvFirstCat, ivFirstMore, ivFirstHold);
-                        setGoneRecycler(false, rvSecondCat, ivSecondMore, ivSecondHold);
-                        setGoneRecycler(false, rvThirdCat, ivThirdMore, ivThirdHold);
-                        setGoneRecycler(false, rvEtcCat, ivEtcMore, ivEtcHold);
+                        setGoneRecycler(false, rvFirstCat, ivFirstMore, ivFirstHold, tvFirstMore);
+                        setGoneRecycler(false, rvSecondCat, ivSecondMore, ivSecondHold, tvSecondMore);
+                        setGoneRecycler(false, rvThirdCat, ivThirdMore, ivThirdHold, tvThirdMore);
+                        setGoneRecycler(false, rvEtcCat, ivEtcMore, ivEtcHold, tvEtcMore);
 
                         setSelectEmotion();
                         getMonthlyDiaryByEmotion();
@@ -256,28 +254,28 @@ public class DiaryMonthlyFragment extends Fragment {
         btnFirstCat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setGoneRecycler(rvFirstCat.getVisibility() == View.GONE, rvFirstCat, ivFirstMore, ivFirstHold);
+                setGoneRecycler(rvFirstCat.getVisibility() == View.GONE, rvFirstCat, ivFirstMore, ivFirstHold, tvFirstMore);
             }
         });
 
         btnSecondCat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setGoneRecycler(rvSecondCat.getVisibility() == View.GONE, rvSecondCat, ivSecondMore, ivSecondHold);
+                setGoneRecycler(rvSecondCat.getVisibility() == View.GONE, rvSecondCat, ivSecondMore, ivSecondHold, tvSecondMore);
             }
         });
 
         btnThirdCat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setGoneRecycler(rvThirdCat.getVisibility() == View.GONE, rvThirdCat, ivThirdMore, ivThirdHold);
+                setGoneRecycler(rvThirdCat.getVisibility() == View.GONE, rvThirdCat, ivThirdMore, ivThirdHold, tvThirdMore);
             }
         });
 
         btnEtcCat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setGoneRecycler(rvEtcCat.getVisibility() == View.GONE, rvEtcCat, ivEtcMore, ivEtcHold);
+                setGoneRecycler(rvEtcCat.getVisibility() == View.GONE, rvEtcCat, ivEtcMore, ivEtcHold, tvEtcMore);
             }
         });
     }
@@ -576,7 +574,7 @@ public class DiaryMonthlyFragment extends Fragment {
             rvFirstCat.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
             btnFirstCat.setVisibility(View.GONE);
-            setGoneRecycler(false, rvFirstCat, ivFirstMore, ivFirstHold);
+            setGoneRecycler(false, rvFirstCat, ivFirstMore, ivFirstHold, tvFirstMore);
         }
 
         if (secondList.size() > 0) {
@@ -587,7 +585,7 @@ public class DiaryMonthlyFragment extends Fragment {
             rvSecondCat.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
             btnSecondCat.setVisibility(View.GONE);
-            setGoneRecycler(false, rvSecondCat, ivSecondMore, ivSecondHold);
+            setGoneRecycler(false, rvSecondCat, ivSecondMore, ivSecondHold, tvSecondMore);
         }
 
         if (thirdList.size() > 0) {
@@ -598,7 +596,7 @@ public class DiaryMonthlyFragment extends Fragment {
             rvThirdCat.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
             btnThirdCat.setVisibility(View.GONE);
-            setGoneRecycler(false, rvThirdCat, ivThirdMore, ivThirdHold);
+            setGoneRecycler(false, rvThirdCat, ivThirdMore, ivThirdHold, tvThirdMore);
         }
 
         if (etcList.size() > 0) {
@@ -609,19 +607,21 @@ public class DiaryMonthlyFragment extends Fragment {
             rvEtcCat.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
             btnEtcCat.setVisibility(View.GONE);
-            setGoneRecycler(false, rvEtcCat, ivEtcMore, ivEtcHold);
+            setGoneRecycler(false, rvEtcCat, ivEtcMore, ivEtcHold, tvEtcMore);
         }
     }
 
-    private void setGoneRecycler(boolean visible, RecyclerView rvCat, ImageView ivMore, ImageView ivHold) {
+    private void setGoneRecycler(boolean visible, RecyclerView rvCat, ImageView ivMore, ImageView ivHold, TextView tvMore) {
         if (visible) {
             rvCat.setVisibility(View.VISIBLE);
             ivHold.setVisibility(View.VISIBLE);
             ivMore.setVisibility(View.GONE);
+            tvMore.setText("접기");
         } else {
             rvCat.setVisibility(View.GONE);
             ivHold.setVisibility(View.GONE);
             ivMore.setVisibility(View.VISIBLE);
+            tvMore.setText("더보기");
         }
     }
 
