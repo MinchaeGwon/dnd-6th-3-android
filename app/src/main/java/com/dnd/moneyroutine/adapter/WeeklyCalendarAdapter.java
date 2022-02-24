@@ -2,6 +2,7 @@ package com.dnd.moneyroutine.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.dnd.moneyroutine.R;
+import com.dnd.moneyroutine.dto.ExpenditureEmotion;
+import com.dnd.moneyroutine.dto.WeeklyDiary;
+import com.dnd.moneyroutine.enums.EmotionEnum;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,14 +27,16 @@ public class WeeklyCalendarAdapter extends ArrayAdapter<Date> {
     private int currentYear; // 현재 년도
     private int currentMonth; // 현재 월
     private int currentWeek; // 현재 주
+    private ArrayList<WeeklyDiary> weeklyList; // 일주일 소비 감정
 
-    public WeeklyCalendarAdapter(@NonNull Context context, ArrayList<Date> days, int year, int month, int week) {
+    public WeeklyCalendarAdapter(@NonNull Context context, ArrayList<Date> days, int year, int month, int week, ArrayList<WeeklyDiary> weeklyList) {
         super(context, R.layout.item_weekly_day, days);
         inflater = LayoutInflater.from(context);
 
         this.currentYear = year;
         this.currentMonth = month;
         this.currentWeek = week;
+        this.weeklyList = weeklyList;
     }
 
     @Override
@@ -55,10 +61,12 @@ public class WeeklyCalendarAdapter extends ArrayAdapter<Date> {
 
         TextView tvDatOfWeek = view.findViewById(R.id.tv_day_of_week);
         TextView tvDay = view.findViewById(R.id.tv_weekly_day);
-        ImageView ivFeel1 = view.findViewById(R.id.iv_weekly_feel1);
-        ImageView ivFeel2 = view.findViewById(R.id.iv_weekly_feel2);
-        ImageView ivFeel3 = view.findViewById(R.id.iv_weekly_feel3);
-        TextView tvRestCnt = view.findViewById(R.id.tv_weekly_feel_rest);
+        ImageView ivEmotion1 = view.findViewById(R.id.iv_weekly_emotion1);
+        ImageView ivEmotion2 = view.findViewById(R.id.iv_weekly_emotion2);
+        ImageView ivEmotion3 = view.findViewById(R.id.iv_weekly_emotion3);
+        TextView tvEtcCnt = view.findViewById(R.id.tv_weekly_emotion_etc);
+
+        ImageView[] ivArr= {ivEmotion1, ivEmotion2, ivEmotion3};
 
         // clear styling
         tvDay.setTextColor(Color.parseColor("#495057"));
@@ -74,7 +82,36 @@ public class WeeklyCalendarAdapter extends ArrayAdapter<Date> {
         tvDatOfWeek.setText(getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
         tvDay.setText(String.valueOf(calendar.get(Calendar.DATE)));
 
+        WeeklyDiary weeklyDiary = weeklyList.get(position);
+        ArrayList<ExpenditureEmotion> expenditureList = weeklyDiary.getExpenditureList();
+        for (int i = 0; i < expenditureList.size(); i++) {
+            if (i < 3) {
+                setEmotion(ivArr[i], expenditureList.get(i).getEmotion());
+            } else {
+                tvEtcCnt.setVisibility(View.VISIBLE);
+                tvEtcCnt.setText("+" + (expenditureList.size() - 3));
+            }
+        }
+
         return view;
+    }
+
+    private void setEmotion(ImageView ivEmotion, EmotionEnum emotion) {
+        ivEmotion.setVisibility(View.VISIBLE);
+        ivEmotion.setImageResource(mappingEmotionIcon(emotion));
+    }
+
+    private int mappingEmotionIcon(EmotionEnum emotion) {
+        switch (emotion) {
+            case GOOD:
+                return R.drawable.icon_good;
+            case SOSO:
+                return R.drawable.icon_soso;
+            case BAD:
+                return R.drawable.icon_bad;
+        }
+
+        return -1;
     }
 
     private String getDayOfWeek(int day) {

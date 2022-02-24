@@ -221,8 +221,6 @@ public class NormalLoginActivity extends AppCompatActivity {
         PreferenceManager.setString(this, Constants.tokenKey, jwtToken);
         PreferenceManager.setString(this, Constants.REFRESH_TOKEN_KEY, refreshToken);
 
-        Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show();
-
         Intent intent = new Intent(this, WelcomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 기존 화면 모두 clear
         startActivity(intent);

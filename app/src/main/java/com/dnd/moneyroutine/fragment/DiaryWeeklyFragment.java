@@ -27,6 +27,7 @@ import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.WeekPickerDialog;
 import com.dnd.moneyroutine.dto.DailyDiary;
 import com.dnd.moneyroutine.dto.ExpenditureDetail;
+import com.dnd.moneyroutine.dto.WeeklyDiary;
 import com.dnd.moneyroutine.enums.EmotionEnum;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.LocalDateSerializer;
@@ -83,6 +84,7 @@ public class DiaryWeeklyFragment extends Fragment {
     private String token;
     private Calendar currentDate;
     private Calendar selectDate;
+    private ArrayList<WeeklyDiary> weeklyList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -95,7 +97,6 @@ public class DiaryWeeklyFragment extends Fragment {
         initField();
         setListener();
 
-        setCalendar();
         getWeeklyDiary();
         getDailyDiary(currentDate);
     }
@@ -236,7 +237,7 @@ public class DiaryWeeklyFragment extends Fragment {
         }
 
         // update view
-        WeeklyCalendarAdapter weeklyCalendarAdapter = new WeeklyCalendarAdapter(getContext(), cells, year, month, week);
+        WeeklyCalendarAdapter weeklyCalendarAdapter = new WeeklyCalendarAdapter(getContext(), cells, year, month, week, weeklyList);
         gvCalendar.setAdapter(weeklyCalendarAdapter);
 
         // update title
@@ -261,33 +262,13 @@ public class DiaryWeeklyFragment extends Fragment {
 
                     Log.d(TAG, responseJson.toString());
 
-                    if (responseJson.get("statusCode").getAsInt() == 200) {
-                        if (!responseJson.get("data").isJsonNull()) {
-//                            JsonObject data = responseJson.get("data").getAsJsonObject();
-//
-//                            Log.d(TAG, data.toString());
-//
-//                            ArrayList<WeeklyDiaryCompact> weeklyDiary = new ArrayList<>();
-//                            LocalDate date = LocalDate.of(year, month, currentDate.get(Calendar.DAY_OF_WEEK));
-//
-//                            Gson gson = new Gson();
-//                            for (int i = 0; i < 7; i++) {
-//                                date.plusDays(i);
-//
-//                                String formatDate = date.plusDays(i).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-//                                Log.d(TAG, "포맷!!! " + formatDate);
-////                                Log.d(TAG, data.get(formatDate).toString());
-//
-//                                WeeklyDiaryCompact test = gson.fromJson(data.getAsJsonObject(formatDate), new TypeToken<WeeklyDiaryCompact>() {}.getType());
-////                                Log.d(TAG, test.getEmotion().getEmotion());
-////
-////                                test.setDate(formatDate);
-////                                Log.d(TAG, test.toString());
-////
-////                                weeklyDiary.add(test);
-//                            }
-                        }
-                    }
+                    if (responseJson.get("statusCode").getAsInt() == 200 && !responseJson.get("data").isJsonNull()) {
+                        JsonArray jsonArray = responseJson.get("data").getAsJsonArray();
+
+                        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
+                        weeklyList = gson.fromJson(jsonArray, new TypeToken<ArrayList<WeeklyDiary>>() {}.getType());
+                        setCalendar(); // 주별 감정 리스트를 가지고 캘린더 만듦
+                   }
                 }
             }
 

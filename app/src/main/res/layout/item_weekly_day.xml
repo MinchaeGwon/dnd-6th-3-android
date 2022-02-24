@@ -9,7 +9,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginEnd="5dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,38 +42,37 @@
             android:textStyle="normal" />
 
         <ImageView
-            android:id="@+id/iv_weekly_feel1"
+            android:id="@+id/iv_weekly_emotion1"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:layout_marginTop="14dp"
-            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:visibility="invisible"
             app:srcCompat="@drawable/icon_good" />
 
         <ImageView
-            android:id="@+id/iv_weekly_feel2"
+            android:id="@+id/iv_weekly_emotion2"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:visibility="gone"
+            android:visibility="invisible"
             app:srcCompat="@drawable/icon_good" />
 
         <ImageView
-            android:id="@+id/iv_weekly_feel3"
+            android:id="@+id/iv_weekly_emotion3"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:visibility="gone"
+            android:visibility="invisible"
             app:srcCompat="@drawable/icon_good" />
 
         <TextView
-            android:id="@+id/tv_weekly_feel_rest"
+            android:id="@+id/tv_weekly_emotion_etc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:fontFamily="@font/spoqa_han_sans_neo_regular"
             android:gravity="center_horizontal"
             android:includeFontPadding="false"
-            android:text="+1"
             android:textColor="#343A40"
             android:textSize="10sp"
-            android:visibility="gone" />
+            android:visibility="invisible" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,11 +23,15 @@ import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
 import com.dnd.moneyroutine.dto.CustomCategoryCreateDto;
 import com.dnd.moneyroutine.dto.CategoryItem;
+import com.dnd.moneyroutine.dto.GoalCategoryCompact;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.JWTUtils;
 import com.dnd.moneyroutine.service.RequestService;
 import com.dnd.moneyroutine.service.RetrofitService;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -123,20 +127,13 @@ public class NewCategoryActivity extends AppCompatActivity {
                 }
 
                 customCategoryCreateDto.setEmoji(iconToByte);
-
                 customCategoryCreateDto.setName(name);
-                customCategoryServer();
 
                 if (name.length() > 0) {
-                    Intent intent = new Intent(getApplicationContext(), OnboardingCategoryActivity.class);
                     newItem = new CategoryItem(icon, name, ex);
-                    intent.putExtra("new category name", newItem);
-                    setResult(RESULT_OK, intent);
-
-                    finish();
                 }
 
-
+                customCategoryServer();
             }
         });
 
@@ -394,8 +391,19 @@ public class NewCategoryActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
-                    JsonObject post = response.body();
-                    Log.d("custom category", post.toString());
+                    JsonObject responseJson = response.body();
+                    Log.d("custom category", responseJson.toString());
+
+                    if (responseJson.get("statusCode").getAsInt() == 200 && !responseJson.get("data").isJsonNull()) {
+                        int newCategoryId = responseJson.get("data").getAsInt();
+
+                        Intent intent = new Intent(getApplicationContext(), OnboardingCategoryActivity.class);
+                        intent.putExtra("new category name", newItem);
+                        intent.putExtra("newCategoryId", newCategoryId);
+                        setResult(RESULT_OK, intent);
+
+                        finish();
+                    }
                 } else {
                     Log.e("custom category", "error: " + response.code());
                     return;
@@ -404,6 +412,7 @@ public class NewCategoryActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Log.e("custom category", "fail: " + t.getMessage());
+                Toast.makeText(NewCategoryActivity.this, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }

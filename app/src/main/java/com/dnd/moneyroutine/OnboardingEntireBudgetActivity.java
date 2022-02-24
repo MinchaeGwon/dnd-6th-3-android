@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -263,14 +264,11 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
                 newItem = (ArrayList<CategoryItem>) getIntent().getSerializableExtra("NewItem");
                 goalCategoryCreateDtoList=(ArrayList<GoalCategoryCreateDto>) getIntent().getSerializableExtra("goalCategoryCreateDtoList");
 
-
-
                 Intent intent = new Intent(getApplicationContext(), OnboardingDetailBudgetActivity.class);
                 intent.putExtra("Budget", budgetToString);
                 intent.putExtra("BudgetItem", bgList);
                 intent.putExtra("NewItem", newItem);
                 intent.putExtra("goalCategoryCreateDtoList", goalCategoryCreateDtoList);
-
 
                 startActivity(intent);
             }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -61,6 +62,7 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
         entireBudget = getIntent().getStringExtra("Budget");
         cList = (ArrayList<CategoryItem>) getIntent().getSerializableExtra("BudgetItem");
         newItem = (ArrayList<CategoryItem>) getIntent().getSerializableExtra("NewItem");
+//        goalCategoryCreateDtoList = (ArrayList<GoalCategoryCreateDto>) getIntent().getSerializableExtra("goalCategoryCreateDtoList");
 
         initView();
         initAdapter();

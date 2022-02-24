@@ -13,11 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GoalCategoryCreateDto implements Serializable  {
-    @SerializedName("budget")
     private int budget;
-    @SerializedName("categoryId")
     private long categoryId;
-    @SerializedName("isCustom")
     private boolean isCustom;
-
 }
