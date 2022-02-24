@@ -23,9 +23,6 @@ import retrofit2.http.Query;
 
 // api interface
 public interface RetrofitService {
-    @GET(".")
-    Call<String> test();
-
     @POST("exist")
     Call<JsonObject> isExistEmail(@Body UserForm userForm);
 
@@ -105,4 +102,10 @@ public interface RetrofitService {
 
     @GET("diary/monthly")
     Call<JsonObject> getMonthlyDiaryByEmotion(@Query("year") int year, @Query("month") int month, @Query("emotion") EmotionEnum emotionEnum);
+
+    @GET("logout")
+    Call<JsonObject> logout();
+
+    @DELETE("withdraw")
+    Call<JsonObject> withdraw();
 }
