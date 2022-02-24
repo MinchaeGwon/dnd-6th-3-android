@@ -122,7 +122,7 @@ public class MainPastRecordFragment extends Fragment  {
 
         tvEmptyDate.setText(selectDate.getYear() + "년 " + selectDate.getMonthValue() + "월");
 
-        tvSelectMonth.setText(Common.getLocalDateToString(selectDate));
+        tvSelectMonth.setText(Common.getMainLocalDateToString(selectDate));
         tvPastYearMonth.setText(selectDate.getYear() + "년 " + selectDate.getMonthValue() + "월");
         tvPastDate.setText(selectDate.getMonthValue() + "/1 ~ " + selectDate.getMonthValue() + "/" + selectDate.lengthOfMonth());
     }
@@ -156,7 +156,7 @@ public class MainPastRecordFragment extends Fragment  {
 
                         tvEmptyDate.setText(date.getYear() + "년 " + date.getMonthValue() + "월");
 
-                        tvSelectMonth.setText(Common.getLocalDateToString(date));
+                        tvSelectMonth.setText(Common.getMainLocalDateToString(date));
                         tvPastYearMonth.setText(date.getYear() + "년 " + date.getMonthValue() + "월");
                         tvPastDate.setText(date.getMonthValue() + "/1 ~ " + date.getMonthValue() + "/" + date.lengthOfMonth());
 

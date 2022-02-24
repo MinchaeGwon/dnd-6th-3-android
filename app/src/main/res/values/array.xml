@@ -23,4 +23,17 @@
         <item>@drawable/tissue_color</item>
         <item>@drawable/pill_color</item>
     </array>
+
+    <string-array name="emotion_color">
+        <item>#76D9CE</item>
+        <item>#B9CCE0</item>
+        <item>#FC99C3</item>
+    </string-array>
+
+    <string-array name="category_reverse_color">
+        <item>#E9ECEF</item>
+        <item>#7AE2F9</item>
+        <item>#A3BCFF</item>
+        <item>#C896FA</item>
+    </string-array>
 </resources>

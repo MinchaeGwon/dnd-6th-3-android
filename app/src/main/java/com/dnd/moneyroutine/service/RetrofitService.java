@@ -1,10 +1,12 @@
 package com.dnd.moneyroutine.service;
 
+import com.dnd.moneyroutine.dto.BasicCategoryForm;
 import com.dnd.moneyroutine.dto.BudgetDetailModel;
 import com.dnd.moneyroutine.dto.CustomCategoryCreateDto;
 import com.dnd.moneyroutine.dto.DirectCustomCategoryForm;
 import com.dnd.moneyroutine.dto.ExpenseForm;
 import com.dnd.moneyroutine.dto.UserForm;
+import com.dnd.moneyroutine.enums.EmotionEnum;
 import com.google.gson.JsonObject;
 
 import java.time.LocalDate;
@@ -80,6 +82,8 @@ public interface RetrofitService {
     @POST("goal-category/custom")
     Call<JsonObject> directAddGoalCategory(@Body DirectCustomCategoryForm categoryForm);
 
+    @POST("goal-category/pick")
+    Call<JsonObject> addBasicGoalCategory(@Body BasicCategoryForm basicCategoryForm);
 
     @PATCH("goal/budget")
     Call<JsonObject> updateTotalBudget();
@@ -89,4 +93,16 @@ public interface RetrofitService {
 
     @GET("category/except-list")
     Call<JsonObject> getExceptCategory(@Query("goalId") int goalId);
+
+    @GET("diary/weekly")
+    Call<JsonObject> getWeeklyDiary(@Query("year") int year, @Query("month") int month, @Query("week") int week);
+
+    @GET("diary/daily")
+    Call<JsonObject> getDailyDiary(@Query("date") LocalDate date);
+
+    @GET("diary/monthly-best")
+    Call<JsonObject> getMonthlyBestEmotion(@Query("year") int year, @Query("month") int month);
+
+    @GET("diary/monthly")
+    Call<JsonObject> getMonthlyDiaryByEmotion(@Query("year") int year, @Query("month") int month, @Query("emotion") EmotionEnum emotionEnum);
 }

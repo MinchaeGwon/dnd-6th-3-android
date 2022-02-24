@@ -1,11 +1,11 @@
 package com.dnd.moneyroutine.enums;
 
-public enum GoalState {
+public enum GoalStateEnum {
     SUCCESS("성공"), PROCEED("진행중"), FAIL("실패");
 
     private String state;
 
-    GoalState(String state) {
+    GoalStateEnum(String state) {
         this.state = state;
     }
 

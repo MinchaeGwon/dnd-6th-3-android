@@ -6,9 +6,10 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,143 +27,35 @@
                 android:background="#F8F9FA">
 
                 <LinearLayout
-                    android:id="@+id/linearLayout24"
+                    android:id="@+id/ll_select_week"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageButton
-                        android:id="@+id/ib_week_prev"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginEnd="5dp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/icon_right_arrow_light_gray"
-                        android:rotationY="180"
-                        android:scaleType="centerInside" />
 
                     <TextView
                         android:id="@+id/tv_week_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                        android:fontFamily="@font/spoqa_han_sans_neo_bold"
                         android:includeFontPadding="false"
                         android:text="2월 1주차"
                         android:textColor="#212529"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textStyle="normal" />
 
                     <ImageButton
-                        android:id="@+id/ib_week_next"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginStart="5dp"
                         android:adjustViewBounds="true"
-                        android:background="@drawable/icon_right_arrow_light_gray"
+                        android:background="@drawable/icon_bottom_arrow"
                         android:scaleType="centerInside" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linearLayout23"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="33dp"
-                    android:layout_marginEnd="16dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout24">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:text="일"
-                        android:textColor="#868E96"
-                        android:textSize="13sp"
-                        android:textStyle="normal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:text="월"
-                        android:textColor="#868E96"
-                        android:textSize="13sp"
-                        android:textStyle="normal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:text="화"
-                        android:textColor="#868E96"
-                        android:textSize="13sp"
-                        android:textStyle="normal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:text="수"
-                        android:textColor="#868E96"
-                        android:textSize="13sp"
-                        android:textStyle="normal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:text="목"
-                        android:textColor="#868E96"
-                        android:textSize="13sp"
-                        android:textStyle="normal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:text="금"
-                        android:textColor="#868E96"
-                        android:textSize="13sp"
-                        android:textStyle="normal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:text="토"
-                        android:textColor="#868E96"
-                        android:textSize="13sp"
-                        android:textStyle="normal" />
                 </LinearLayout>
 
                 <GridView
@@ -170,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="35dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginBottom="40dp"
                     android:numColumns="7"
@@ -178,7 +71,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout23" />
+                    app:layout_constraintTop_toBottomOf="@+id/ll_select_week" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -198,9 +91,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="16dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -218,6 +109,7 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
+                            android:layout_marginStart="16dp"
                             app:srcCompat="@drawable/icon_good" />
 
                         <TextView
@@ -260,18 +152,39 @@
                             android:id="@+id/iv_week_good_more"
                             android:layout_width="22dp"
                             android:layout_height="22dp"
+                            android:layout_marginEnd="16dp"
+                            app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
+
+                        <ImageView
+                            android:id="@+id/iv_week_good_hold"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginEnd="16dp"
+                            android:rotationX="180"
+                            android:visibility="gone"
                             app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_week_good_detail"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:background="#F8F9FA"
                         android:clipToPadding="false"
                         android:paddingTop="8dp"
                         android:paddingBottom="8dp"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        app:layout_constrainedHeight="true" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#F8F9FA"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </LinearLayout>
 
@@ -290,6 +203,7 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
+                            android:layout_marginStart="16dp"
                             app:srcCompat="@drawable/icon_soso" />
 
                         <TextView
@@ -332,18 +246,39 @@
                             android:id="@+id/iv_week_soso_more"
                             android:layout_width="22dp"
                             android:layout_height="22dp"
+                            android:layout_marginEnd="16dp"
+                            app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
+
+                        <ImageView
+                            android:id="@+id/iv_week_soso_hold"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginEnd="16dp"
+                            android:rotationX="180"
+                            android:visibility="gone"
                             app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_week_soso_detail"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:background="#F8F9FA"
                         android:clipToPadding="false"
                         android:paddingTop="8dp"
                         android:paddingBottom="8dp"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        app:layout_constrainedHeight="true" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#F8F9FA"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </LinearLayout>
 
@@ -362,6 +297,7 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
+                            android:layout_marginStart="16dp"
                             app:srcCompat="@drawable/icon_bad" />
 
                         <TextView
@@ -404,23 +340,44 @@
                             android:id="@+id/iv_week_bad_more"
                             android:layout_width="22dp"
                             android:layout_height="22dp"
+                            android:layout_marginEnd="16dp"
+                            app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
+
+                        <ImageView
+                            android:id="@+id/iv_week_bad_hold"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginEnd="16dp"
+                            android:rotationX="180"
+                            android:visibility="gone"
                             app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_week_bad_detail"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:background="#F8F9FA"
                         android:clipToPadding="false"
                         android:paddingTop="8dp"
                         android:paddingBottom="8dp"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        app:layout_constrainedHeight="true" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#F8F9FA"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
