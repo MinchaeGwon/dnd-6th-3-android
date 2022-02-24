@@ -95,8 +95,9 @@ public class DiaryWeeklyFragment extends Fragment {
         initField();
         setListener();
 
-        getWeeklyDiary();
         setCalendar();
+        getWeeklyDiary();
+        getDailyDiary(currentDate);
     }
 
     private void initView(View v) {
@@ -134,8 +135,6 @@ public class DiaryWeeklyFragment extends Fragment {
         selectDate = Calendar.getInstance();
         currentDate = Calendar.getInstance();
         tvDate.setText((currentDate.get(Calendar.MONTH) + 1) + "월 " + currentDate.get(Calendar.DATE) + "일 소비 다이어리");
-
-        getDailyDiary(currentDate);
     }
 
     private void setListener() {
@@ -371,49 +370,43 @@ public class DiaryWeeklyFragment extends Fragment {
         }
 
         if (goodList.size() > 0) {
-            btnGood.setEnabled(true);
+            btnGood.setVisibility(View.VISIBLE);
 
             WeeklyDiaryAdapter weeklyDiaryAdapter = new WeeklyDiaryAdapter(EmotionEnum.GOOD, goodList);
             rvGood.setAdapter(weeklyDiaryAdapter);
             rvGood.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
-            btnGood.setEnabled(false);
+            btnGood.setVisibility(View.GONE);
 
             rvGood.setVisibility(View.GONE);
-            tvGoodCnt.setText("0개");
-            tvGoodMoney.setText("0원");
             ivGoodMore.setVisibility(View.VISIBLE);
             ivGoodHold.setVisibility(View.GONE);
         }
 
         if (sosoList.size() > 0) {
-            btnSoso.setEnabled(true);
+            btnSoso.setVisibility(View.VISIBLE);
 
             WeeklyDiaryAdapter weeklyDiaryAdapter = new WeeklyDiaryAdapter(EmotionEnum.SOSO, sosoList);
             rvSoso.setAdapter(weeklyDiaryAdapter);
             rvSoso.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
-            btnSoso.setEnabled(false);
+            btnSoso.setVisibility(View.GONE);
 
             rvSoso.setVisibility(View.GONE);
-            tvSosoCnt.setText("0개");
-            tvSosoMoney.setText("0원");
             ivSosoMore.setVisibility(View.VISIBLE);
             ivSosoHold.setVisibility(View.GONE);
         }
 
         if (badList.size() > 0) {
-            btnBad.setEnabled(true);
+            btnBad.setVisibility(View.VISIBLE);
 
             WeeklyDiaryAdapter weeklyDiaryAdapter = new WeeklyDiaryAdapter(EmotionEnum.BAD, badList);
             rvBad.setAdapter(weeklyDiaryAdapter);
             rvBad.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
-            btnBad.setEnabled(false);
+            btnBad.setVisibility(View.GONE);
 
             rvBad.setVisibility(View.GONE);
-            tvBadCnt.setText("0개");
-            tvBadMoney.setText("0원");
             ivBadMore.setVisibility(View.VISIBLE);
             ivBadHold.setVisibility(View.GONE);
         }

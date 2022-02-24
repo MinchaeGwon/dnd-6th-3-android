@@ -26,6 +26,7 @@ public class YearMonthPickerDialog extends DialogFragment {
 
     private OnSelectListener onSelectListener;
     private LocalDate date;
+    private boolean diary = false;
 
     public void setOnSelectListener(OnSelectListener onSelectListener) {
         this.onSelectListener = onSelectListener;
@@ -35,6 +36,11 @@ public class YearMonthPickerDialog extends DialogFragment {
 
     public YearMonthPickerDialog(LocalDate date) {
         this.date = date;
+    }
+
+    public YearMonthPickerDialog(LocalDate date, boolean diary) {
+        this.date = date;
+        this.diary = diary;
     }
 
     @Override
@@ -67,7 +73,12 @@ public class YearMonthPickerDialog extends DialogFragment {
             }
         });
 
-        LocalDate curDate = LocalDate.now().minusMonths(1);
+        LocalDate curDate = LocalDate.now();
+
+        if (!diary) {
+            curDate.minusMonths(1);
+        }
+
         int curYear = curDate.getYear();
         int curMonth = curDate.getMonthValue();
 

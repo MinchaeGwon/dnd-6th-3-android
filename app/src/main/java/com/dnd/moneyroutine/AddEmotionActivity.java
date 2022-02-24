@@ -83,7 +83,7 @@ public class AddEmotionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_feeling);
+        setContentView(R.layout.activity_add_emotion);
 
         initView();
         initField();
@@ -99,7 +99,7 @@ public class AddEmotionActivity extends AppCompatActivity {
         ivPencil = findViewById(R.id.iv_feeling_pencil);
         etContent = findViewById(R.id.et_feeling_content);
 
-        rgEmotion = findViewById(R.id.rg_feeling);
+        rgEmotion = findViewById(R.id.rg_emotion);
         rbGood = findViewById(R.id.rb_emotion_good);
         rbSoso = findViewById(R.id.rb_emotion_soso);
         rbBad = findViewById(R.id.rb_emotion_bad);

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -73,7 +72,7 @@ public class GoalCategoryGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                 ((CategoryViewHolder) holder).tvDetail.setTextColor(detailCatId == category.getCategoryId() ?
                         Color.parseColor("#212529") : Color.parseColor("#868E96"));
 
-                if (category.isCustom() == detailCustom) {
+                if (!category.isCustom() && !detailCustom) {
                     ((CategoryViewHolder) holder).ivCategory.setImageResource(detailCatId == category.getCategoryId() ?
                             Common.getBasicColorCategoryResId(category.getName()) : Common.getBasicGrayCategoryResId(category.getName()));
                 }
