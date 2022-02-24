@@ -328,9 +328,11 @@ public class SignupStep2Activity extends AppCompatActivity {
 
                     if (responseJson.get("statusCode").getAsInt() == 200) {
                         JsonObject data = responseJson.get("data").getAsJsonObject();
-                        String token = data.get("accessToken").getAsString();
 
-                        saveTokenAndMoveActivity(token);
+                        String token = data.get("accessToken").getAsString();
+                        String refreshToken = data.get("refreshToken").getAsString();
+
+                        saveTokenAndMoveActivity(token, refreshToken);
                     }
                 }
             }
@@ -344,8 +346,9 @@ public class SignupStep2Activity extends AppCompatActivity {
     }
 
     // 회원가입 성공시 토큰 저장, 화면 이동
-    public void saveTokenAndMoveActivity(String jwtToken) {
+    public void saveTokenAndMoveActivity(String jwtToken, String refreshToken) {
         PreferenceManager.setString(this, Constants.tokenKey, jwtToken);
+        PreferenceManager.setString(this, Constants.REFRESH_TOKEN_KEY, refreshToken);
 
         Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show();
 
