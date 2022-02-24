@@ -6,4 +6,5 @@ public class Constants {
 
     public static final String tokenHeader = "X-AUTH-TOKEN"; // 서버 요청 헤더에 들어갈 필드
     public static final String tokenKey = "userToken"; // SharedPreferences에서 토큰을 저장하는 key
+    public static final String REFRESH_TOKEN_KEY = "refreshToken";
 }

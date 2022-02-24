@@ -36,8 +36,8 @@ public class RequestService {
         return requestService;
     }
 
-    public Call<String> test() {
-        return retrofitService.test();
+    public Call<JsonObject> isExistEmail(UserForm userForm) {
+        return retrofitService.isExistEmail(userForm);
     }
 
     public Call<JsonObject> join(UserForm userForm) {

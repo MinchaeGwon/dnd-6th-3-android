@@ -1,5 +1,6 @@
 package com.dnd.moneyroutine;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -35,6 +36,8 @@ public class NormalLoginActivity extends AppCompatActivity {
     private EditText etPassword;
     private Button btnLogin;
     private TextView tvJoin;
+
+    private AlertDialog failDialog;
 
     private InputMethodManager inputManager;
 
@@ -125,12 +128,16 @@ public class NormalLoginActivity extends AppCompatActivity {
 
                     if (responseJson.get("statusCode").getAsInt() == 200) {
                         JsonObject data = responseJson.get("data").getAsJsonObject();
-                        String token = data.get("access_token").getAsString();
 
-                        saveTokenAndMoveActivity(token);
+//                        String token = data.get("accessToken").getAsString();
+//                        String refreshToken = data.get("refreshToken").getAsString();
+//
+//                        saveTokenAndMoveActivity(token, refreshToken);
                     } else {
                         // 로그인 정보가 맞지 않으면 로그인 실패 다이얼로그 띄움
                     }
+                } else {
+                    Log.d(TAG, "!11111111");
                 }
             }
 
@@ -142,13 +149,41 @@ public class NormalLoginActivity extends AppCompatActivity {
     }
 
     // 로그인 성공시 토큰 저장, 화면 이동
-    private void saveTokenAndMoveActivity(String jwtToken) {
+    private void saveTokenAndMoveActivity(String jwtToken, String refreshToken) {
         PreferenceManager.setString(this, Constants.tokenKey, jwtToken);
+        PreferenceManager.setString(this, Constants.REFRESH_TOKEN_KEY, refreshToken);
 
         Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(this, WelcomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 기존 화면 모두 clear
         startActivity(intent);
+    }
+
+    private void setFailDialog() {
+        if (failDialog != null) return;
+        makeFailDialog();
+    }
+
+    // 이메일 중복 확인 다이얼로그 만들기
+    private void makeFailDialog() {
+        View view = getLayoutInflater().inflate(R.layout.dialog_confirm, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
+        builder.setView(view);
+        failDialog = builder.create();
+
+        TextView tvTitle = view.findViewById(R.id.tv_dialog_title);
+        TextView tvContent = view.findViewById(R.id.tv_dialog_content);
+        Button btnConfirm = view.findViewById(R.id.btn_dialog_confirm);
+
+        tvTitle.setText("로그인 실패");
+        tvContent.setText("이메일 또는 비밀번호가 일치하지 않습니다");
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                failDialog.dismiss();
+            }
+        });
     }
 }

@@ -24,6 +24,9 @@ public interface RetrofitService {
     @GET(".")
     Call<String> test();
 
+    @POST("exist")
+    Call<JsonObject> isExistEmail(@Body UserForm userForm);
+
     @POST("join")
     Call<JsonObject> join(@Body UserForm userForm);
 
@@ -86,5 +89,4 @@ public interface RetrofitService {
 
     @GET("category/except-list")
     Call<JsonObject> getExceptCategory(@Query("goalId") int goalId);
-
 }
