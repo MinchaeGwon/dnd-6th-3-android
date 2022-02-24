@@ -49,7 +49,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 // 토큰이 null이거나 길이가 0일 경우 로그인 화면으로 이동, 아닌 경우 메인 화면으로 이동
                 if (token == null || token.length() == 0) {
-                    intent = new Intent(SplashActivity.this, SocialLoginActivity.class);
+                    intent = new Intent(SplashActivity.this, NormalLoginActivity.class);
                 } else {
                     intent = new Intent(SplashActivity.this, MainActivity.class);
                 }

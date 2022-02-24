@@ -47,9 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="31dp"
-        android:layout_marginBottom="22dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_dialog_content">
@@ -74,5 +72,30 @@
             android:layout_height="wrap_content"
             android:button="@drawable/emotion_bad_small_selector" />
     </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_dialog_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="22dp"
+        android:background="@drawable/rectangle_343a40_radius_8"
+        android:fontFamily="@font/spoqa_han_sans_neo_medium"
+        android:letterSpacing="-0.02"
+        android:lineSpacingExtra="16sp"
+        android:stateListAnimator="@null"
+        android:text="확인"
+        android:textColor="#ffffff"
+        android:textSize="14sp"
+        android:textStyle="normal"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rg_emotion" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

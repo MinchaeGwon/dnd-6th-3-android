@@ -20,7 +20,7 @@ import com.dnd.moneyroutine.enums.EmotionEnum;
 
 import java.time.LocalDate;
 
-// 시간 선택할 때 사용
+// 소비 감정 선택할 때 사용
 public class EmotionDialog extends DialogFragment {
 
     public interface OnSelectListener {
@@ -47,6 +47,14 @@ public class EmotionDialog extends DialogFragment {
         View dialog = inflater.inflate(R.layout.dialog_emotion, null);
         builder.setView(dialog);
 
+        Button btnConfirm = dialog.findViewById(R.id.btn_dialog_confirm);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSelectListener.onSelect(emotion);
+                EmotionDialog.this.getDialog().cancel();
+            }
+        });
 
         RadioGroup rgEmotion = dialog.findViewById(R.id.rg_emotion);
         rgEmotion.check(mappingEmotionId());
@@ -56,17 +64,15 @@ public class EmotionDialog extends DialogFragment {
             public void onCheckedChanged(RadioGroup radioGroup, int id) {
                 switch (id) {
                     case R.id.rb_emotion_good:
-                        onSelectListener.onSelect(EmotionEnum.GOOD);
+                        emotion = EmotionEnum.GOOD;
                         break;
                     case R.id.rb_emotion_soso:
-                        onSelectListener.onSelect(EmotionEnum.SOSO);
+                        emotion = EmotionEnum.SOSO;
                         break;
                     case R.id.rb_emotion_bad:
-                        onSelectListener.onSelect(EmotionEnum.BAD);
+                        emotion = EmotionEnum.BAD;
                         break;
                 }
-
-                EmotionDialog.this.getDialog().cancel();
             }
         });
 

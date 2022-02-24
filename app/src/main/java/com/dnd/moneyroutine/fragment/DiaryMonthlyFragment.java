@@ -524,7 +524,7 @@ public class DiaryMonthlyFragment extends Fragment {
                 tvBestEmotionCatTitle.setText(category + " 관련 소비가 그냥 그랬어요");
                 break;
             case BAD:
-                tvBestEmotionCatTitle.setText(category + "관련 소비를 체크해볼까요?");
+                tvBestEmotionCatTitle.setText(category + " 관련 소비를 체크해볼까요?");
                 break;
         }
 

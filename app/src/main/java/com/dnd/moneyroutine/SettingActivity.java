@@ -79,8 +79,7 @@ public class SettingActivity extends AppCompatActivity {
         btnWithdraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("SettingActivity", "111111111");
-                withdrawToServer();
+//                withdrawToServer();
             }
         });
     }
@@ -121,7 +120,6 @@ public class SettingActivity extends AppCompatActivity {
 
     // 서비스 탈퇴 하기
     private void withdrawToServer() {
-        Log.d("SettingActivity", "222222");
         HeaderRetrofit headerRetrofit = new HeaderRetrofit();
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);
@@ -140,9 +138,6 @@ public class SettingActivity extends AppCompatActivity {
                         removeSharedPreferences();
                         afterMoveActivity();
                     }
-                } else {
-//                    Log.d("SettingActivity", response.);
-                    Log.d("SettingActivity", "3333333333333");
                 }
             }
 
@@ -161,29 +156,8 @@ public class SettingActivity extends AppCompatActivity {
 
     // 어디로 이동할지 결정하는 메소드 -> SocialLoginActivity로 이동
     private void afterMoveActivity() {
-        Intent intent = new Intent(this, SocialLoginActivity.class);
+        Intent intent = new Intent(this, NormalLoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-    }
-
-    public class MyErrorMessage {
-        private int code;
-        private String message;
-
-        public int getCode() {
-            return code;
-        }
-
-        public void setCode(int code) {
-            this.code = code;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
     }
 }

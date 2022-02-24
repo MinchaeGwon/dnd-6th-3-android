@@ -73,8 +73,9 @@ public class MonthlyDiaryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             LocalDate date = expenditure.getDate();
             if (date.getYear() != today.getYear()) {
                 tvDate.setText(date.getYear() + "." + date.getMonthValue() + "." +date.getDayOfMonth());
+            } else {
+                tvDate.setText(date.getMonthValue() + "." +date.getDayOfMonth());
             }
-
         }
     }
 }
