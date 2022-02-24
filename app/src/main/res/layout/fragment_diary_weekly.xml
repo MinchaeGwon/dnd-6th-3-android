@@ -90,9 +90,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="16dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -110,6 +108,7 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
+                            android:layout_marginStart="16dp"
                             app:srcCompat="@drawable/icon_good" />
 
                         <TextView
@@ -152,13 +151,23 @@
                             android:id="@+id/iv_week_good_more"
                             android:layout_width="22dp"
                             android:layout_height="22dp"
+                            android:layout_marginEnd="16dp"
+                            app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
+
+                        <ImageView
+                            android:id="@+id/iv_week_good_hold"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginEnd="16dp"
+                            android:rotationX="180"
+                            android:visibility="gone"
                             app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_week_good_detail"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:background="#F8F9FA"
                         android:clipToPadding="false"
                         android:paddingTop="8dp"
@@ -182,6 +191,7 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
+                            android:layout_marginStart="16dp"
                             app:srcCompat="@drawable/icon_soso" />
 
                         <TextView
@@ -224,13 +234,23 @@
                             android:id="@+id/iv_week_soso_more"
                             android:layout_width="22dp"
                             android:layout_height="22dp"
+                            android:layout_marginEnd="16dp"
+                            app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
+
+                        <ImageView
+                            android:id="@+id/iv_week_soso_hold"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginEnd="16dp"
+                            android:rotationX="180"
+                            android:visibility="gone"
                             app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_week_soso_detail"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:background="#F8F9FA"
                         android:clipToPadding="false"
                         android:paddingTop="8dp"
@@ -254,6 +274,7 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
+                            android:layout_marginStart="16dp"
                             app:srcCompat="@drawable/icon_bad" />
 
                         <TextView
@@ -296,13 +317,23 @@
                             android:id="@+id/iv_week_bad_more"
                             android:layout_width="22dp"
                             android:layout_height="22dp"
+                            android:layout_marginEnd="16dp"
+                            app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
+
+                        <ImageView
+                            android:id="@+id/iv_week_bad_hold"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginEnd="16dp"
+                            android:rotationX="180"
+                            android:visibility="gone"
                             app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_week_bad_detail"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:background="#F8F9FA"
                         android:clipToPadding="false"
                         android:paddingTop="8dp"

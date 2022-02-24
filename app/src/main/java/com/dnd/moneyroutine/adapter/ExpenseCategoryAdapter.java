@@ -28,7 +28,6 @@ public class ExpenseCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private Context context;
     private ArrayList<GoalCategoryDetail> categoryList;
     private boolean current;
-    private TypedArray basicCategory;
 
     public ExpenseCategoryAdapter(ArrayList<GoalCategoryDetail> categoryList, boolean current) {
         this.categoryList = categoryList;
@@ -40,7 +39,6 @@ public class ExpenseCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.item_expense_category, parent, false);
-        basicCategory = context.getResources().obtainTypedArray(R.array.basicColorCategory);
         return new CategoryViewHolder(view);
     }
 

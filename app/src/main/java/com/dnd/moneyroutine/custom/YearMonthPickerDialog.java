@@ -15,7 +15,7 @@ import com.dnd.moneyroutine.R;
 
 import java.time.LocalDate;
 
-// 연도 선택할 때 사용
+// 연도, 월 선택할 때 사용
 public class YearMonthPickerDialog extends DialogFragment {
 
     public interface OnSelectListener {

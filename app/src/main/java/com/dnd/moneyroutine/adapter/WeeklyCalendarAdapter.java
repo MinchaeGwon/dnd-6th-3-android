@@ -12,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.custom.Common;
 
 import java.util.ArrayList;
 import java.util.Calendar;

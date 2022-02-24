@@ -11,6 +11,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 // 헤더에 토큰 추가할 때 사용되는 클래스
 public class HeaderRetrofit {
@@ -21,6 +22,7 @@ public class HeaderRetrofit {
 
         return new Retrofit.Builder()
                 .baseUrl(Constants.SERVER)
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();

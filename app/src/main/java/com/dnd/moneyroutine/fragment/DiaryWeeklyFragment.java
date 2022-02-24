@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,29 +15,33 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.adapter.WeeklyCalendarAdapter;
+import com.dnd.moneyroutine.adapter.WeeklyDiaryAdapter;
 import com.dnd.moneyroutine.custom.Common;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.WeekPickerDialog;
-import com.dnd.moneyroutine.dto.GoalInfo;
-import com.dnd.moneyroutine.dto.WeeklyDiaryCompact;
+import com.dnd.moneyroutine.dto.DailyDiary;
+import com.dnd.moneyroutine.dto.ExpenditureDetail;
+import com.dnd.moneyroutine.enums.EmotionEnum;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
+import com.dnd.moneyroutine.service.LocalDateSerializer;
 import com.dnd.moneyroutine.service.RetrofitService;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TreeMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,22 +63,26 @@ public class DiaryWeeklyFragment extends Fragment {
     private TextView tvGoodCnt;
     private TextView tvGoodMoney;
     private ImageView ivGoodMore;
+    private ImageView ivGoodHold;
     private RecyclerView rvGood;
 
     private LinearLayout btnSoso;
     private TextView tvSosoCnt;
     private TextView tvSosoMoney;
     private ImageView ivSosoMore;
+    private ImageView ivSosoHold;
     private RecyclerView rvSoso;
 
     private LinearLayout btnBad;
     private TextView tvBadCnt;
     private TextView tvBadMoney;
     private ImageView ivBadMore;
+    private ImageView ivBadHold;
     private RecyclerView rvBad;
 
     private String token;
     private Calendar currentDate;
+    private Calendar selectDate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -103,26 +110,32 @@ public class DiaryWeeklyFragment extends Fragment {
         tvGoodCnt = v.findViewById(R.id.tv_week_good_cnt);
         tvGoodMoney = v.findViewById(R.id.tv_week_good_money);
         ivGoodMore = v.findViewById(R.id.iv_week_good_more);
+        ivGoodHold = v.findViewById(R.id.iv_week_good_hold);
         rvGood = v.findViewById(R.id.rv_week_good_detail);
 
         btnSoso = v.findViewById(R.id.ll_week_soso);
         tvSosoCnt = v.findViewById(R.id.tv_week_soso_cnt);
         tvSosoMoney = v.findViewById(R.id.tv_week_soso_money);
         ivSosoMore = v.findViewById(R.id.iv_week_soso_more);
+        ivSosoHold = v.findViewById(R.id.iv_week_soso_hold);
         rvSoso = v.findViewById(R.id.rv_week_soso_detail);
 
         btnBad = v.findViewById(R.id.ll_week_bad);
         tvBadCnt = v.findViewById(R.id.tv_week_bad_cnt);
         tvBadMoney = v.findViewById(R.id.tv_week_bad_money);
         ivBadMore = v.findViewById(R.id.iv_week_bad_more);
+        ivBadHold = v.findViewById(R.id.iv_week_bad_hold);
         rvBad = v.findViewById(R.id.rv_week_bad_detail);
     }
 
     private void initField() {
         token = PreferenceManager.getToken(getContext(), Constants.tokenKey);
 
+        selectDate = Calendar.getInstance();
         currentDate = Calendar.getInstance();
         tvDate.setText((currentDate.get(Calendar.MONTH) + 1) + "월 " + currentDate.get(Calendar.DATE) + "일 소비 다이어리");
+
+        getDailyDiary(currentDate);
     }
 
     private void setListener() {
@@ -152,6 +165,8 @@ public class DiaryWeeklyFragment extends Fragment {
                 selectDate.setTime(date);
 
                 tvDate.setText((selectDate.get(Calendar.MONTH) + 1) + "월 " + selectDate.get(Calendar.DATE) + "일 소비 다이어리");
+
+                getDailyDiary(selectDate);
             }
         });
 
@@ -160,10 +175,12 @@ public class DiaryWeeklyFragment extends Fragment {
             public void onClick(View view) {
                 if (rvGood.getVisibility() == View.GONE) {
                     rvGood.setVisibility(View.VISIBLE);
-                    ivGoodMore.setRotationX(180);
+                    ivGoodHold.setVisibility(View.VISIBLE);
+                    ivGoodMore.setVisibility(View.GONE);
                 } else {
                     rvGood.setVisibility(View.GONE);
-                    ivGoodMore.setRotationX(360);
+                    ivGoodHold.setVisibility(View.GONE);
+                    ivGoodMore.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -173,10 +190,12 @@ public class DiaryWeeklyFragment extends Fragment {
             public void onClick(View view) {
                 if (rvSoso.getVisibility() == View.GONE) {
                     rvSoso.setVisibility(View.VISIBLE);
-                    ivSosoMore.setRotationX(180);
+                    ivSosoHold.setVisibility(View.VISIBLE);
+                    ivSosoMore.setVisibility(View.GONE);
                 } else {
                     rvSoso.setVisibility(View.GONE);
-                    ivSosoMore.setRotationX(360);
+                    ivSosoHold.setVisibility(View.GONE);
+                    ivSosoMore.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -186,10 +205,12 @@ public class DiaryWeeklyFragment extends Fragment {
             public void onClick(View view) {
                 if (rvBad.getVisibility() == View.GONE) {
                     rvBad.setVisibility(View.VISIBLE);
-                    ivBadMore.setRotationX(180);
+                    ivBadHold.setVisibility(View.VISIBLE);
+                    ivBadMore.setVisibility(View.GONE);
                 } else {
                     rvBad.setVisibility(View.GONE);
-                    ivBadMore.setRotationX(360);
+                    ivBadHold.setVisibility(View.GONE);
+                    ivBadMore.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -276,5 +297,125 @@ public class DiaryWeeklyFragment extends Fragment {
                 Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void getDailyDiary(Calendar calendar) {
+        LocalDate date = LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DATE));
+
+        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+        RetrofitService retroService = retrofit.create(RetrofitService.class);
+
+        Call<JsonObject> call = retroService.getDailyDiary(date);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject responseJson = response.body();
+
+                    Log.d(TAG, responseJson.toString());
+
+                    if (responseJson.get("statusCode").getAsInt() == 200 && !responseJson.get("data").isJsonNull()) {
+                        JsonArray jsonArray = responseJson.get("data").getAsJsonArray();
+
+                        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
+                        ArrayList<DailyDiary> dailyList = gson.fromJson(jsonArray, new TypeToken<ArrayList<DailyDiary>>() {}.getType());
+
+                        setEmotionDiary(dailyList);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setEmotionDiary(ArrayList<DailyDiary> dailyList) {
+        ArrayList<ExpenditureDetail> goodList = new ArrayList<>();
+        ArrayList<ExpenditureDetail> sosoList = new ArrayList<>();
+        ArrayList<ExpenditureDetail> badList = new ArrayList<>();
+
+        DecimalFormat myFormatter = new DecimalFormat("###,###");
+        String expense;
+
+        for (DailyDiary dailyDiary : dailyList) {
+            switch (dailyDiary.getEmotion()) {
+                case GOOD:
+                    tvGoodCnt.setText(dailyDiary.getCount() + "개");
+
+                    expense = myFormatter.format(dailyDiary.getAmount()) + "원";
+                    tvGoodMoney.setText(expense);
+
+                    goodList.addAll(dailyDiary.getExpenditureList());
+                    break;
+                case SOSO:
+                    tvSosoCnt.setText(dailyDiary.getCount() + "개");
+
+                    expense = myFormatter.format(dailyDiary.getAmount()) + "원";
+                    tvSosoMoney.setText(expense);
+
+                    sosoList.addAll(dailyDiary.getExpenditureList());
+                    break;
+                case BAD:
+                    tvBadCnt.setText(dailyDiary.getCount() + "개");
+
+                    expense = myFormatter.format(dailyDiary.getAmount()) + "원";
+                    tvBadMoney.setText(expense);
+
+                    badList.addAll(dailyDiary.getExpenditureList());
+                    break;
+            }
+        }
+
+        if (goodList.size() > 0) {
+            btnGood.setEnabled(true);
+
+            WeeklyDiaryAdapter weeklyDiaryAdapter = new WeeklyDiaryAdapter(EmotionEnum.GOOD, goodList);
+            rvGood.setAdapter(weeklyDiaryAdapter);
+            rvGood.setLayoutManager(new LinearLayoutManager(getContext()));
+        } else {
+            btnGood.setEnabled(false);
+
+            rvGood.setVisibility(View.GONE);
+            tvGoodCnt.setText("0개");
+            tvGoodMoney.setText("0원");
+            ivGoodMore.setVisibility(View.VISIBLE);
+            ivGoodHold.setVisibility(View.GONE);
+        }
+
+        if (sosoList.size() > 0) {
+            btnSoso.setEnabled(true);
+
+            WeeklyDiaryAdapter weeklyDiaryAdapter = new WeeklyDiaryAdapter(EmotionEnum.SOSO, sosoList);
+            rvSoso.setAdapter(weeklyDiaryAdapter);
+            rvSoso.setLayoutManager(new LinearLayoutManager(getContext()));
+        } else {
+            btnSoso.setEnabled(false);
+
+            rvSoso.setVisibility(View.GONE);
+            tvSosoCnt.setText("0개");
+            tvSosoMoney.setText("0원");
+            ivSosoMore.setVisibility(View.VISIBLE);
+            ivSosoHold.setVisibility(View.GONE);
+        }
+
+        if (badList.size() > 0) {
+            btnBad.setEnabled(true);
+
+            WeeklyDiaryAdapter weeklyDiaryAdapter = new WeeklyDiaryAdapter(EmotionEnum.BAD, badList);
+            rvBad.setAdapter(weeklyDiaryAdapter);
+            rvBad.setLayoutManager(new LinearLayoutManager(getContext()));
+        } else {
+            btnBad.setEnabled(false);
+
+            rvBad.setVisibility(View.GONE);
+            tvBadCnt.setText("0개");
+            tvBadMoney.setText("0원");
+            ivBadMore.setVisibility(View.VISIBLE);
+            ivBadHold.setVisibility(View.GONE);
+        }
     }
 }

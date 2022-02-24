@@ -33,7 +33,6 @@ import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
 import com.dnd.moneyroutine.dto.ExpenseForm;
 import com.dnd.moneyroutine.dto.GoalCategoryCompact;
-import com.dnd.moneyroutine.dto.GoalInfo;
 import com.dnd.moneyroutine.fragment.ExpenseCalendarFragment;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.RetrofitService;
@@ -154,7 +153,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddExpenseActivity.this, AddFeelingActivity.class);
+                Intent intent = new Intent(AddExpenseActivity.this, AddEmotionActivity.class);
                 intent.putExtra("expenseForm", setExpenseForm());
                 startActivity(intent);
             }

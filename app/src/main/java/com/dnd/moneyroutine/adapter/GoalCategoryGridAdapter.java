@@ -31,6 +31,10 @@ public class GoalCategoryGridAdapter extends RecyclerView.Adapter<RecyclerView.V
     private ArrayList<GoalCategoryCompact> categoryList;
     private GoalCategoryCompact selectCat;
 
+    private boolean detail = false;
+    private int detailCatId;
+    private boolean detailCustom;
+
     private OnItemClickListener onItemClickListener;
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -39,6 +43,13 @@ public class GoalCategoryGridAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public GoalCategoryGridAdapter(ArrayList<GoalCategoryCompact> categoryList) {
         this.categoryList = categoryList;
+    }
+
+    public GoalCategoryGridAdapter(ArrayList<GoalCategoryCompact> categoryList, int detailCatId, boolean detailCustom, boolean detail) {
+        this.categoryList = categoryList;
+        this.detailCatId = detailCatId;
+        this.detailCustom = detailCustom;
+        this.detail = detail;
     }
 
     @NonNull
@@ -55,17 +66,30 @@ public class GoalCategoryGridAdapter extends RecyclerView.Adapter<RecyclerView.V
             GoalCategoryCompact category = categoryList.get(position);
             ((CategoryViewHolder) holder).setItem(category);
 
-            int categoryId = selectCat != null ? selectCat.getCategoryId() : -1;
+            if (detail) {
+                holder.itemView.setBackgroundResource(detailCatId == category.getCategoryId() ?
+                        R.drawable.button_category_clicked : R.drawable.button_category_unclicked);
 
-            holder.itemView.setBackgroundResource(categoryId == category.getCategoryId() ?
-                    R.drawable.button_category_clicked : R.drawable.button_category_unclicked);
+                ((CategoryViewHolder) holder).tvDetail.setTextColor(detailCatId == category.getCategoryId() ?
+                        Color.parseColor("#212529") : Color.parseColor("#868E96"));
 
-            ((CategoryViewHolder) holder).tvDetail.setTextColor(categoryId == category.getCategoryId() ?
-                    Color.parseColor("#212529") : Color.parseColor("#868E96"));
+                if (category.isCustom() == detailCustom) {
+                    ((CategoryViewHolder) holder).ivCategory.setImageResource(detailCatId == category.getCategoryId() ?
+                            Common.getBasicColorCategoryResId(category.getName()) : Common.getBasicGrayCategoryResId(category.getName()));
+                }
+            } else {
+                int categoryId = selectCat != null ? selectCat.getCategoryId() : -1;
 
-            if (!category.isCustom()) {
-                ((CategoryViewHolder) holder).ivCategory.setImageResource(categoryId == category.getCategoryId() ?
-                        Common.getBasicColorCategoryResId(category.getName()) : Common.getBasicGrayCategoryResId(category.getName()));
+                holder.itemView.setBackgroundResource(categoryId == category.getCategoryId() ?
+                        R.drawable.button_category_clicked : R.drawable.button_category_unclicked);
+
+                ((CategoryViewHolder) holder).tvDetail.setTextColor(categoryId == category.getCategoryId() ?
+                        Color.parseColor("#212529") : Color.parseColor("#868E96"));
+
+                if (!category.isCustom()) {
+                    ((CategoryViewHolder) holder).ivCategory.setImageResource(categoryId == category.getCategoryId() ?
+                            Common.getBasicColorCategoryResId(category.getName()) : Common.getBasicGrayCategoryResId(category.getName()));
+                }
             }
         }
     }
@@ -91,19 +115,22 @@ public class GoalCategoryGridAdapter extends RecyclerView.Adapter<RecyclerView.V
             tvCategory = itemView.findViewById(R.id.tv_category_name);
             tvDetail = itemView.findViewById(R.id.tv_category_ex);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (selectCat != null) {
+            // 상세 보기가 아닌 경우에만 리스너 등록
+            if (!detail) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (selectCat != null) {
+                            notifyItemChanged(categoryList.indexOf(selectCat));
+                        }
+
+                        selectCat = categoryList.get(getBindingAdapterPosition());
                         notifyItemChanged(categoryList.indexOf(selectCat));
+
+                        onItemClickListener.onClick(selectCat);
                     }
-
-                    selectCat = categoryList.get(getBindingAdapterPosition());
-                    notifyItemChanged(categoryList.indexOf(selectCat));
-
-                    onItemClickListener.onClick(selectCat);
-                }
-            });
+                });
+            }
         }
 
         // 실제 view에 객체 내용을 적용시키는 메소드

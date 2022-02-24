@@ -16,7 +16,7 @@ import com.dnd.moneyroutine.R;
 import java.time.LocalDate;
 import java.util.Calendar;
 
-// 연도 선택할 때 사용
+// 연도, 월, 주 선택할 때 사용
 public class WeekPickerDialog extends DialogFragment {
 
     public interface OnSelectListener {

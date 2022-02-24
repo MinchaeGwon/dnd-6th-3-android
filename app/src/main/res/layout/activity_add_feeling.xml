@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".AddFeelingActivity">
+    tools:context=".AddEmotionActivity">
 
     <ImageButton
         android:id="@+id/ib_add_feeling_back"
@@ -75,13 +75,13 @@
         app:layout_constraintTop_toBottomOf="@+id/textView11">
 
         <RadioButton
-            android:id="@+id/rb_feeling_good"
+            android:id="@+id/rb_emotion_good"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:button="@drawable/feeling_good_selector" />
 
         <RadioButton
-            android:id="@+id/rb_feeling_soso"
+            android:id="@+id/rb_emotion_soso"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -89,7 +89,7 @@
             android:button="@drawable/feeling_soso_selector" />
 
         <RadioButton
-            android:id="@+id/rb_feeling_bad"
+            android:id="@+id/rb_emotion_bad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:button="@drawable/feeling_bad_selector" />
