@@ -152,7 +152,7 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                 String totalbudget = tv_budget_total.getText().toString();
                 mbudget = Integer.parseInt(totalbudget.replaceAll("\\,", "").toString());
 
-
+                //
                 finalTotal = 0;
                 if (isOnTextChanged) {
                     isOnTextChanged = false;
