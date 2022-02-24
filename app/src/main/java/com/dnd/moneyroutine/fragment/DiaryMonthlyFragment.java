@@ -391,6 +391,8 @@ public class DiaryMonthlyFragment extends Fragment {
     // 소비 감정 그래프 그리기
     private void drawEmotionChart() {
         hcEmotion.setVisibility(View.VISIBLE);
+        hcEmotion.removeAllViews();
+
         List<Integer> colorArray = getColorArray(true);
 
         ArrayList<BarEntry> barEntries = new ArrayList<>();
@@ -463,6 +465,7 @@ public class DiaryMonthlyFragment extends Fragment {
     // 카테고리 파이 차트 그리기
     private void drawCategoryChart() {
         pcCategory.setVisibility(View.VISIBLE);
+        pcCategory.removeAllViews();
 
 //        pcCategory.setRotationAngle(100); // 시작 위치 설정 (3시방향이 기본)
         pcCategory.getDescription().setEnabled(false); // 차트 설명 제거
