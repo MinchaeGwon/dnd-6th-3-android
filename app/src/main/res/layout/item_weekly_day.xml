@@ -18,9 +18,22 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/tv_day_of_week"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="일"
+            android:textColor="#868E96"
+            android:textSize="13sp"
+            android:textStyle="normal" />
+
+        <TextView
             android:id="@+id/tv_weekly_day"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:layout_marginTop="7dp"
             android:fontFamily="@font/spoqa_han_sans_neo_medium"
             android:gravity="center"
             android:includeFontPadding="false"

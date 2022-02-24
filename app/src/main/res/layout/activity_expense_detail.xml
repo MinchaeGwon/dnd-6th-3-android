@@ -36,7 +36,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="15dp"
@@ -147,6 +147,7 @@
                         android:background="@null"
                         android:ems="10"
                         android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:gravity="center_vertical"
                         android:textColor="#212529"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -200,6 +201,7 @@
                         android:background="@null"
                         android:ems="10"
                         android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:gravity="center_vertical"
                         android:textColor="#212529"
                         android:textSize="14sp" />
 
@@ -258,7 +260,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/rv_dtl_expense_category" />
 
                 <RadioGroup
-                    android:id="@+id/rg_dtl_expense_feeling"
+                    android:id="@+id/rg_dtl_expense_emotion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -268,24 +270,24 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView12">
 
                     <RadioButton
-                        android:id="@+id/rb_dtl_expense__good"
+                        android:id="@+id/rb_dtl_emotion_good"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:button="@drawable/feeling_good_selector" />
+                        android:button="@drawable/emotion_good_selector" />
 
                     <RadioButton
-                        android:id="@+id/rb_dtl_expense_soso"
+                        android:id="@+id/rb_dtl_emotion_soso"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
-                        android:button="@drawable/feeling_soso_selector" />
+                        android:button="@drawable/emotion_soso_selector" />
 
                     <RadioButton
-                        android:id="@+id/rb_dtl_expense_bad"
+                        android:id="@+id/rb_dtl_emotion_bad"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:button="@drawable/feeling_bad_selector" />
+                        android:button="@drawable/emotion_bad_selector" />
                 </RadioGroup>
 
                 <TextView
@@ -300,7 +302,7 @@
                     android:textColor="#212529"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rg_dtl_expense_feeling" />
+                    app:layout_constraintTop_toBottomOf="@+id/rg_dtl_expense_emotion" />
 
                 <LinearLayout
                     android:id="@+id/ll_dtl_expense_feeling_content"
@@ -329,7 +331,7 @@
                         app:srcCompat="@drawable/icon_pencil_black" />
 
                     <TextView
-                        android:id="@+id/tv_dtl_expense_feeling_content"
+                        android:id="@+id/tv_dtl_expense_emotion_content"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
@@ -342,5 +344,5 @@
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

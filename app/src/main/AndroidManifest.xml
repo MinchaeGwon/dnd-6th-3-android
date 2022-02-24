@@ -52,7 +52,7 @@
             android:screenOrientation="portrait"
             android:exported="true" />
         <activity
-            android:name=".AddFeelingActivity"
+            android:name=".AddEmotionActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />

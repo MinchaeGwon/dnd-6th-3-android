@@ -1,17 +1,14 @@
 package com.dnd.moneyroutine.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class ExpenseForm implements Serializable {
-    private int categoryId;
-    private boolean custom;
-    private String date;
-    private int expense;
+public class ExpenditureCompact implements Serializable {
+    private LocalDate date;
     private String expenseDetail;
-    private String emotion;
     private String emotionDetail;
 }

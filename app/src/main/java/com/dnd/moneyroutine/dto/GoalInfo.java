@@ -1,6 +1,6 @@
 package com.dnd.moneyroutine.dto;
 
-import com.dnd.moneyroutine.enums.GoalState;
+import com.dnd.moneyroutine.enums.GoalStateEnum;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter @Setter
 public class GoalInfo implements Serializable {
     private int goalId;
-    private GoalState goalState;
+    private GoalStateEnum goalState;
     private int remainder;
     private int totalBudget;
 

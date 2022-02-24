@@ -30,15 +30,10 @@ import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
 import com.dnd.moneyroutine.dto.ExpenseForm;
-import com.dnd.moneyroutine.dto.GoalCategoryCompact;
+import com.dnd.moneyroutine.enums.EmotionEnum;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.RetrofitService;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,7 +41,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 // 소비 감정 입력 activity
-public class AddFeelingActivity extends AppCompatActivity {
+public class AddEmotionActivity extends AppCompatActivity {
 
     private static final String TAG = "AddFeelingActivity";
 
@@ -57,12 +52,12 @@ public class AddFeelingActivity extends AppCompatActivity {
     private ImageView ivPencil;
     private EditText etContent;
 
-    private RadioGroup rgFeeling;
+    private RadioGroup rgEmotion;
     private RadioButton rbGood;
     private RadioButton rbSoso;
     private RadioButton rbBad;
 
-    private RadioButton selectFeeling;
+    private RadioButton selectEmotion;
 
     private Button btnConfirm;
     private AlertDialog cancelDialog;
@@ -88,7 +83,7 @@ public class AddFeelingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_feeling);
+        setContentView(R.layout.activity_add_emotion);
 
         initView();
         initField();
@@ -104,10 +99,10 @@ public class AddFeelingActivity extends AppCompatActivity {
         ivPencil = findViewById(R.id.iv_feeling_pencil);
         etContent = findViewById(R.id.et_feeling_content);
 
-        rgFeeling = findViewById(R.id.rg_feeling);
-        rbGood = findViewById(R.id.rb_feeling_good);
-        rbSoso = findViewById(R.id.rb_feeling_soso);
-        rbBad = findViewById(R.id.rb_feeling_bad);
+        rgEmotion = findViewById(R.id.rg_emotion);
+        rbGood = findViewById(R.id.rb_emotion_good);
+        rbSoso = findViewById(R.id.rb_emotion_soso);
+        rbBad = findViewById(R.id.rb_emotion_bad);
 
         btnConfirm = findViewById(R.id.btn_add_feeling_confirm);
     }
@@ -145,14 +140,14 @@ public class AddFeelingActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                expenseForm.setEmotion(mappingFeeling());
+                expenseForm.setEmotion(mappingEmotionString());
                 expenseForm.setEmotionDetail(etContent.getText().toString());
 
                 addExpenseToServer();
             }
         });
 
-        rgFeeling.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        rgEmotion.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (etContent.isFocused()) {
@@ -161,14 +156,14 @@ public class AddFeelingActivity extends AppCompatActivity {
                 }
 
                 switch (i) {
-                    case R.id.rb_feeling_good:
-                        selectFeeling = rbGood;
+                    case R.id.rb_emotion_good:
+                        selectEmotion = rbGood;
                         break;
-                    case R.id.rb_feeling_soso:
-                        selectFeeling = rbSoso;
+                    case R.id.rb_emotion_soso:
+                        selectEmotion = rbSoso;
                         break;
-                    case R.id.rb_feeling_bad:
-                        selectFeeling = rbBad;
+                    case R.id.rb_emotion_bad:
+                        selectEmotion = rbBad;
                         break;
                 }
             }
@@ -221,7 +216,7 @@ public class AddFeelingActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (etContent.length() > 0 && selectFeeling != null) {
+                if (etContent.length() > 0 && selectEmotion != null) {
                     btnConfirm.setEnabled(true);
 
                     if (inputManager.isAcceptingText()) {
@@ -252,7 +247,7 @@ public class AddFeelingActivity extends AppCompatActivity {
         softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
             @Override
             public void onHiddenSoftKeyboard() {
-                if (etContent.length() > 0 && selectFeeling != null) {
+                if (etContent.length() > 0 && selectEmotion != null) {
                     btnConfirm.setEnabled(true);
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_true);
                 } else {
@@ -272,7 +267,7 @@ public class AddFeelingActivity extends AppCompatActivity {
             @Override
             public void onShowSoftKeyboard() {
 
-                if (etContent.length() > 0 && selectFeeling != null) {
+                if (etContent.length() > 0 && selectEmotion != null) {
                     btnConfirm.setEnabled(true);
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
                 } else {
@@ -311,19 +306,19 @@ public class AddFeelingActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(AddFeelingActivity.this, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddEmotionActivity.this, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private String mappingFeeling() {
-        switch (rgFeeling.getCheckedRadioButtonId()) {
-            case R.id.rb_feeling_good:
-                return "GOOD";
-            case R.id.rb_feeling_soso:
-                return "SOSO";
-            case R.id.rb_feeling_bad:
-                return "BAD";
+    private String mappingEmotionString() {
+        switch (rgEmotion.getCheckedRadioButtonId()) {
+            case R.id.rb_emotion_good:
+                return EmotionEnum.GOOD.getEmotion();
+            case R.id.rb_emotion_soso:
+                return EmotionEnum.SOSO.getEmotion();
+            case R.id.rb_emotion_bad:
+                return EmotionEnum.BAD.getEmotion();
         }
         return null;
     }
@@ -365,7 +360,7 @@ public class AddFeelingActivity extends AppCompatActivity {
     }
 
     private void moveActivity() {
-        Intent intent = new Intent(AddFeelingActivity.this, MainActivity.class);
+        Intent intent = new Intent(AddEmotionActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 기존 화면 모두 clear
         startActivity(intent);
     }

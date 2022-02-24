@@ -6,9 +6,7 @@ import com.dnd.moneyroutine.R;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Date;
 
 public class Common {
 
@@ -60,42 +58,67 @@ public class Common {
     }
 
     // 메인화면 지난 기록 날짜에 사용
-    public static String getLocalDateToString(LocalDate selectDate) {
-        String result = "";
-        try {
-            Calendar regDate = Calendar.getInstance();
-            regDate.clear();
-            regDate.set(selectDate.getYear(), selectDate.getMonthValue() - 1, selectDate.getDayOfMonth());
+    public static String getMainLocalDateToString(LocalDate selectDate) {
+        LocalDate today = LocalDate.now();
 
-            Calendar calendar = Calendar.getInstance(); // 현재 날짜
-
-            long curTime = calendar.getTimeInMillis(); // 현재 시간
-            long regTime = regDate.getTimeInMillis(); // 선택된 시간
-            long diffTime = (curTime - regTime) / 1000; // 두 시간의 차이
-
-            diffTime /= TIME_MAXIMUM.SEC;
-            diffTime /= TIME_MAXIMUM.MIN;
-            diffTime /= TIME_MAXIMUM.HOUR;
-
-            if (diffTime >= 0) { // 과거 ~ 오늘
-                if (diffTime / TIME_MAXIMUM.DAY < TIME_MAXIMUM.MONTH) {
-                    result += (regDate.get(Calendar.MONTH) + 1) + "월";
-                } else {
-                    result += regDate.get(Calendar.YEAR) + "년 " + (regDate.get(Calendar.MONTH) + 1) + "월 ";
-                }
-            } else { // 미래
-                if(regDate.get(Calendar.YEAR) != calendar.get(Calendar.YEAR)) {
-                    result += regDate.get(Calendar.YEAR) + "년 " + (regDate.get(Calendar.MONTH) + 1) + "월 ";
-                } else {
-                    result += (regDate.get(Calendar.MONTH) + 1) + "월";
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (selectDate.getYear() == today.getYear()) {
+            return selectDate.getMonthValue() + "월";
+        } else {
+            return selectDate.getYear() + "년 " + selectDate.getMonthValue() + "월";
         }
 
-        return result;
+//        String result = "";
+//        try {
+//            Calendar regDate = Calendar.getInstance();
+//            regDate.set(selectDate.getYear(), selectDate.getMonthValue() - 1, selectDate.getDayOfMonth());
+//
+//            Calendar calendar = Calendar.getInstance(); // 현재 날짜
+//
+//            long curTime = calendar.getTimeInMillis(); // 현재 시간
+//            long regTime = regDate.getTimeInMillis(); // 선택된 시간
+//            long diffTime = (curTime - regTime) / 1000; // 두 시간의 차이
+//
+//            diffTime /= TIME_MAXIMUM.SEC;
+//            diffTime /= TIME_MAXIMUM.MIN;
+//            diffTime /= TIME_MAXIMUM.HOUR;
+//
+//            if (selectDate.getYear() != calendar.get(Calendar.YEAR)) {
+//                result += selectDate.getYear() + "년 " + selectDate.getMonthValue() + "월";
+//            } else {
+//                result += selectDate.getMonthValue() + "월";
+//            }
+//
+////            if (diffTime >= 0) { // 과거 ~ 오늘
+////                if (diffTime / TIME_MAXIMUM.DAY < TIME_MAXIMUM.MONTH) {
+////                    result += (regDate.get(Calendar.MONTH) + 1) + "월";
+////                } else {
+////                    result += regDate.get(Calendar.YEAR) + "년 " + (regDate.get(Calendar.MONTH) + 1) + "월 ";
+////                }
+////            } else { // 미래
+////                if(regDate.get(Calendar.YEAR) != calendar.get(Calendar.YEAR)) {
+////                    result += regDate.get(Calendar.YEAR) + "년 " + (regDate.get(Calendar.MONTH) + 1) + "월 ";
+////                } else {
+////                    result += (regDate.get(Calendar.MONTH) + 1) + "월";
+////                }
+////            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return result;
+    }
+
+    // 다이어리 주별 날짜에 사용
+    public static String getWeeklyCalendarToString(Calendar calendar) {
+        Calendar today = Calendar.getInstance();
+
+        if (calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR)) {
+            return (calendar.get(Calendar.MONTH) + 1) + "월 " + calendar.get(Calendar.WEEK_OF_MONTH) + "주차";
+        } else {
+            return calendar.get(Calendar.YEAR) + "년 " + (calendar.get(Calendar.MONTH) + 1) + "월 " + calendar.get(Calendar.WEEK_OF_MONTH) + "주차";
+        }
+
     }
 
     public static int getBasicColorCategoryResId(String category) {
