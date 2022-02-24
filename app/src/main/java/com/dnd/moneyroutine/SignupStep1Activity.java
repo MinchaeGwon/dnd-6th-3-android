@@ -1,5 +1,6 @@
 package com.dnd.moneyroutine;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -10,6 +11,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -23,16 +25,26 @@ import android.widget.Toast;
 
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
 import com.dnd.moneyroutine.dto.UserForm;
+import com.dnd.moneyroutine.service.RequestService;
+import com.google.gson.JsonObject;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class SignupStep1Activity extends AppCompatActivity {
+
+    private static final String TAG = "SignStep1Activity";
 
     private ImageButton ibBack;
     private EditText etEmail;
     private Button btnNext;
     private ImageButton ibRemove;
+
+    private AlertDialog existDialog;
 
     private ConstraintLayout.LayoutParams contentLayoutParams;
     private InputMethodManager inputManager;
@@ -100,10 +112,7 @@ public class SignupStep1Activity extends AppCompatActivity {
 
                 if (isValidEmail(email)) {
                     userForm.setEmail(email);
-
-                    Intent intent = new Intent(SignupStep1Activity.this, SignupStep2Activity.class);
-                    intent.putExtra("userForm", userForm);
-                    startActivity(intent);
+                    checkExistEmail();
                 } else {
                     Toast.makeText(SignupStep1Activity.this, "이메일 형식에 맞지 않습니다", Toast.LENGTH_SHORT).show();
                 }
@@ -240,5 +249,67 @@ public class SignupStep1Activity extends AppCompatActivity {
         Matcher m = p.matcher(email);
 
         return m.matches();
+    }
+
+    private void checkExistEmail() {
+        Call<JsonObject> call = RequestService.getInstance().isExistEmail(userForm);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject responseJson = response.body();
+
+                    Log.d(TAG, responseJson.toString());
+
+                    if (responseJson.get("statusCode").getAsInt() == 200) {
+                        JsonObject data = responseJson.get("data").getAsJsonObject();
+
+                        boolean exist = data.get("exist").getAsBoolean();
+
+                        if (exist) {
+                            setExistDialog();
+                            existDialog.show();
+                        } else {
+                            Intent intent = new Intent(SignupStep1Activity.this, SignupStep2Activity.class);
+                            intent.putExtra("userForm", userForm);
+                            startActivity(intent);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.d(TAG, t.getMessage());
+                Toast.makeText(SignupStep1Activity.this, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setExistDialog() {
+        if (existDialog != null) return;
+        makeExistDialog();
+    }
+
+    // 이메일 중복 확인 다이얼로그 만들기
+    private void makeExistDialog() {
+        View view = getLayoutInflater().inflate(R.layout.dialog_confirm, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
+        builder.setView(view);
+        existDialog = builder.create();
+
+        TextView tvTitle = view.findViewById(R.id.tv_dialog_title);
+        TextView tvContent = view.findViewById(R.id.tv_dialog_content);
+        Button btnConfirm = view.findViewById(R.id.btn_dialog_confirm);
+
+        tvTitle.setText("이미 존재하는 이메일입니다");
+        tvContent.setText("새로운 이메일을 입력해주세요!");
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                existDialog.dismiss();
+            }
+        });
     }
 }

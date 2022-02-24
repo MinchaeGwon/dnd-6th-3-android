@@ -152,7 +152,7 @@ public class MainFragment extends Fragment {
         makeGoalDialog();
     }
 
-    // 기록 종료 확인 다이얼로그 만들기
+    // 예산 추가 확인 다이얼로그 만들기
     private void makeGoalDialog() {
         View view = getLayoutInflater().inflate(R.layout.dialog_confirm, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialog);
@@ -205,8 +205,6 @@ public class MainFragment extends Fragment {
                         } else {
                             getCurrentGoalInfo();
                         }
-
-
                     }
                 }
             }
@@ -239,11 +237,9 @@ public class MainFragment extends Fragment {
                         if (!responseJson.get("data").isJsonNull()) {
                             Gson gson = new Gson();
                             goalInfo = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<GoalInfo>() {}.getType());
-
-                            if (goalInfo != null) {
-                                tabInit();
-                            }
                         }
+
+                        tabInit();
                     }
                 }
             }

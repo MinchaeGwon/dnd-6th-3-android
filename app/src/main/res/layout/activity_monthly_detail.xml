@@ -23,7 +23,7 @@
             app:srcCompat="@drawable/arrow_back" />
 
         <TextView
-            android:id="@+id/textView34"
+            android:id="@+id/tv_monthly_detail_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/spoqa_han_sans_neo_bold"
@@ -51,7 +51,7 @@
                 android:layout_height="118dp">
 
                 <TextView
-                    android:id="@+id/textView41"
+                    android:id="@+id/tv_month_detail_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -64,7 +64,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView46"
+                    android:id="@+id/tv_monthly_detail_percent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -73,11 +73,11 @@
                     android:text="65%"
                     android:textColor="#8f30e9  "
                     android:textSize="14sp"
-                    app:layout_constraintStart_toEndOf="@+id/textView41"
+                    app:layout_constraintStart_toEndOf="@+id/tv_month_detail_category"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView47"
+                    android:id="@+id/tv_monthly_detail_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -87,7 +87,7 @@
                     android:textColor="#212529"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView41" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_month_detail_category" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View

@@ -1,5 +1,7 @@
 package com.dnd.moneyroutine.dto;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
@@ -10,10 +12,12 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GoalCategoryCreateDto implements Serializable {
-
+public class GoalCategoryCreateDto implements Serializable  {
+    @SerializedName("budget")
     private int budget;
-    private Long categoryId;
-    private Boolean isCustom;
+    @SerializedName("categoryId")
+    private long categoryId;
+    @SerializedName("isCustom")
+    private boolean isCustom;
 
 }

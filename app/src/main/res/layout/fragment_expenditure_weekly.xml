@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="17dp"
+    android:background="@color/white"
     tools:context=".fragment.ExpenditureWeeklyFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -257,8 +258,6 @@
                 android:id="@+id/rc_first_content_week"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_weight="0"
                 android:background="#f8f9fa"
                 android:paddingTop="8dp"
@@ -344,8 +343,6 @@
                 android:id="@+id/rc_second_content_week"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_weight="0"
                 android:background="#f8f9fa"
                 android:paddingTop="8dp"
@@ -431,8 +428,6 @@
                 android:id="@+id/rc_third_content_week"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_weight="0"
                 android:background="#f8f9fa"
                 android:paddingTop="8dp"
@@ -518,8 +513,6 @@
                 android:id="@+id/rc_content_else_week"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_weight="0"
                 android:background="#f8f9fa"
                 android:paddingTop="8dp"

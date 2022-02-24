@@ -118,8 +118,8 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/spoqa_han_sans_neo_regular"
                         android:text="전체 예산 "
-                        android:textColor="#ADB5BD"
-                        android:textSize="12sp" />
+                        android:textColor="#868E96"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tv_budget_total"
@@ -127,8 +127,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:textColor="#ADB5BD"
-                        android:textSize="12sp" />
+                        android:textColor="#868E96"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/textView3"
@@ -137,18 +137,18 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/spoqa_han_sans_neo_regular"
                         android:text="원"
-                        android:textColor="#ADB5BD"
-                        android:textSize="12sp" />
+                        android:textColor="#868E96"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_budget_alert"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                    android:fontFamily="@font/spoqa_han_sans_neo_bold"
                     android:text="만원"
                     android:textColor="#343A40"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

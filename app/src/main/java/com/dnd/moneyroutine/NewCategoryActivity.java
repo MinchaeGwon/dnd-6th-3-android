@@ -239,8 +239,6 @@ public class NewCategoryActivity extends AppCompatActivity {
 
                 } else {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_false);
-
-
                 }
 
                 contentLayoutParams.setMarginStart((int) (16 * scale + 0.2f));
@@ -299,12 +297,6 @@ public class NewCategoryActivity extends AppCompatActivity {
                     }
                 }
 
-//                if(btnConfirm.isEnabled()){
-//
-//                }
-//                else{
-//
-//                }
 
             }
 
@@ -396,7 +388,6 @@ public class NewCategoryActivity extends AppCompatActivity {
         HeaderRetrofit headerRetrofit = new HeaderRetrofit();
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);
-
 
         Call<JsonObject> call = retroService.create(customCategoryCreateDto);
         call.enqueue(new Callback<JsonObject>() {
