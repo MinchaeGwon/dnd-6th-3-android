@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class MonthlyTrend {
 
-//    @SerializedName("monthExpenseInfoDtoList")
-//    List<> monthlyTrend;
+    @SerializedName("monthExpenseInfoDtoList")
+    List<MonthlyExpense> monthlyTrend;
 
 }

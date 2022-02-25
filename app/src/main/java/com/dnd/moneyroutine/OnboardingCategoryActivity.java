@@ -1,12 +1,5 @@
 package com.dnd.moneyroutine;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +10,13 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.dnd.moneyroutine.adapter.CategoryGridViewAdapter;
 import com.dnd.moneyroutine.custom.ExpandableHeightGridView;
@@ -183,6 +183,12 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
                         goalCategoryCreateDto.setCustom(false);
                     } else{
                         bgList.add(new CategoryItem(icon.get(index), name.get(index), ex.get(index))); //새로 생성한 카테고리는 아이콘으로
+//                        goalCategoryCreateDtoList.add(i, new GoalCategoryCreateDto(0, Long.valueOf(categoryId), true));
+////                        goalCategoryCreateDto.setBudget(0);
+////                        goalCategoryCreateDto.setCategoryId(Long.valueOf(categoryId));
+////                        goalCategoryCreateDto.setCustom(true);
+////                        goalCategoryCreateDtoList.add(i,goalCategoryCreateDto);
+//                        categoryId++;
 //                        goalCategoryCreateDtoList.add(i, new GoalCategoryCreateDto(0, Long.valueOf(categoryId), true));
                         goalCategoryCreateDto.setBudget(0);
                         goalCategoryCreateDto.setCategoryId(Long.valueOf(newCategoryId));

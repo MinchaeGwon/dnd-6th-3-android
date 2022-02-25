@@ -1,14 +1,21 @@
 package com.dnd.moneyroutine;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.dnd.moneyroutine.adapter.MonthlyDetailAdapter;
+import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
+
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class MonthlyDetailActivity extends AppCompatActivity {
 
@@ -19,13 +26,17 @@ public class MonthlyDetailActivity extends AppCompatActivity {
     private TextView tvTotal;
     private RecyclerView rcContent;
 
+    private ExpenditureDetailDto expenditureDetailDto;
+
     private String getCategoryName;
+    private String getMonth;
     private int getPercent;
     private int getTotal;
 
     DecimalFormat dcFormat = new DecimalFormat("#,###");
 
-
+    private MonthlyDetailAdapter adapter;
+    private ArrayList<ExpenditureDetailDto> expenditureDetailDtoArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +44,7 @@ public class MonthlyDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_monthly_detail);
 
         initView();
+        initAdapter();
         setTextView();
         setListener();
 
@@ -49,18 +61,28 @@ public class MonthlyDetailActivity extends AppCompatActivity {
 
 
     private void setTextView(){
-//        getCategoryName=getIntent().getStringExtra("category name");
-//        getPercent=getIntent().getIntExtra("percentage",0);
-//        getTotal=getIntent().getIntExtra("expense",0);
+        getCategoryName=getIntent().getStringExtra("category name");
+        getPercent=getIntent().getIntExtra("percentage",0);
+        getTotal=getIntent().getIntExtra("expense",0);
+        getMonth=getIntent().getStringExtra("month");
 
         tvTitle.setText(getCategoryName);
-        tvCategoryName.setText("월"+getCategoryName+"지출액");
+        tvCategoryName.setText(getMonth+"월 "+getCategoryName+" 지출액");
         tvPercent.setText(getPercent+"%");
         tvTotal.setText("총 "+dcFormat.format(getTotal)+"원");
 
     }
 
-    private void initAdapter(){}
+    private void initAdapter(){
+        expenditureDetailDtoArrayList= new ArrayList<>();
+//        expenditureDetailDtoArrayList.add(new ExpenditureDetailDto(LocalDate.now(),3000,"학식"));
+
+        adapter = new MonthlyDetailAdapter(expenditureDetailDtoArrayList);
+        rcContent.setLayoutManager(new LinearLayoutManager(this));
+        rcContent.setAdapter(adapter);
+
+
+    }
 
     private void setListener() {
         ivBack.setOnClickListener(new View.OnClickListener() {

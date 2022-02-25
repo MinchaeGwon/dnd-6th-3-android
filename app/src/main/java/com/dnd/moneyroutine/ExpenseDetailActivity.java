@@ -34,6 +34,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import com.dnd.moneyroutine.adapter.MonthlyDetailAdapter;
+import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
+
+import java.util.ArrayList;
+
 public class ExpenseDetailActivity extends AppCompatActivity {
 
     private TextView tvCategory;
