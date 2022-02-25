@@ -139,8 +139,8 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
             @Override
             public void afterTextChanged(Editable editable) {
                 String num = editable.toString().replaceAll("\\,", "");
-                String totalbudget = tv_budget_total.getText().toString();
-                mbudget = Integer.parseInt(totalbudget.replaceAll("\\,", "").toString());
+                String totalBudget = tv_budget_total.getText().toString();
+                mbudget = Integer.parseInt(totalBudget.replaceAll("\\,", ""));
 
                 finalTotal = 0;
                 if (isOnTextChanged) {

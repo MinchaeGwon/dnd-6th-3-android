@@ -5,8 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,7 +55,7 @@ public class DiaryWeeklyFragment extends Fragment {
 
     private LinearLayout btnSelectWeek;
     private TextView tvSelectWeek;
-    private GridView gvCalendar;
+    private RecyclerView rvCalendar;
 
     private TextView tvDate;
 
@@ -104,7 +103,6 @@ public class DiaryWeeklyFragment extends Fragment {
     private void initView(View v) {
         btnSelectWeek = v.findViewById(R.id.ll_select_week);
         tvSelectWeek = v.findViewById(R.id.tv_week_header);
-        gvCalendar = v.findViewById(R.id.gv_weekly_calendar);
 
         tvDate = v.findViewById(R.id.tv_week_date);
 
@@ -128,6 +126,8 @@ public class DiaryWeeklyFragment extends Fragment {
         ivBadMore = v.findViewById(R.id.iv_week_bad_more);
         ivBadHold = v.findViewById(R.id.iv_week_bad_hold);
         rvBad = v.findViewById(R.id.rv_week_bad_detail);
+
+        rvCalendar = v.findViewById(R.id.rv_week_calendar);
     }
 
     private void initField() {
@@ -150,25 +150,25 @@ public class DiaryWeeklyFragment extends Fragment {
                     @Override
                     public void onSelect(Calendar calendar) {
                         currentDate = calendar;
-                        setCalendar();
+                        getWeeklyDiary();
                     }
                 });
             }
         });
 
-        gvCalendar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Date date = (Date) adapterView.getItemAtPosition(position);
-
-                Calendar selectDate = Calendar.getInstance();
-                selectDate.setTime(date);
-
-                tvDate.setText((selectDate.get(Calendar.MONTH) + 1) + "월 " + selectDate.get(Calendar.DATE) + "일 소비 다이어리");
-
-                getDailyDiary(selectDate);
-            }
-        });
+//        gvCalendar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                Date date = (Date) adapterView.getItemAtPosition(position);
+//
+//                Calendar selectDate = Calendar.getInstance();
+//                selectDate.setTime(date);
+//
+//                tvDate.setText((selectDate.get(Calendar.MONTH) + 1) + "월 " + selectDate.get(Calendar.DATE) + "일 소비 다이어리");
+//
+//                getDailyDiary(selectDate);
+//            }
+//        });
 
         btnGood.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,9 +236,22 @@ public class DiaryWeeklyFragment extends Fragment {
             calendar.add(Calendar.DAY_OF_WEEK,1);
         }
 
+        WeeklyCalendarAdapter weeklyCalendarAdapter2 = new WeeklyCalendarAdapter(cells, year, month, week, weeklyList);
+        weeklyCalendarAdapter2.setOnSelectListener(new WeeklyCalendarAdapter.OnSelectListener() {
+            @Override
+            public void onSelect(View v, Date date) {
+                Calendar selectDate = Calendar.getInstance();
+                selectDate.setTime(date);
+
+                tvDate.setText((selectDate.get(Calendar.MONTH) + 1) + "월 " + selectDate.get(Calendar.DATE) + "일 소비 다이어리");
+
+                getDailyDiary(selectDate);
+            }
+        });
+
         // update view
-        WeeklyCalendarAdapter weeklyCalendarAdapter = new WeeklyCalendarAdapter(getContext(), cells, year, month, week, weeklyList);
-        gvCalendar.setAdapter(weeklyCalendarAdapter);
+        rvCalendar.setAdapter(weeklyCalendarAdapter2);
+        rvCalendar.setLayoutManager(new GridLayoutManager(getContext(), 7));
 
         // update title
         tvSelectWeek.setText(Common.getWeeklyCalendarToString(currentDate));

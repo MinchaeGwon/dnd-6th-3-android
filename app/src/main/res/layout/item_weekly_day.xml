@@ -46,21 +46,21 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginTop="10dp"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:srcCompat="@drawable/icon_good" />
 
         <ImageView
             android:id="@+id/iv_weekly_emotion2"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:srcCompat="@drawable/icon_good" />
 
         <ImageView
             android:id="@+id/iv_weekly_emotion3"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:srcCompat="@drawable/icon_good" />
 
         <TextView
@@ -73,6 +73,6 @@
             android:includeFontPadding="false"
             android:textColor="#343A40"
             android:textSize="10sp"
-            android:visibility="invisible" />
+            android:visibility="gone" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
