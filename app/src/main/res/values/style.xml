@@ -50,4 +50,26 @@
         <!-- inactive track color -->
         <item name="android:colorForeground">#212529</item>
     </style>
+
+    <style name="AnimThemeRight" parent="Theme.MoneyRoutine">
+        <item name="android:windowAnimationStyle">@style/CustomAnimRight</item>
+    </style>
+
+    <style name="CustomAnimRight" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/hold</item>
+        <item name="android:activityCloseEnterAnimation">@anim/hold</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+    </style>
+
+    <style name="AnimThemeUp" parent="Theme.MoneyRoutine">
+        <item name="android:windowAnimationStyle">@style/CustomAnimUp</item>
+    </style>
+
+    <style name="CustomAnimUp" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_up</item>
+        <item name="android:activityOpenExitAnimation">@anim/hold</item>
+        <item name="android:activityCloseEnterAnimation">@anim/hold</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_up</item>
+    </style>
 </resources>

@@ -172,7 +172,7 @@ public class MainCurrentMonthFragment extends Fragment {
         }
 
         String strTotalExpense = myFormatter.format(totalExpense);
-        tvTotalBudget.setText("전체 " + strTotalExpense + "원 지출");
+        tvTotalExpense.setText("전체 " + strTotalExpense + "원 지출");
 
         ExpenseCategoryAdapter expenseCategoryAdapter = new ExpenseCategoryAdapter(goalInfo.getGoalCategoryList(), true);
         rvCategory.setAdapter(expenseCategoryAdapter);

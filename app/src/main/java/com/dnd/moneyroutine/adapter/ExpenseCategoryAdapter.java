@@ -111,7 +111,7 @@ public class ExpenseCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             if (current) {
                 tvExpense.setText(expense + "원");
-                tvRemain.setText(remain + "원");
+                tvRemain.setText(remain + "원 남음");
             } else {
                 tvExpense.setText(expense + "원 씀");
                 tvRemain.setText(remain + "원 아낌");

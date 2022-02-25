@@ -119,7 +119,7 @@
                                 android:includeFontPadding="false"
                                 android:text="만족"
                                 android:textColor="#343A40"
-                                android:textSize="14sp" />
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/tv_month_good_cnt"
@@ -131,7 +131,7 @@
                                 android:includeFontPadding="false"
                                 android:text="0번"
                                 android:textColor="#107D69"
-                                android:textSize="14sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
@@ -159,7 +159,7 @@
                                 android:includeFontPadding="false"
                                 android:text="보통"
                                 android:textColor="#343A40"
-                                android:textSize="14sp" />
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/tv_month_soso_cnt"
@@ -171,7 +171,7 @@
                                 android:includeFontPadding="false"
                                 android:text="0번"
                                 android:textColor="#1E5CA4"
-                                android:textSize="14sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
@@ -199,7 +199,7 @@
                                 android:includeFontPadding="false"
                                 android:text="불만족"
                                 android:textColor="#343A40"
-                                android:textSize="14sp" />
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/tv_month_bad_cnt"
@@ -211,7 +211,7 @@
                                 android:includeFontPadding="false"
                                 android:text="0번"
                                 android:textColor="#D13474"
-                                android:textSize="14sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 

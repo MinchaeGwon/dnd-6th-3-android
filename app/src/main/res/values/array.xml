@@ -36,4 +36,58 @@
         <item>#A3BCFF</item>
         <item>#C896FA</item>
     </string-array>
+
+    <array name="badgeStartArray">
+        <item>@drawable/badge_start_budget</item>
+        <item>@drawable/badge_start_record</item>
+        <item>@drawable/badge_start_good</item>
+    </array>
+
+    <array name="badgeRecordArray">
+        <item>@drawable/badge_record1</item>
+        <item>@drawable/badge_record2</item>
+        <item>@drawable/badge_record3</item>
+        <item>@drawable/badge_record4</item>
+    </array>
+
+    <array name="badgeRecommendArray">
+        <item>@drawable/badge_recommend1</item>
+        <item>@drawable/badge_recommend2</item>
+        <item>@drawable/badge_recommend3</item>
+        <item>@drawable/badge_recommend4</item>
+    </array>
+
+    <array name="badgeGoodArray">
+        <item>@drawable/badge_good1</item>
+        <item>@drawable/badge_good2</item>
+        <item>@drawable/badge_good3</item>
+        <item>@drawable/badge_good4</item>
+    </array>
+
+    <string-array name="strStartArray">
+        <item>예산 설정</item>
+        <item>첫 기록</item>
+        <item>첫 만족 소비</item>
+    </string-array>
+
+    <string-array name="strRecordArray">
+        <item>일주일(7회)</item>
+        <item>2주(14회)</item>
+        <item>3주(21회)</item>
+        <item>한 달</item>
+    </string-array>
+
+    <string-array name="strRecommendArray">
+        <item>1주차</item>
+        <item>2주차</item>
+        <item>3주차</item>
+        <item>4주차</item>
+    </string-array>
+
+    <string-array name="strGoodArray">
+        <item>만족 소비(5회)</item>
+        <item>만족 소비(10회)</item>
+        <item>만족 소비(20회)</item>
+        <item>만족 소비(30회)</item>
+    </string-array>
 </resources>

@@ -9,8 +9,8 @@
 
     <ImageButton
         android:id="@+id/ib_dtl_expense_back"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="10dp"
+        android:layout_height="18dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_weight="0"
@@ -273,6 +273,7 @@
                         android:id="@+id/rb_dtl_emotion_good"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:enabled="false"
                         android:button="@drawable/emotion_good_selector" />
 
                     <RadioButton
@@ -281,12 +282,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
+                        android:enabled="false"
                         android:button="@drawable/emotion_soso_selector" />
 
                     <RadioButton
                         android:id="@+id/rb_dtl_emotion_bad"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:enabled="false"
                         android:button="@drawable/emotion_bad_selector" />
                 </RadioGroup>
 

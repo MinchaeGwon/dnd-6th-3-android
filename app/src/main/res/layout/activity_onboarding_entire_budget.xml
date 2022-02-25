@@ -9,13 +9,13 @@
 
     <ImageView
         android:id="@+id/iv_back_entire"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="10dp"
+        android:layout_height="18dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/btn_black_back" />
+        app:srcCompat="@drawable/icon_left_arrow" />
 
     <LinearLayout
         android:layout_width="wrap_content"
