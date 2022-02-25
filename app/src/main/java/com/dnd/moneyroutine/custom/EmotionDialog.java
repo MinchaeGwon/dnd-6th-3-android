@@ -47,6 +47,14 @@ public class EmotionDialog extends DialogFragment {
         View dialog = inflater.inflate(R.layout.dialog_emotion, null);
         builder.setView(dialog);
 
+        Button btnCancel = dialog.findViewById(R.id.btn_dialog_cancel);
+        btnCancel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                EmotionDialog.this.getDialog().cancel();
+            }
+        });
+
         Button btnConfirm = dialog.findViewById(R.id.btn_dialog_confirm);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override

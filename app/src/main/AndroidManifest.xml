@@ -21,84 +21,103 @@
             android:name=".DirectCustomCategoryActivity"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"
+            android:theme="@style/AnimThemeRight"
             android:exported="true" />
 
         <activity
             android:name=".MonthlyDetailActivity"
+            android:theme="@style/AnimThemeRight"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ExpenseDetailActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AnimThemeRight"
             android:exported="true" />
         <activity
             android:name=".NotificationSettingActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AnimThemeRight"
             android:exported="true" />
         <activity
             android:name=".SettingActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AnimThemeRight"
             android:exported="true" />
         <activity
             android:name=".OnboardingCategoryActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AnimThemeRight" />
         <activity
             android:name=".AddExpenseCatActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AnimThemeRight"
             android:exported="true" />
         <activity
             android:name=".BudgetUpdateActivity"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"
+            android:theme="@style/AnimThemeRight"
             android:exported="true" />
         <activity
             android:name=".AddEmotionActivity"
             android:exported="true"
             android:screenOrientation="portrait"
+            android:theme="@style/AnimThemeRight"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".AddExpenseActivity"
             android:exported="true"
             android:screenOrientation="portrait"
+            android:theme="@style/AnimThemeRight"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".NewCategoryActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AnimThemeRight"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".OnboardingDetailBudgetActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AnimThemeRight"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".OnboardingEntireBudgetActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AnimThemeRight"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".MainActivity"
+            android:theme="@style/AnimThemeRight"
             android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".SignupStep2Activity"
             android:exported="true"
+            android:theme="@style/AnimThemeRight"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".SignupStep1Activity"
             android:exported="true"
+            android:theme="@style/AnimThemeRight"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".NormalLoginActivity"
             android:exported="true"
+            android:theme="@style/AnimThemeRight"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait" />
         <activity
             android:name=".SocialLoginActivity"
             android:exported="true"
+            android:theme="@style/AnimThemeRight"
             android:screenOrientation="portrait" />
         <activity
             android:name=".WelcomeActivity"
             android:exported="true"
+            android:theme="@style/AnimThemeRight"
             android:screenOrientation="portrait" />
         <activity
             android:name=".SplashActivity"

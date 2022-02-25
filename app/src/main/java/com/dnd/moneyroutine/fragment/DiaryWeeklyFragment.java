@@ -81,8 +81,8 @@ public class DiaryWeeklyFragment extends Fragment {
     private RecyclerView rvBad;
 
     private String token;
-    private Calendar currentDate;
     private Calendar selectDate;
+    private Calendar today;
     private ArrayList<WeeklyDiary> weeklyList;
 
     @Override
@@ -97,7 +97,7 @@ public class DiaryWeeklyFragment extends Fragment {
         setListener();
 
         getWeeklyDiary();
-        getDailyDiary(currentDate);
+        getDailyDiary(selectDate);
     }
 
     private void initView(View v) {
@@ -133,9 +133,9 @@ public class DiaryWeeklyFragment extends Fragment {
     private void initField() {
         token = PreferenceManager.getToken(getContext(), Constants.tokenKey);
 
+        today = Calendar.getInstance();
         selectDate = Calendar.getInstance();
-        currentDate = Calendar.getInstance();
-        tvDate.setText((currentDate.get(Calendar.MONTH) + 1) + "월 " + currentDate.get(Calendar.DATE) + "일 소비 다이어리");
+        tvDate.setText((selectDate.get(Calendar.MONTH) + 1) + "월 " + selectDate.get(Calendar.DATE) + "일 소비 다이어리");
     }
 
     private void setListener() {
@@ -143,32 +143,18 @@ public class DiaryWeeklyFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // 연도, 월, 주 선택 다이얼로그 띄우기
-                WeekPickerDialog weekPickerDialog = new WeekPickerDialog(currentDate);
+                WeekPickerDialog weekPickerDialog = new WeekPickerDialog(selectDate);
                 weekPickerDialog.show(getActivity().getSupportFragmentManager(), "YearMonthPickerDialog");
 
                 weekPickerDialog.setOnSelectListener(new WeekPickerDialog.OnSelectListener() {
                     @Override
                     public void onSelect(Calendar calendar) {
-                        currentDate = calendar;
+                        selectDate = calendar;
                         getWeeklyDiary();
                     }
                 });
             }
         });
-
-//        gvCalendar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                Date date = (Date) adapterView.getItemAtPosition(position);
-//
-//                Calendar selectDate = Calendar.getInstance();
-//                selectDate.setTime(date);
-//
-//                tvDate.setText((selectDate.get(Calendar.MONTH) + 1) + "월 " + selectDate.get(Calendar.DATE) + "일 소비 다이어리");
-//
-//                getDailyDiary(selectDate);
-//            }
-//        });
 
         btnGood.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,11 +205,11 @@ public class DiaryWeeklyFragment extends Fragment {
     // 캘린더 설정
     public void setCalendar() {
         ArrayList<Date> cells = new ArrayList<>();
-        Calendar calendar = (Calendar) currentDate.clone();
+        Calendar calendar = (Calendar) selectDate.clone();
 
-        int year = currentDate.get(Calendar.YEAR);
-        int month = currentDate.get(Calendar.MONTH) + 1;
-        int week = currentDate.get(Calendar.WEEK_OF_MONTH);
+        int year = selectDate.get(Calendar.YEAR);
+        int month = selectDate.get(Calendar.MONTH) + 1;
+        int week = selectDate.get(Calendar.WEEK_OF_MONTH);
 
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY); // 주의 시작을 일요일로 설정
         int weekBeginningCell = calendar.get(Calendar.DAY_OF_WEEK) - 1;
@@ -236,25 +222,29 @@ public class DiaryWeeklyFragment extends Fragment {
             calendar.add(Calendar.DAY_OF_WEEK,1);
         }
 
-        WeeklyCalendarAdapter weeklyCalendarAdapter2 = new WeeklyCalendarAdapter(cells, year, month, week, weeklyList);
-        weeklyCalendarAdapter2.setOnSelectListener(new WeeklyCalendarAdapter.OnSelectListener() {
+        WeeklyCalendarAdapter weeklyCalendarAdapter = new WeeklyCalendarAdapter(cells, year, month, week, weeklyList);
+        weeklyCalendarAdapter.setOnSelectListener(new WeeklyCalendarAdapter.OnSelectListener() {
             @Override
             public void onSelect(View v, Date date) {
-                Calendar selectDate = Calendar.getInstance();
-                selectDate.setTime(date);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
 
-                tvDate.setText((selectDate.get(Calendar.MONTH) + 1) + "월 " + selectDate.get(Calendar.DATE) + "일 소비 다이어리");
+                if (today.get(Calendar.YEAR) == calendar.get(Calendar.YEAR)) {
+                    tvDate.setText((calendar.get(Calendar.MONTH) + 1) + "월 " + calendar.get(Calendar.DATE) + "일 소비 다이어리");
+                } else {
+                    tvDate.setText(calendar.get(Calendar.YEAR) + "년 " + (calendar.get(Calendar.MONTH) + 1) + "월 " + calendar.get(Calendar.DATE) + "일 소비 다이어리");
+                }
 
-                getDailyDiary(selectDate);
+                getDailyDiary(calendar);
             }
         });
 
         // update view
-        rvCalendar.setAdapter(weeklyCalendarAdapter2);
+        rvCalendar.setAdapter(weeklyCalendarAdapter);
         rvCalendar.setLayoutManager(new GridLayoutManager(getContext(), 7));
 
         // update title
-        tvSelectWeek.setText(Common.getWeeklyCalendarToString(currentDate));
+        tvSelectWeek.setText(Common.getWeeklyCalendarToString(selectDate));
     }
 
     private void getWeeklyDiary() {
@@ -262,9 +252,9 @@ public class DiaryWeeklyFragment extends Fragment {
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);
 
-        int year = currentDate.get(Calendar.YEAR);
-        int month = currentDate.get(Calendar.MONTH) + 1;
-        int week = currentDate.get(Calendar.WEEK_OF_MONTH);
+        int year = selectDate.get(Calendar.YEAR);
+        int month = selectDate.get(Calendar.MONTH) + 1;
+        int week = selectDate.get(Calendar.WEEK_OF_MONTH);
 
         Call<JsonObject> call = retroService.getWeeklyDiary(year, month, week);
         call.enqueue(new Callback<JsonObject>() {
