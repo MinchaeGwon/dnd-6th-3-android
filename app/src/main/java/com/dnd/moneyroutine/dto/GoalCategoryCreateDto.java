@@ -16,5 +16,4 @@ public class GoalCategoryCreateDto implements Serializable  {
     private int budget;
     private long categoryId;
     private boolean isCustom;
-
 }

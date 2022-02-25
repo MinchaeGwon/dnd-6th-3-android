@@ -7,6 +7,7 @@
     android:background="#F8F9FA">
 
     <LinearLayout
+        android:id="@+id/ll_week_expense"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="38dp"
@@ -69,7 +70,7 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/tv_week_feel_content"
+                android:id="@+id/tv_week_emotion_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"

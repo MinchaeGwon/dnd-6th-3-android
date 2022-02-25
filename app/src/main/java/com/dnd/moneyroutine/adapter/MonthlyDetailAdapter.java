@@ -64,14 +64,14 @@ public class MonthlyDetailAdapter  extends RecyclerView.Adapter<MonthlyDetailAda
 
         private void onBind(ExpenditureDetailDto expenditureDetailDto){
 
-            tvDate.setText(expenditureDetailDto.getDate().format(DateTimeFormatter.ofPattern("M월 d일")));
-            mList = new ArrayList<>();
-            mList.add(new ExpenditureDetailDto(LocalDate.now(),3000,"dd"));
-
-
-            adapter=new MonthlyDetailContentAdapter(mList);
-            rcContent.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
-            rcContent.setAdapter(adapter);
+//            tvDate.setText(expenditureDetailDto.getDate().format(DateTimeFormatter.ofPattern("M월 d일")));
+//            mList = new ArrayList<>();
+//            mList.add(new ExpenditureDetailDto(LocalDate.now(),3000,"dd"));
+//
+//
+//            adapter=new MonthlyDetailContentAdapter(mList);
+//            rcContent.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+//            rcContent.setAdapter(adapter);
 
 
         }

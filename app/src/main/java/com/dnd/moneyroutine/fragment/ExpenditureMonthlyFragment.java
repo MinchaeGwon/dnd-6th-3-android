@@ -19,8 +19,8 @@ import androidx.fragment.app.Fragment;
 
 import com.dnd.moneyroutine.MonthlyDetailActivity;
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.adapter.MonthlyDetailAdapter;
 import com.dnd.moneyroutine.custom.Constants;
+import com.dnd.moneyroutine.custom.Exclude;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
 import com.dnd.moneyroutine.dto.GoalCategoryInfo;
@@ -115,9 +115,8 @@ public class ExpenditureMonthlyFragment extends Fragment {
     private TextView tvBarChartMonth5;
 
 
-
     private MonthlyStatistics responseMonthDetail;
-    private ArrayList<GoalCategoryInfo> goalCategoryInfo;
+    private ArrayList<GoalCategoryInfo> goal;
     DecimalFormat dcFormat = new DecimalFormat("#,###");
 
     private ExpenditureDetailDto expenditureDetailDto;
@@ -146,18 +145,16 @@ public class ExpenditureMonthlyFragment extends Fragment {
 
         initView(view);
         setDate();
-        setTextView();
+//        setTextView();
 //        drawPieChart();
 //        setContent();
 //        drawBarChart();
         showDetail();
 //        drawBarChart();
-
-        drawPieChartNull();
-        setContentNull();
+        setListener();
         getMonthlyStatistics(startDate, endDate);
         getMonthlyTrend(now);
-
+//        drawPieChart();
     }
 
     private void initView(View v) {
@@ -224,8 +221,7 @@ public class ExpenditureMonthlyFragment extends Fragment {
 
     private void drawPieChart() {
 
-        tvTop.setText(responseMonthDetail.getTopCategory());
-        totalExpenditure.setText(responseMonthDetail.getTotalExpense().toString() + "원");
+        totalExpenditure.setText(dcFormat.format(responseMonthDetail.getTotalExpense()) + "원");
 
         pieChart.setRotationAngle(-100); //시작 위치 설정 (3시방향이 기본)
         pieChart.getDescription().setEnabled(false); //차트 설명 제거
@@ -237,32 +233,51 @@ public class ExpenditureMonthlyFragment extends Fragment {
         pieChart.setHoleRadius(55f); //hole 크기 설정
         pieChart.setTransparentCircleRadius(0);
 
-        goalCategoryInfo = new ArrayList<>();
+        goal = new ArrayList<>();
         for (int i = 0; i < responseMonthDetail.getGoalCategoryInfoDtoList().size(); i++) {
 //            String name = responseMonthDetail.getGoalCategoryInfoDtoList().get(i).getCategoryName();
 //            double percentage  = responseMonthDetail.getGoalCategoryInfoDtoList().get(i).getPercentage();
 //            long expense = responseMonthDetail.getGoalCategoryInfoDtoList().get(i).getExpense();
 //
-            goalCategoryInfo.add(responseMonthDetail.getGoalCategoryInfoDtoList().get(i));
+            goal.add(responseMonthDetail.getGoalCategoryInfoDtoList().get(i));
         }
 
-        Collections.sort(goalCategoryInfo, Collections.reverseOrder());
+        Collections.sort(goal, Collections.reverseOrder());
+        tvTop.setText(goal.get(0).getCategoryName());
+        tvTopRatio.setText(goal.get(0).getPercentage() + "%");
+
+        int p1 =goal.get(0).getExpense()/responseMonthDetail.getTotalExpense()*100;
+        int p2 =goal.get(1).getExpense()/responseMonthDetail.getTotalExpense()*100;
+        int p3 =goal.get(2).getExpense()/responseMonthDetail.getTotalExpense()*100;
 
 
         percentSum = 0;
         expenseSum = 0;
-        for (int i = 0; i < 3; i++) {
-            expenseSum += goalCategoryInfo.get(i).getExpense();
-            percentSum += goalCategoryInfo.get(i).getPercentage();
+
+        if (goal.size() < 4) {
+            for (int i = 0; i < goal.size(); i++) {
+                expenseSum += goal.get(i).getExpense();
+                percentSum += goal.get(i).getPercentage();
+            }
+        } else {
+            for (int i = 0; i < 3; i++) {
+                expenseSum += goal.get(i).getExpense();
+                percentSum += goal.get(i).getPercentage();
+            }
         }
 
-        ArrayList values = new ArrayList();
 
+        ArrayList<PieEntry> values = new ArrayList();
 
-        values.add(new PieEntry((float) goalCategoryInfo.get(0).getPercentage(), goalCategoryInfo.get(0).getCategoryName()));
-        values.add(new PieEntry((float) (100 - expenseSum), "나머지"));
-        values.add(new PieEntry((float) goalCategoryInfo.get(2).getPercentage(), goalCategoryInfo.get(2).getCategoryName()));
-        values.add(new PieEntry((float) goalCategoryInfo.get(1).getPercentage(), goalCategoryInfo.get(1).getCategoryName()));
+//        values.add(new PieEntry(goal.get(0).getPercentage(), goal.get(0).getCategoryName()));
+//        values.add(new PieEntry((100 - percentSum), "나머지"));
+//        values.add(new PieEntry(goal.get(2).getPercentage(), goal.get(2).getCategoryName()));
+//        values.add(new PieEntry(goal.get(1).getPercentage(), goal.get(1).getCategoryName()));
+
+        values.add(new PieEntry(60f,"1"));
+        values.add(new PieEntry(0, "나머지"));
+        values.add(new PieEntry(0,"3"));
+        values.add(new PieEntry(40f,"2"));
 
 
         PieDataSet dataSet = new PieDataSet(values, "총 지출");
@@ -284,82 +299,25 @@ public class ExpenditureMonthlyFragment extends Fragment {
     }
 
     private void setContent() {
-        tvCategoryName1.setText(goalCategoryInfo.get(0).getCategoryName());
-        tvPercentage1.setText(goalCategoryInfo.get(0).getPercentage() + "%");
-        tvExpense1.setText(dcFormat.format(goalCategoryInfo.get(0).getExpense()) + "원");
+        tvCategoryName1.setText(goal.get(0).getCategoryName());
+//        tvPercentage1.setText(goal.get(0).getPercentage() + "%");
+        tvPercentage1.setText(60 + "%");
+        tvExpense1.setText(dcFormat.format(goal.get(0).getExpense()) + "원");
 
-        tvCategoryName2.setText(goalCategoryInfo.get(1).getCategoryName());
-        tvPercentage2.setText(goalCategoryInfo.get(1).getPercentage() + "%");
-        tvExpense2.setText(dcFormat.format(goalCategoryInfo.get(1).getExpense()) + "원");
+        tvCategoryName2.setText(goal.get(1).getCategoryName());
+//        tvPercentage2.setText(goal.get(1).getPercentage() + "%");
+        tvPercentage2.setText(40 + "%");
+        tvExpense2.setText(dcFormat.format(goal.get(1).getExpense()) + "원");
 
-        tvCategoryName3.setText(goalCategoryInfo.get(2).getCategoryName());
-        tvPercentage3.setText(goalCategoryInfo.get(2).getPercentage() + "%");
-        tvExpense3.setText(dcFormat.format(goalCategoryInfo.get(2).getExpense()) + "원");
-
-        tvCategoryName4.setText(goalCategoryInfo.get(3).getCategoryName());
-        tvPercentage4.setText(goalCategoryInfo.get(3).getPercentage() + "%");
-        tvExpense4.setText(dcFormat.format(goalCategoryInfo.get(3).getExpense()) + "원");
-
-    }
-
-    //임시로 생성
-    private void drawPieChartNull() {
-        pieChart.setRotationAngle(-100); //시작 위치 설정 (3시방향이 기본)
-        pieChart.getDescription().setEnabled(false); //차트 설명 제거
-        pieChart.getLegend().setEnabled(false); //아래 색깔별 항목 설명 제거
-
-        pieChart.setExtraOffsets(0, 0, 0, 0); //차트 주변 margin 설정
-        pieChart.setTouchEnabled(false); // 터치 애니메이션 설정
-        pieChart.setDrawHoleEnabled(true); //가운데 hole
-        pieChart.setHoleRadius(55f); //hole 크기 설정
-        pieChart.setTransparentCircleRadius(0);
-
-        ArrayList values = new ArrayList();
-
-
-        values.add(new PieEntry(65f, "식비"));
-        values.add(new PieEntry(2f, "나머지"));
-        values.add(new PieEntry(8f,"유흥비"));
-        values.add(new PieEntry(25f, "카페"));
-
-
-        PieDataSet dataSet = new PieDataSet(values, "총 지출");
-
-        //차트 색상 설정
-        final int[] MY_COLORS = {Color.parseColor("#c896fa"), Color.parseColor("#ced4da"),
-                Color.parseColor("#7ae2f9"), Color.parseColor("#a3bcff")};
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-        for (int c : MY_COLORS) colors.add(c);
-        dataSet.setColors(colors);
-
-        pieChart.setDrawMarkers(false); //차트 색상 사이 간격
-        pieChart.setDrawEntryLabels(false); //차트위 설명 제거
-
-        PieData data = new PieData((dataSet));
-        dataSet.setDrawValues(false);
-
-        pieChart.setData(data);
-    }
-
-    private void setContentNull() {
-        tvCategoryName1.setText("식비");
-        tvPercentage1.setText(55 + "%");
-        tvExpense1.setText("125,000" + "원");
-
-        tvCategoryName2.setText("카페");
-        tvPercentage2.setText("25%");
-        tvExpense2.setText("75,000원");
-
-        tvCategoryName3.setText("유흥비");
-        tvPercentage3.setText("8%");
-        tvExpense3.setText("50,000원");
+        tvCategoryName3.setText(goal.get(2).getCategoryName());
+        tvPercentage3.setText(goal.get(2).getPercentage() + "%");
+        tvExpense3.setText(dcFormat.format(goal.get(2).getExpense()) + "원");
 
         tvCategoryName4.setText("나머지");
-        tvPercentage4.setText("12%");
-        tvExpense4.setText("8,000원");
+        tvPercentage4.setText(goal.get(3).getPercentage() + "%");
+        tvExpense4.setText(dcFormat.format(goal.get(3).getExpense()) + "원");
 
     }
-
 
     private void getMonthlyStatistics(LocalDate startDate, LocalDate endDate) {
         HeaderRetrofit headerRetrofit = new HeaderRetrofit();
@@ -376,21 +334,19 @@ public class ExpenditureMonthlyFragment extends Fragment {
                     Log.d("month", responseJson.toString());
 
 
-                    Gson gson = new Gson();
-                    responseMonthDetail = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<MonthlyDetailActivity>() {
-                    }.getType());
-
                     if (responseJson.get("statusCode").getAsInt() == 200) {
                         if (!responseJson.get("data").isJsonNull()) {
 //                            JsonArray jsonArray = responseJson.get("data").getAsJsonArray();
+//                            Gson gson = new Gson();
 
-
-                        }
-                        if (responseMonthDetail != null) {
+//                            Gson gson = new GsonBuilder().addDeserializationExclusionStrategy(ex).addSerializationExclusionStrategy(ex).create();
+                            Gson gson = new Gson();
+                            responseMonthDetail = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<MonthlyStatistics>() {}.getType());
                             drawPieChart();
                             setTextView();
                             setContent();
                         }
+
                     }
                 } else {
                     Log.e("month", "error: " + response.code());
@@ -419,7 +375,6 @@ public class ExpenditureMonthlyFragment extends Fragment {
                 if (response.isSuccessful()) {
                     JsonObject responseJson = response.body();
                     Log.d("monthly Trend", responseJson.toString());
-
 
                     Gson gson = new Gson();
                     monthlyTrend = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<MonthlyDetailActivity>() {
@@ -452,7 +407,6 @@ public class ExpenditureMonthlyFragment extends Fragment {
         endDate = YearMonth.now().atEndOfMonth();
 
 
-
         ivNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -466,7 +420,7 @@ public class ExpenditureMonthlyFragment extends Fragment {
                 drawPieChart();
                 setContent();
 
-                setMonthlyTrendText();
+//                setMonthlyTrendText();
 
             }
         });
@@ -484,7 +438,7 @@ public class ExpenditureMonthlyFragment extends Fragment {
                 setContent();
 
                 if (now.getMonthValue() > startDate.getMonthValue()) {
-                    setMonthlyTrendText();
+//                    setMonthlyTrendText();
                 }
             }
         });
@@ -499,176 +453,179 @@ public class ExpenditureMonthlyFragment extends Fragment {
         tvMonth.setText(startDate.getYear() + ". " + startDate.getMonthValue() + "월");
         tvDate.setText(start + "-" + end);
 
-    }
-
-
-    private void drawBarChart() {
-
-        int overHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 74, getResources().getDisplayMetrics());
-        int lessHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 121, getResources().getDisplayMetrics());
-        int nowHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 169, getResources().getDisplayMetrics());
-
-
-        if (monthlyTrend.get(0) != null) {
-            tvBarChartMonth1.setText(monthlyTrend.get(0).getMonth() + "월");
-            if (monthlyTrend.get(0).getMonthExpense() > monthlyTrend.get(0).getBudget()) {
-                viewBarChart1.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, overHeight));
-
-            } else {
-                viewBarChart1.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, lessHeight));
-            }
-        }
-
-        if (monthlyTrend.get(1) != null) {
-            tvBarChartMonth1.setText(monthlyTrend.get(1).getMonth() + "월");
-            if (monthlyTrend.get(1).getMonthExpense() > monthlyTrend.get(1).getBudget()) {
-                viewBarChart2.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, overHeight));
-
-            } else {
-                viewBarChart2.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, lessHeight));
-            }
-        }
-
-        if (monthlyTrend.get(2) != null) {
-            tvBarChartMonth1.setText(monthlyTrend.get(2).getMonth() + "월");
-            if (monthlyTrend.get(2).getMonthExpense() > monthlyTrend.get(2).getBudget()) {
-                viewBarChart3.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, overHeight));
-
-            } else {
-                viewBarChart3.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, lessHeight));
-            }
-
-        }
-
-        if (monthlyTrend.get(3) != null) {
-            tvBarChartMonth1.setText(monthlyTrend.get(3).getMonth() + "월");
-            if (monthlyTrend.get(3).getMonthExpense() > monthlyTrend.get(3).getBudget()) {
-                viewBarChart4.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, overHeight));
-
-            } else {
-                viewBarChart4.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, lessHeight));
-            }
-        }
-
-        if (monthlyTrend.get(4) != null) {
-            tvBarChartMonth1.setText(monthlyTrend.get(4).getMonth() + "월");
-            viewBarChart5.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, nowHeight));
-            if (monthlyTrend.get(4).getMonthExpense() > monthlyTrend.get(4).getBudget()) {
-                tvBarChartMonth1.setBackgroundResource(R.drawable.bar_chart_now_high);
-                tvNotice.setText("이번달 지출이 위험해요");
-
-            } else {
-                tvBarChartMonth1.setBackgroundResource(R.drawable.bar_chart_now_low);
-
-                tvNotice.setText("이번달 지출이 적당해요");
-
-
-                tvDifference.setText("아직" + formatter.format(monthlyTrend.get(4).getBudget() - monthlyTrend.get(4).getMonthExpense()) + "원 더 쓸 수 있어요");
-                tvDifference.setTextColor(Color.parseColor("#107D69"));
-
-                tvMonthBudgetBarChart.setText(formatter.format(monthlyTrend.get(4).getBudget()) + "원");
-
-                tvPossibleText.setText("쓸 수 있는 돈");
-                tvPossibleAmount.setText(formatter.format(monthlyTrend.get(4).getBudget() - monthlyTrend.get(4).getMonthExpense()) + "원");
-                tvPossibleAmount.setTextColor(Color.parseColor("#107D6"));
-
-                tvRemainText.setVisibility(View.INVISIBLE);
-                tvRemainAmount.setVisibility(View.INVISIBLE);
-
-            }
-        }
+//        if(responseMonthDetail.getTotalExpense()>responseMonthDetail.)
 
     }
 
-    private void setMonthlyTrendText() {
-        monthDifference = now.getMonthValue() - startDate.getMonthValue();
-
-        if (monthDifference == 1) {
-            if (monthlyTrend.get(3).getMonthExpense() > monthlyTrend.get(3).getBudget()) {
-                setTextOver(3);
-                viewBarChart4.setBackgroundResource(R.drawable.bar_chart_now_high);
-            } else {
-                setTextLess(3);
-                viewBarChart4.setBackgroundResource(R.drawable.bar_chart_now_low);
-            }
-        } else if (monthDifference == 2) {
-            if (monthlyTrend.get(2).getMonthExpense() > monthlyTrend.get(3).getBudget()) {
-                setTextOver(2);
-                viewBarChart3.setBackgroundResource(R.drawable.bar_chart_now_high);
-            } else {
-                setTextLess(2);
-                viewBarChart3.setBackgroundResource(R.drawable.bar_chart_now_low);
-            }
-        } else if (monthDifference == 3) {
-            if (monthlyTrend.get(1).getMonthExpense() > monthlyTrend.get(3).getBudget()) {
-                setTextOver(1);
-                viewBarChart2.setBackgroundResource(R.drawable.bar_chart_now_high);
-            } else {
-                setTextLess(1);
-                viewBarChart2.setBackgroundResource(R.drawable.bar_chart_now_low);
-            }
-        } else if (monthDifference == 4) {
-            if (monthlyTrend.get(0).getMonthExpense() > monthlyTrend.get(3).getBudget()) {
-                setTextOver(0);
-                viewBarChart1.setBackgroundResource(R.drawable.bar_chart_now_high);
-            } else {
-                setTextLess(0);
-                viewBarChart1.setBackgroundResource(R.drawable.bar_chart_now_low);
-            }
-        }
-
-    }
-
-    //초과시
-    private void setTextOver(int position) {
-
-        tvNotice.setText(formatter.format(monthlyTrend.get(position).getMonthExpense() - monthlyTrend.get(position).getBudget()) + "원 초과됐어요");
-
-        tvDifference.setText("총" + formatter.format(monthlyTrend.get(position).getBudget() - monthlyTrend.get(position).getMonthExpense()) + "원 앆ㅆ어요");
-        tvDifference.setTextColor(Color.parseColor("#107D69"));
-
-        tvMonthBudgetBarChart.setText(formatter.format(monthlyTrend.get(position).getBudget()) + "원");
-
-        tvPossibleText.setText("총 지출");
-        tvPossibleAmount.setText(formatter.format(monthlyTrend.get(position).getMonthExpense()) + "원");
-        tvPossibleAmount.setTextColor(Color.parseColor("#212529"));
 
 
-        tvRemainText.setVisibility(View.VISIBLE);
-        tvRemainText.setText("아낀 돈");
-        tvRemainAmount.setVisibility(View.VISIBLE);
-        tvRemainAmount.setText(formatter.format(monthlyTrend.get(position).getBudget() - monthlyTrend.get(position).getMonthExpense()) + "원");
-        tvRemainAmount.setTextColor(Color.parseColor("#107D69"));
-
-    }
-
-    //예산 이내(이전 달)
-    private void setTextLess(int position) {
-
-
-        if (monthlyTrend.get(position).getMonthExpense() < monthlyTrend.get(position).getBudget()) {
-
-            tvDifference.setText(monthlyTrend.get(position).getMonth() + "월 지출 내역");
-            tvDifference.setTextColor(Color.parseColor("#107D69"));
-
-            tvDifference.setText(formatter.format(monthlyTrend.get(position).getMonthExpense() - monthlyTrend.get(position).getBudget()) + "원 초과됐어요");
-            tvDifference.setTextColor(Color.parseColor("#FC3781"));
-
-            tvMonthBudgetBarChart.setText(formatter.format(monthlyTrend.get(position).getBudget()) + "원");
-
-            tvPossibleText.setText("총 지출");
-            tvPossibleAmount.setText(formatter.format(monthlyTrend.get(position).getMonthExpense()) + "원");
-            tvPossibleAmount.setTextColor(Color.parseColor("#212529"));
-
-
-            tvRemainText.setVisibility(View.VISIBLE);
-            tvRemainText.setText("초과된 돈");
-            tvRemainAmount.setVisibility(View.VISIBLE);
-            tvRemainAmount.setText(formatter.format(monthlyTrend.get(position).getMonthExpense() - monthlyTrend.get(position).getBudget()) + "원");
-            tvRemainAmount.setTextColor(Color.parseColor("#FC3781"));
-        }
-    }
-
+//    private void drawBarChart() {
+//
+//        int overHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 74, getResources().getDisplayMetrics());
+//        int lessHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 121, getResources().getDisplayMetrics());
+//        int nowHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 169, getResources().getDisplayMetrics());
+//
+//
+//        if (monthlyTrend.get(0) != null) {
+//            tvBarChartMonth1.setText(monthlyTrend.get(0).getMonth() + "월");
+//            if (monthlyTrend.get(0).getMonthExpense() > monthlyTrend.get(0).getBudget()) {
+//                viewBarChart1.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, overHeight));
+//
+//            } else {
+//                viewBarChart1.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, lessHeight));
+//            }
+//        }
+//
+//        if (monthlyTrend.get(1) != null) {
+//            tvBarChartMonth1.setText(monthlyTrend.get(1).getMonth() + "월");
+//            if (monthlyTrend.get(1).getMonthExpense() > monthlyTrend.get(1).getBudget()) {
+//                viewBarChart2.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, overHeight));
+//
+//            } else {
+//                viewBarChart2.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, lessHeight));
+//            }
+//        }
+//
+//        if (monthlyTrend.get(2) != null) {
+//            tvBarChartMonth1.setText(monthlyTrend.get(2).getMonth() + "월");
+//            if (monthlyTrend.get(2).getMonthExpense() > monthlyTrend.get(2).getBudget()) {
+//                viewBarChart3.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, overHeight));
+//
+//            } else {
+//                viewBarChart3.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, lessHeight));
+//            }
+//
+//        }
+//
+//        if (monthlyTrend.get(3) != null) {
+//            tvBarChartMonth1.setText(monthlyTrend.get(3).getMonth() + "월");
+//            if (monthlyTrend.get(3).getMonthExpense() > monthlyTrend.get(3).getBudget()) {
+//                viewBarChart4.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, overHeight));
+//
+//            } else {
+//                viewBarChart4.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, lessHeight));
+//            }
+//        }
+//
+//        if (monthlyTrend.get(4) != null) {
+//            tvBarChartMonth1.setText(monthlyTrend.get(4).getMonth() + "월");
+//            viewBarChart5.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, nowHeight));
+//            if (monthlyTrend.get(4).getMonthExpense() > monthlyTrend.get(4).getBudget()) {
+//                tvBarChartMonth1.setBackgroundResource(R.drawable.bar_chart_now_high);
+//                tvNotice.setText("이번달 지출이 위험해요");
+//
+//            } else {
+//                tvBarChartMonth1.setBackgroundResource(R.drawable.bar_chart_now_low);
+//
+//                tvNotice.setText("이번달 지출이 적당해요");
+//
+//
+//                tvDifference.setText("아직" + formatter.format(monthlyTrend.get(4).getBudget() - monthlyTrend.get(4).getMonthExpense()) + "원 더 쓸 수 있어요");
+//                tvDifference.setTextColor(Color.parseColor("#107D69"));
+//
+//                tvMonthBudgetBarChart.setText(formatter.format(monthlyTrend.get(4).getBudget()) + "원");
+//
+//                tvPossibleText.setText("쓸 수 있는 돈");
+//                tvPossibleAmount.setText(formatter.format(monthlyTrend.get(4).getBudget() - monthlyTrend.get(4).getMonthExpense()) + "원");
+//                tvPossibleAmount.setTextColor(Color.parseColor("#107D6"));
+//
+//                tvRemainText.setVisibility(View.INVISIBLE);
+//                tvRemainAmount.setVisibility(View.INVISIBLE);
+//
+//            }
+//        }
+//
+//    }
+//
+//    private void setMonthlyTrendText() {
+//        monthDifference = now.getMonthValue() - startDate.getMonthValue();
+//
+//        if (monthDifference == 1) {
+//            if (monthlyTrend.get(3).getMonthExpense() > monthlyTrend.get(3).getBudget()) {
+//                setTextOver(3);
+//                viewBarChart4.setBackgroundResource(R.drawable.bar_chart_now_high);
+//            } else {
+//                setTextLess(3);
+//                viewBarChart4.setBackgroundResource(R.drawable.bar_chart_now_low);
+//            }
+//        } else if (monthDifference == 2) {
+//            if (monthlyTrend.get(2).getMonthExpense() > monthlyTrend.get(3).getBudget()) {
+//                setTextOver(2);
+//                viewBarChart3.setBackgroundResource(R.drawable.bar_chart_now_high);
+//            } else {
+//                setTextLess(2);
+//                viewBarChart3.setBackgroundResource(R.drawable.bar_chart_now_low);
+//            }
+//        } else if (monthDifference == 3) {
+//            if (monthlyTrend.get(1).getMonthExpense() > monthlyTrend.get(3).getBudget()) {
+//                setTextOver(1);
+//                viewBarChart2.setBackgroundResource(R.drawable.bar_chart_now_high);
+//            } else {
+//                setTextLess(1);
+//                viewBarChart2.setBackgroundResource(R.drawable.bar_chart_now_low);
+//            }
+//        } else if (monthDifference == 4) {
+//            if (monthlyTrend.get(0).getMonthExpense() > monthlyTrend.get(3).getBudget()) {
+//                setTextOver(0);
+//                viewBarChart1.setBackgroundResource(R.drawable.bar_chart_now_high);
+//            } else {
+//                setTextLess(0);
+//                viewBarChart1.setBackgroundResource(R.drawable.bar_chart_now_low);
+//            }
+//        }
+//
+//    }
+//
+//    //초과시
+//    private void setTextOver(int position) {
+//
+//        tvNotice.setText(formatter.format(monthlyTrend.get(position).getMonthExpense() - monthlyTrend.get(position).getBudget()) + "원 초과됐어요");
+//
+//        tvDifference.setText("총" + formatter.format(monthlyTrend.get(position).getBudget() - monthlyTrend.get(position).getMonthExpense()) + "원 앆ㅆ어요");
+//        tvDifference.setTextColor(Color.parseColor("#107D69"));
+//
+//        tvMonthBudgetBarChart.setText(formatter.format(monthlyTrend.get(position).getBudget()) + "원");
+//
+//        tvPossibleText.setText("총 지출");
+//        tvPossibleAmount.setText(formatter.format(monthlyTrend.get(position).getMonthExpense()) + "원");
+//        tvPossibleAmount.setTextColor(Color.parseColor("#212529"));
+//
+//
+//        tvRemainText.setVisibility(View.VISIBLE);
+//        tvRemainText.setText("아낀 돈");
+//        tvRemainAmount.setVisibility(View.VISIBLE);
+//        tvRemainAmount.setText(formatter.format(monthlyTrend.get(position).getBudget() - monthlyTrend.get(position).getMonthExpense()) + "원");
+//        tvRemainAmount.setTextColor(Color.parseColor("#107D69"));
+//
+//    }
+//
+//    //예산 이내(이전 달)
+//    private void setTextLess(int position) {
+//
+//
+//        if (monthlyTrend.get(position).getMonthExpense() < monthlyTrend.get(position).getBudget()) {
+//
+//            tvDifference.setText(monthlyTrend.get(position).getMonth() + "월 지출 내역");
+//            tvDifference.setTextColor(Color.parseColor("#107D69"));
+//
+//            tvDifference.setText(formatter.format(monthlyTrend.get(position).getMonthExpense() - monthlyTrend.get(position).getBudget()) + "원 초과됐어요");
+//            tvDifference.setTextColor(Color.parseColor("#FC3781"));
+//
+//            tvMonthBudgetBarChart.setText(formatter.format(monthlyTrend.get(position).getBudget()) + "원");
+//
+//            tvPossibleText.setText("총 지출");
+//            tvPossibleAmount.setText(formatter.format(monthlyTrend.get(position).getMonthExpense()) + "원");
+//            tvPossibleAmount.setTextColor(Color.parseColor("#212529"));
+//
+//
+//            tvRemainText.setVisibility(View.VISIBLE);
+//            tvRemainText.setText("초과된 돈");
+//            tvRemainAmount.setVisibility(View.VISIBLE);
+//            tvRemainAmount.setText(formatter.format(monthlyTrend.get(position).getMonthExpense() - monthlyTrend.get(position).getBudget()) + "원");
+//            tvRemainAmount.setTextColor(Color.parseColor("#FC3781"));
+//        }
+//    }
+//
 
     private void getDetailServer(LocalDate startDate, LocalDate endDate, int categoryId, boolean isCustom) {
 
@@ -684,13 +641,12 @@ public class ExpenditureMonthlyFragment extends Fragment {
                     JsonObject responseJson = response.body();
                     Log.d("monthly Trend", responseJson.toString());
 
-
                     if (responseJson.get("statusCode").getAsInt() == 200) {
                         if (!responseJson.get("data").isJsonNull()) {
 //                            JsonArray jsonArray = responseJson.get("data").getAsJsonArray();
 
                             Gson gson = new Gson();
-                            expenditureDetailDto = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<MonthlyDetailActivity>() {
+                            expenditureDetailDto = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<ExpenditureDetailDto>() {
                             }.getType());
 
                         }
@@ -709,72 +665,80 @@ public class ExpenditureMonthlyFragment extends Fragment {
                 Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-//        ivDetail1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
-//                intent.putExtra("isElse",false);
-//                intent.putExtra("category name",goalCategoryInfo.get(0).getCategoryName());
-//                intent.putExtra("percentage", goalCategoryInfo.get(0).getPercentage());
-//                intent.putExtra("expense", goalCategoryInfo.get(0).getExpense());
-//                intent.putExtra("detail", (ArrayList)goalCategoryInfo.get(0).getWeeklyExpenditureDetailDtoList());
-//                startActivity(intent);
-//            }
-//        });
-//
-//        ivDetail2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
-//                intent.putExtra("isElse",false);
-//                intent.putExtra("category name",goalCategoryInfo.get(1).getCategoryName());
-//                intent.putExtra("percentage", goalCategoryInfo.get(1).getPercentage());
-//                intent.putExtra("expense", goalCategoryInfo.get(1).getExpense());
-//                intent.putExtra("detail", (ArrayList)goalCategoryInfo.get(1).getWeeklyExpenditureDetailDtoList());
-//                startActivity(intent);
-//            }
-//        });
-//
-//        ivDetail3.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
-//                intent.putExtra("isElse",false);
-//                intent.putExtra("category name",goalCategoryInfo.get(2).getCategoryName());
-//                intent.putExtra("percentage", goalCategoryInfo.get(2).getPercentage());
-//                intent.putExtra("expense", goalCategoryInfo.get(2).getExpense());
-//                intent.putExtra("detail", (ArrayList)goalCategoryInfo.get(2).getWeeklyExpenditureDetailDtoList());
-//                startActivity(intent);
-//            }
-//        });
-//
-//        ivDetail4.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
-//                intent.putExtra("isElse",true);
-//                intent.putExtra("category name","나머지");
-//                intent.putExtra("percentage", 100-percentSum);
-//                intent.putExtra("expense", responseMonthDetail.getTotalExpense()-expenseSum);
-//                for(int i=2; i<goalCategoryInfo.size();i++){
-//                    intent.putExtra("detail"+(i-2), (ArrayList)goalCategoryInfo.get(i).getWeeklyExpenditureDetailDtoList());
-//                }
-//                startActivity(intent);
-//            }
-//        });
+    private void setListener(){
+
+        ivDetail1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getDetailServer(startDate, endDate, goal.get(0).getCategoryType().getCategoryId(),goal.get(0).getCategoryType().getCustom());
+                Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
+//                intent.putExtra("detail",expenditureDetailDto.getExpenseDetail());
+////                intent.putExtra("isElse",false);
+                intent.putExtra("month",startDate.getMonthValue());
+
+                intent.putExtra("category name",goal.get(0).getCategoryName());
+                intent.putExtra("percentage", goal.get(0).getPercentage());
+                intent.putExtra("expense", goal.get(0).getExpense());
+//                intent.putExtra("detail", (ArrayList)goal.get(0).getExpenditureDetailDtoList());
+                startActivity(intent);
+            }
+        });
+
+        ivDetail2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
+                intent.putExtra("isElse",false);
+                intent.putExtra("category name",goal.get(1).getCategoryName());
+                intent.putExtra("percentage", goal.get(1).getPercentage());
+                intent.putExtra("expense", goal.get(1).getExpense());
+                intent.putExtra("detail", (ArrayList)goal.get(1).getExpenditureDetailDtoList());
+                startActivity(intent);
+            }
+        });
+
+        ivDetail3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
+                intent.putExtra("isElse",false);
+                intent.putExtra("category name",goal.get(2).getCategoryName());
+                intent.putExtra("percentage", goal.get(2).getPercentage());
+                intent.putExtra("expense", goal.get(2).getExpense());
+                intent.putExtra("detail", (ArrayList)goal.get(2).getExpenditureDetailDtoList());
+                startActivity(intent);
+            }
+        });
+
+        ivDetail4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
+                intent.putExtra("isElse",true);
+                intent.putExtra("category name","나머지");
+                intent.putExtra("percentage", 100-percentSum);
+                intent.putExtra("expense", responseMonthDetail.getTotalExpense()-expenseSum);
+                for(int i=2; i<goal.size();i++){
+                    intent.putExtra("detail"+(i-2), (ArrayList)goal.get(i).getExpenditureDetailDtoList());
+                }
+                startActivity(intent);
+            }
+        });
 
     }
 
     private void showDetail() {
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
-                startActivity(intent);
-
-            }
-        };
-        ivDetail1.setOnClickListener(onClickListener);
+//        View.OnClickListener onClickListener = new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
+//                startActivity(intent);
+//
+//            }
+//        };
+//        ivDetail1.setOnClickListener(onClickListener);
     }
 }
+

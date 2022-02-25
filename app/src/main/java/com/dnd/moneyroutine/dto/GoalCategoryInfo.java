@@ -11,9 +11,13 @@ import lombok.Setter;
 @Setter
 public class GoalCategoryInfo implements Comparable<GoalCategoryInfo> {
 
+    @SerializedName("categoryType")
     private CategoryType categoryType;
+    @SerializedName("categoryName")
     private String categoryName;
+    @SerializedName("percentage")
     private int percentage;
+    @SerializedName("expense")
     private int expense;
     @SerializedName("weeklyExpenditureDetailDtoList")
     private List<ExpenditureDetailDto> expenditureDetailDtoList;

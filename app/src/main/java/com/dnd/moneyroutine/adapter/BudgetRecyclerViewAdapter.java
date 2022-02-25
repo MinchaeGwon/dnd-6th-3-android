@@ -1,5 +1,6 @@
 package com.dnd.moneyroutine.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,7 +64,6 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
     private InputMethodManager inputManager;
     private BudgetDetailModel budgetDetailModel;
 
-
     private boolean isOnTextChanged = false;
     private int finalTotal;
     private int mbudget;
@@ -88,12 +89,9 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
         tv_budget_total = rootView.findViewById(R.id.tv_budget_total);
         btnNext = rootView.findViewById(R.id.btn_next_detail_budget);
         inputManager = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
-//        goalCategoryCreateDtoList = (ArrayList<GoalCategoryCreateDto>) ((Activity) context).getIntent().getSerializableExtra("goalCategoryCreateDtoList");
+
         goalCategoryCreateDtoList = (ArrayList<GoalCategoryCreateDto>) ((Activity) context).getIntent().getSerializableExtra("goalCategoryCreateDtoList");
-
-
         entireBudget = ((Activity) context).getIntent().getStringExtra("Budget");
-
 
         token = PreferenceManager.getToken(context, Constants.tokenKey);
         userId = JWTUtils.getUserId(token);
@@ -101,11 +99,8 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
         return new ViewHolder(view);
     }
 
-
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         //예산 입력하면 합산하여 띄움
         holder.et_budget_detail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -142,12 +137,10 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
 
             @Override
             public void afterTextChanged(Editable editable) {
-
                 String num = editable.toString().replaceAll("\\,", "");
-                String totalbudget = tv_budget_total.getText().toString();
-                mbudget = Integer.parseInt(totalbudget.replaceAll("\\,", "").toString());
+                String totalBudget = tv_budget_total.getText().toString();
+                mbudget = Integer.parseInt(totalBudget.replaceAll("\\,", ""));
 
-                //
                 finalTotal = 0;
                 if (isOnTextChanged) {
                     isOnTextChanged = false;
@@ -170,7 +163,6 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                             finalTotal = finalTotal + tmpTotal;
                         }
 
-
                         if (finalTotal > mbudget) {
                             //예산보다 많으면
                             String commaTotal = new DecimalFormat("#,###").format(finalTotal - mbudget);
@@ -191,7 +183,6 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                         for (int i = 0; i <= position; i++) {
                             if (i == position) {
                                 totalAmountArray.set(position, "0");
-//                                    nameArray.set(position,"0");
                             }
                         }
                         for (int i = 0; i <= totalAmountArray.size() - 1; i++) {
@@ -205,15 +196,14 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                             tvAlert.setTextColor(Color.parseColor("#FD5E6E"));
                             btnNext.setEnabled(false);
                             btnNext.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
-
                         } else {
                             String commaTotal = new DecimalFormat("#,###").format(mbudget - finalTotal);
                             tvAlert.setText(commaTotal + "원 남음");
                             btnNext.setEnabled(true);
                             btnNext.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
                         }
-
                     }
+
                     if (holder.et_budget_detail.getText().toString().length() > 0) {
                         budgetDetail = Integer.parseInt(holder.et_budget_detail.getText().toString().replaceAll("\\,", ""));
                         goalCategoryCreateDtoList.get(position).setBudget(budgetDetail);
@@ -221,10 +211,7 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                         goalCategoryCreateDtoList.get(position).setBudget(0);
                     }
 
-
                 }
-
-
             }
         });
 
@@ -238,20 +225,14 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                 budgetDetailModel.setGoalCategoryCreateDtoList(goalCategoryCreateDtoList); //list
                 budgetDetailModel.setTotal_budget(mbudget); //budget
 
-                goaltoServer();
-
-                Intent intent = new Intent(view.getContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                context.startActivity(intent);
-
+                goalToServer();
             }
 
         });
-
     }
 
     //서버로 categoryid, budget, iscustom, 전체 budget 보냄
-    private void goaltoServer() {
+    private void goalToServer() {
         HeaderRetrofit headerRetrofit = new HeaderRetrofit();
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);
@@ -264,6 +245,10 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                 if (response.isSuccessful()) {
                     JsonObject post = response.body();
                     Log.d("BudgetDetailModel", post.toString());
+
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    context.startActivity(intent);
                 } else {
                     Log.e("BudgetDetailModel", "error: " + response.code());
                     return;
@@ -273,6 +258,7 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Log.e("custom category", "fail: " + t.getMessage());
+                Toast.makeText(context, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -301,16 +287,13 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
             won_detail = itemView.findViewById(R.id.won_detail);
             tv_budget_detail_won = itemView.findViewById(R.id.tv_budget_detail_won);
             et_budget_detail = itemView.findViewById(R.id.et_budget_detail);
-//            ic_category_icon = itemView.findViewById(R.id.iv_category_icon);
             ic_category_item_detail = itemView.findViewById(R.id.ic_category_item_detail);
             iv_category_item_detail = itemView.findViewById(R.id.iv_category_item_detail);
-            tv_category_name_budget = (TextView) itemView.findViewById(R.id.tv_category_item_detail);
+            tv_category_name_budget = itemView.findViewById(R.id.tv_category_item_detail);
             itemContext = itemView.getContext();
-
         }
 
         public void bindView(int position, BudgetItem item) {
-
             //edittext 커서 위치에 따라 색 변경
             et_budget_detail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
@@ -335,7 +318,6 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                 }
             });
 
-
             if (item.getCategoryIcon().contains("@drawable/")) { //기본 카테고리
                 ic_category_item_detail.setVisibility(View.INVISIBLE);
                 iv_category_item_detail.setVisibility(View.VISIBLE);
@@ -346,11 +328,8 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                 ic_category_item_detail.setVisibility(View.VISIBLE);
                 ic_category_item_detail.setText(item.getCategoryIcon());
             }
+
             tv_category_name_budget.setText(item.getCategoryName());
         }
-
-
     }
-
-
 }

@@ -350,8 +350,6 @@ public class SignupStep2Activity extends AppCompatActivity {
         PreferenceManager.setString(this, Constants.tokenKey, jwtToken);
         PreferenceManager.setString(this, Constants.REFRESH_TOKEN_KEY, refreshToken);
 
-        Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show();
-
         Intent intent = new Intent(this, WelcomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 기존 화면 모두 clear
         intent.putExtra("join", true);

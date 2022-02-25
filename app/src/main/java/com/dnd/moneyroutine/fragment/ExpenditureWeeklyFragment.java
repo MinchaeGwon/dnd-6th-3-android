@@ -21,6 +21,8 @@ import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.adapter.WeeklyDetailAdapter;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
+import com.dnd.moneyroutine.dto.GoalCategoryInfo;
+import com.dnd.moneyroutine.dto.MonthlyStatistics;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.JWTUtils;
 import com.dnd.moneyroutine.service.RetrofitService;
@@ -28,12 +30,16 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -71,6 +77,27 @@ public class ExpenditureWeeklyFragment extends Fragment {
     private RecyclerView rcDetai3;
     private RecyclerView rcDetai4;
 
+    private TextView tvTop;
+    private TextView tvTopRatio;
+    private TextView totalExpenditure;
+
+    private TextView tvCategoryName1;
+    private TextView tvPercentage1;
+    private TextView tvExpense1;
+    private TextView tvCategoryName2;
+    private TextView tvPercentage2;
+    private TextView tvExpense2;
+    private TextView tvCategoryName3;
+    private TextView tvPercentage3;
+    private TextView tvExpense3;
+    private TextView tvCategoryName4;
+    private TextView tvPercentage4;
+    private TextView tvExpense4;
+
+    private ArrayList<GoalCategoryInfo> goal;
+    DecimalFormat dcFormat = new DecimalFormat("#,###");
+    private MonthlyStatistics responseMonthDetail;
+
 
     private ConstraintLayout c1Chart1;
     private ConstraintLayout c1Chart2;
@@ -85,6 +112,10 @@ public class ExpenditureWeeklyFragment extends Fragment {
     private View chart3;
     private View chart4;
     private View chart5;
+
+    private int percentSum;
+    private int expenseSum;
+
 
 
     public ExpenditureWeeklyFragment() {
@@ -111,7 +142,7 @@ public class ExpenditureWeeklyFragment extends Fragment {
         setWeekNumber();
         setDate();
         setWeekBtnListener();
-        setPieChart();
+//        setPieChart();
         showDialog();
         getWeeklyStatistics(startDate, endDate);
         getWeeklyTrend(now);
@@ -129,11 +160,29 @@ public class ExpenditureWeeklyFragment extends Fragment {
         tvWeekNum = v.findViewById(R.id.tv_week_num);
         formatter = new SimpleDateFormat("yyyy-MM-dd");
 
+        tvTop=v.findViewById(R.id.tv_top_week);
+        tvTopRatio=v.findViewById(R.id.tv_top_ratio_week);
+        totalExpenditure = v.findViewById(R.id.tv_total_week);
 
         adapter = new WeeklyDetailAdapter();
 
         ivPreviousWeek = v.findViewById(R.id.iv_previous_week);
         ivNextWeek = v.findViewById(R.id.iv_next_week);
+
+        tvCategoryName1 = v.findViewById(R.id.tv_first_category_week);
+        tvCategoryName2 = v.findViewById(R.id.tv_second_category_week);
+        tvCategoryName3 = v.findViewById(R.id.tv_third_category_week);
+        tvCategoryName4 = v.findViewById(R.id.tv_else_category_week);
+
+        tvPercentage1 = v.findViewById(R.id.tv_first_percent_week);
+        tvPercentage2 = v.findViewById(R.id.tv_second_percent_week);
+        tvPercentage3 = v.findViewById(R.id.tv_third_percent_week);
+        tvPercentage4 = v.findViewById(R.id.tv_else_percent_week);
+
+        tvExpense1 = v.findViewById(R.id.tv_first_amount_week);
+        tvExpense2 = v.findViewById(R.id.tv_second_amount_week);
+        tvExpense3 = v.findViewById(R.id.tv_third_amount_week);
+        tvExpense4 = v.findViewById(R.id.tv_else_amount_week);
 
         ivDetail1 = v.findViewById(R.id.iv_show_content_first);
         ivDetail2 = v.findViewById(R.id.iv_show_content_second);
@@ -248,6 +297,17 @@ public class ExpenditureWeeklyFragment extends Fragment {
                 if (response.isSuccessful()) {
                     JsonObject responseJson = response.body();
                     Log.d("week", responseJson.toString());
+
+                    if (responseJson.get("statusCode").getAsInt() == 200) {
+                        if (!responseJson.get("data").isJsonNull()) {
+                            Gson gson = new Gson();
+                            responseMonthDetail = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<MonthlyStatistics>() {
+                            }.getType());
+                            setPieChart();
+                            setContent();
+                        }
+                    }
+
                 } else {
                     Log.e("week", "error: " + response.code());
 
@@ -274,9 +334,9 @@ public class ExpenditureWeeklyFragment extends Fragment {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     JsonObject responseJson = response.body();
-                    Log.d("week", responseJson.toString());
+                    Log.d("trend", responseJson.toString());
                 } else {
-                    Log.e("week", "error: " + response.code());
+                    Log.e("trend", "error: " + response.code());
 
                     return;
                 }
@@ -292,6 +352,9 @@ public class ExpenditureWeeklyFragment extends Fragment {
 
     private void setPieChart() {
 
+
+        totalExpenditure.setText(dcFormat.format(responseMonthDetail.getTotalExpense()) + "원");
+
         pieChart.setRotationAngle(-100); //시작 위치 설정 (3시방향이 기본)
         pieChart.getDescription().setEnabled(false); //차트 설명 제거
         pieChart.getLegend().setEnabled(false); //아래 색깔별 항목 설명 제거
@@ -302,19 +365,61 @@ public class ExpenditureWeeklyFragment extends Fragment {
         pieChart.setHoleRadius(55f); //hole 크기 설정
         pieChart.setTransparentCircleRadius(0);
 
-        ArrayList values = new ArrayList();
+        goal = new ArrayList<>();
+        for (int i = 0; i < responseMonthDetail.getGoalCategoryInfoDtoList().size(); i++) {
+//            String name = responseMonthDetail.getGoalCategoryInfoDtoList().get(i).getCategoryName();
+//            double percentage  = responseMonthDetail.getGoalCategoryInfoDtoList().get(i).getPercentage();
+//            long expense = responseMonthDetail.getGoalCategoryInfoDtoList().get(i).getExpense();
+//
+            goal.add(responseMonthDetail.getGoalCategoryInfoDtoList().get(i));
+        }
 
-        values.add(new PieEntry(40f, "식비"));
-        values.add(new PieEntry(20f, "교통비"));
-        values.add(new PieEntry(10f, "나머지"));
-        values.add(new PieEntry(30f, "유흥비"));
+        Collections.sort(goal, Collections.reverseOrder());
+        tvTop.setText(goal.get(0).getCategoryName());
+        tvTopRatio.setText(goal.get(0).getPercentage()+"%");
 
 
-        PieDataSet dataSet = new PieDataSet(values, "Countries");
+        percentSum = 0;
+        expenseSum = 0;
+
+        if(goal.size()<4){
+            for (int i = 0; i < goal.size(); i++) {
+                expenseSum += goal.get(i).getExpense();
+                percentSum += goal.get(i).getPercentage();
+            }
+        }
+        else{
+            for (int i = 0; i < 3; i++) {
+                expenseSum += goal.get(i).getExpense();
+                percentSum += goal.get(i).getPercentage();
+            }
+        }
+
+
+
+
+        ArrayList<PieEntry> values = new ArrayList();
+
+//        Log.d("ddd", goal.get(0).getPercentage()+"");
+//        values.add(new PieEntry(goal.get(0).getPercentage(), goal.get(0).getCategoryName()));
+//        values.add(new PieEntry((100 - percentSum), "나머지"));
+//        values.add(new PieEntry(goal.get(2).getPercentage(), goal.get(2).getCategoryName()));
+//        values.add(new PieEntry(goal.get(1).getPercentage(), goal.get(1).getCategoryName()));
+
+        values.add(new PieEntry(60f,"1"));
+        values.add(new PieEntry(0, "나머지"));
+        values.add(new PieEntry(0,"3"));
+        values.add(new PieEntry(40f,"2"));
+
+
+
+
+
+        PieDataSet dataSet = new PieDataSet(values, "총 지출");
 
         //차트 색상 설정
-        final int[] MY_COLORS = {Color.parseColor("#c896fa"), Color.parseColor("#a3bcff"),
-                Color.parseColor("#7ae2f9"), Color.parseColor("#ced4da")};
+        final int[] MY_COLORS = {Color.parseColor("#c896fa"), Color.parseColor("#ced4da"),
+                Color.parseColor("#7ae2f9"), Color.parseColor("#a3bcff")};
         ArrayList<Integer> colors = new ArrayList<Integer>();
         for (int c : MY_COLORS) colors.add(c);
         dataSet.setColors(colors);
@@ -327,6 +432,28 @@ public class ExpenditureWeeklyFragment extends Fragment {
 
         pieChart.setData(data);
     }
+
+    private void setContent() {
+        tvCategoryName1.setText(goal.get(0).getCategoryName());
+//        tvPercentage1.setText(goal.get(0).getPercentage() + "%");
+        tvPercentage1.setText(60 + "%");
+        tvExpense1.setText(dcFormat.format(goal.get(0).getExpense()) + "원");
+
+        tvCategoryName2.setText(goal.get(1).getCategoryName());
+//        tvPercentage2.setText(goal.get(1).getPercentage() + "%");
+        tvPercentage2.setText(40+ "%");
+        tvExpense2.setText(dcFormat.format(goal.get(1).getExpense()) + "원");
+
+        tvCategoryName3.setText(goal.get(2).getCategoryName());
+        tvPercentage3.setText(goal.get(2).getPercentage() + "%");
+        tvExpense3.setText(dcFormat.format(goal.get(2).getExpense()) + "원");
+
+        tvCategoryName4.setText("나머지");
+        tvPercentage4.setText(goal.get(3).getPercentage() + "%");
+        tvExpense4.setText(dcFormat.format(goal.get(3).getExpense()) + "원");
+
+    }
+
 
 
     private void setDate() {

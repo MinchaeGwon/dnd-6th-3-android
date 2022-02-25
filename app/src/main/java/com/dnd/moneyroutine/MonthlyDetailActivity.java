@@ -1,6 +1,7 @@
 package com.dnd.moneyroutine;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,7 +26,10 @@ public class MonthlyDetailActivity extends AppCompatActivity {
     private TextView tvTotal;
     private RecyclerView rcContent;
 
+    private ExpenditureDetailDto expenditureDetailDto;
+
     private String getCategoryName;
+    private String getMonth;
     private int getPercent;
     private int getTotal;
 
@@ -57,12 +61,13 @@ public class MonthlyDetailActivity extends AppCompatActivity {
 
 
     private void setTextView(){
-//        getCategoryName=getIntent().getStringExtra("category name");
-//        getPercent=getIntent().getIntExtra("percentage",0);
-//        getTotal=getIntent().getIntExtra("expense",0);
+        getCategoryName=getIntent().getStringExtra("category name");
+        getPercent=getIntent().getIntExtra("percentage",0);
+        getTotal=getIntent().getIntExtra("expense",0);
+        getMonth=getIntent().getStringExtra("month");
 
         tvTitle.setText(getCategoryName);
-        tvCategoryName.setText("월"+getCategoryName+"지출액");
+        tvCategoryName.setText(getMonth+"월 "+getCategoryName+" 지출액");
         tvPercent.setText(getPercent+"%");
         tvTotal.setText("총 "+dcFormat.format(getTotal)+"원");
 
@@ -70,11 +75,13 @@ public class MonthlyDetailActivity extends AppCompatActivity {
 
     private void initAdapter(){
         expenditureDetailDtoArrayList= new ArrayList<>();
-        expenditureDetailDtoArrayList.add(new ExpenditureDetailDto(LocalDate.now(),3000,"학식"));
+//        expenditureDetailDtoArrayList.add(new ExpenditureDetailDto(LocalDate.now(),3000,"학식"));
 
         adapter = new MonthlyDetailAdapter(expenditureDetailDtoArrayList);
         rcContent.setLayoutManager(new LinearLayoutManager(this));
         rcContent.setAdapter(adapter);
+
+
     }
 
     private void setListener() {

@@ -2,6 +2,7 @@ package com.dnd.moneyroutine;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
@@ -32,11 +33,11 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
 
     private CategoryGridViewAdapter adapter = null;
     private CategoryItem newCategory;
+    private int newCategoryId;
 
     private ConstraintLayout background;
     private LinearLayout linearAddcategory;
     private Button btnNext;
-
 
     private ArrayList<CategoryItem> bgList;
     private ArrayList<String> icon;
@@ -44,13 +45,6 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
     private ArrayList<String> ex;
     private ArrayList<CategoryItem> newItem;
     private ArrayList<Integer> selectedItem = new ArrayList<>();
-
-    private GoalCategoryCreateDto goalCategoryCreateDto = new GoalCategoryCreateDto();
-    private List<GoalCategoryCreateDto> goalCategoryCreateDtoList;
-
-
-
-//    private ArrayList<GoalCategoryCreateDtoList>
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +64,6 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
         btnNext = (Button) findViewById(R.id.btn_next1);
 
         linearAddcategory = findViewById(R.id.btn_addcategory);
-
-        goalCategoryCreateDtoList=new ArrayList<>();
-
     }
 
     private void initAdapter() {
@@ -172,33 +163,41 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int categoryId = 0;
+//                int categoryId = 0;
 
                 bgList = new ArrayList<>();
                 Collections.sort(selectedItem);
                 String [] colorIcons = {"@drawable/coffee_color", "@drawable/food_color", "@drawable/beer_color", "@drawable/book_color", "@drawable/bus_color", "@drawable/bag_color", "@drawable/computer_color","@drawable/tissue_color", "@drawable/pill_color"};
 
+                List<GoalCategoryCreateDto> goalCategoryCreateDtoList = new ArrayList<>();
+
                 //선택된 아이템
                 for (int i = 0; i < selectedItem.size(); i++) {
                     int index = selectedItem.get(i);
-                    if(index<9){
+                    GoalCategoryCreateDto goalCategoryCreateDto = new GoalCategoryCreateDto();
+
+                    if (index < 9){
                         bgList.add(new CategoryItem(colorIcons[index], name.get(index), ex.get(index))); //기본카테고리는 drawable로
                         goalCategoryCreateDto.setBudget(0);
-                        goalCategoryCreateDto.setCategoryId(Long.valueOf(index));
+                        goalCategoryCreateDto.setCategoryId(Long.valueOf(index + 1)); // 기본 카테고리 id는 1 ~ 9까지이기 때문에 +1 해주는 것
                         goalCategoryCreateDto.setCustom(false);
-                        goalCategoryCreateDtoList.add(i,goalCategoryCreateDto);
-                    }
-                    else{
+                    } else{
                         bgList.add(new CategoryItem(icon.get(index), name.get(index), ex.get(index))); //새로 생성한 카테고리는 아이콘으로
-                        goalCategoryCreateDtoList.add(i, new GoalCategoryCreateDto(0, Long.valueOf(categoryId), true));
-//                        goalCategoryCreateDto.setBudget(0);
-//                        goalCategoryCreateDto.setCategoryId(Long.valueOf(categoryId));
-//                        goalCategoryCreateDto.setCustom(true);
-//                        goalCategoryCreateDtoList.add(i,goalCategoryCreateDto);
-                        categoryId++;
+//                        goalCategoryCreateDtoList.add(i, new GoalCategoryCreateDto(0, Long.valueOf(categoryId), true));
+////                        goalCategoryCreateDto.setBudget(0);
+////                        goalCategoryCreateDto.setCategoryId(Long.valueOf(categoryId));
+////                        goalCategoryCreateDto.setCustom(true);
+////                        goalCategoryCreateDtoList.add(i,goalCategoryCreateDto);
+//                        categoryId++;
+//                        goalCategoryCreateDtoList.add(i, new GoalCategoryCreateDto(0, Long.valueOf(categoryId), true));
+                        goalCategoryCreateDto.setBudget(0);
+                        goalCategoryCreateDto.setCategoryId(Long.valueOf(newCategoryId));
+                        goalCategoryCreateDto.setCustom(true);
+                        //                        categoryId++;
                     }
-                }
 
+                    goalCategoryCreateDtoList.add(i, goalCategoryCreateDto);
+                }
 
                 Intent intent = new Intent(getApplicationContext(), OnboardingEntireBudgetActivity.class);
                 intent.putExtra("BudgetItem", bgList);
@@ -219,6 +218,7 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
                     if (result.getResultCode() == RESULT_OK) {
                         Intent intent = result.getData();
                         newCategory = (CategoryItem) intent.getSerializableExtra("new category name");
+                        newCategoryId = intent.getIntExtra("newCategoryId", -1);
 //                        name.add(.);
                         String newIcon = newCategory.getCategoryIcon();
                         String newName = newCategory.getCategoryName();

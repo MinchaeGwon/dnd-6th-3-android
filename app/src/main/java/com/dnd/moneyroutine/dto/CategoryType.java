@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CategoryType {
-    private Long categoryId;
-    private boolean isCustom;
+    private int categoryId;
+    private Boolean custom;
+
 }

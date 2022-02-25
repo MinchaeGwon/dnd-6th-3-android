@@ -34,6 +34,7 @@ public class NormalLoginActivity extends AppCompatActivity {
 
     private EditText etEmail;
     private EditText etPassword;
+
     private Button btnLogin;
     private TextView tvJoin;
 
@@ -64,6 +65,7 @@ public class NormalLoginActivity extends AppCompatActivity {
     private void init() {
         etEmail = findViewById(R.id.et_login_email);
         etPassword = findViewById(R.id.et_login_password);
+
         btnLogin = findViewById(R.id.btn_login_email);
         tvJoin = findViewById(R.id.tv_join);
     }
@@ -76,6 +78,14 @@ public class NormalLoginActivity extends AppCompatActivity {
                 switch (actionId) {
                     case EditorInfo.IME_ACTION_DONE:
                         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                        if (etEmail.isFocused()) {
+                            etEmail.clearFocus();
+                        }
+
+                        if (etPassword.isFocused()) {
+                            etPassword.clearFocus();
+                        }
                         break;
                     default:
                         // 기본 엔터키 동작
@@ -89,18 +99,46 @@ public class NormalLoginActivity extends AppCompatActivity {
         etEmail.setOnEditorActionListener(onEditorActionListener);
         etPassword.setOnEditorActionListener(onEditorActionListener);
 
+        etEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean focus) {
+                if (focus) {
+                    view.setBackgroundResource(R.drawable.textbox_typing);
+                } else {
+                    view.setBackgroundResource(R.drawable.textbox_default);
+                }
+            }
+        });
+
+        etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean focus) {
+                if (focus) {
+                    view.setBackgroundResource(R.drawable.textbox_typing);
+                } else {
+                    view.setBackgroundResource(R.drawable.textbox_default);
+                }
+            }
+        });
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // 키보드 내리기
-                if (etEmail.isFocused() || etPassword.isFocused()) {
-                    inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                if (etEmail.isFocused()) {
+                    etEmail.clearFocus();
+                }
+
+                if (etPassword.isFocused()) {
+                    etPassword.clearFocus();
                 }
 
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
 
-                if (email.length() != 0 && password.length() != 0) {
+                if (email.length() > 0 && password.length() > 0) {
                     loginToServer(email, password);
                 }
             }
@@ -127,17 +165,20 @@ public class NormalLoginActivity extends AppCompatActivity {
                     Log.d(TAG, responseJson.toString());
 
                     if (responseJson.get("statusCode").getAsInt() == 200) {
-                        JsonObject data = responseJson.get("data").getAsJsonObject();
+                        String message = responseJson.get("responseMessage").getAsString();
 
-//                        String token = data.get("accessToken").getAsString();
-//                        String refreshToken = data.get("refreshToken").getAsString();
-//
-//                        saveTokenAndMoveActivity(token, refreshToken);
-                    } else {
-                        // 로그인 정보가 맞지 않으면 로그인 실패 다이얼로그 띄움
+                        if (message.equals("로그인 실패(존재하지 않는 이메일, 잘못된 비밀번호)")) {
+                            setFailDialog();
+                            failDialog.show();
+                        } else {
+                            JsonObject data = responseJson.get("data").getAsJsonObject();
+
+                            String token = data.get("accessToken").getAsString();
+                            String refreshToken = data.get("refreshToken").getAsString();
+
+                            saveTokenAndMoveActivity(token, refreshToken);
+                        }
                     }
-                } else {
-                    Log.d(TAG, "!11111111");
                 }
             }
 
@@ -148,24 +189,12 @@ public class NormalLoginActivity extends AppCompatActivity {
         });
     }
 
-    // 로그인 성공시 토큰 저장, 화면 이동
-    private void saveTokenAndMoveActivity(String jwtToken, String refreshToken) {
-        PreferenceManager.setString(this, Constants.tokenKey, jwtToken);
-        PreferenceManager.setString(this, Constants.REFRESH_TOKEN_KEY, refreshToken);
-
-        Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show();
-
-        Intent intent = new Intent(this, WelcomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 기존 화면 모두 clear
-        startActivity(intent);
-    }
-
     private void setFailDialog() {
         if (failDialog != null) return;
         makeFailDialog();
     }
 
-    // 이메일 중복 확인 다이얼로그 만들기
+    // 로그인 실패 다이얼로그 만들기
     private void makeFailDialog() {
         View view = getLayoutInflater().inflate(R.layout.dialog_confirm, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
@@ -185,5 +214,15 @@ public class NormalLoginActivity extends AppCompatActivity {
                 failDialog.dismiss();
             }
         });
+    }
+
+    // 로그인 성공시 토큰 저장, 화면 이동
+    private void saveTokenAndMoveActivity(String jwtToken, String refreshToken) {
+        PreferenceManager.setString(this, Constants.tokenKey, jwtToken);
+        PreferenceManager.setString(this, Constants.REFRESH_TOKEN_KEY, refreshToken);
+
+        Intent intent = new Intent(this, WelcomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 기존 화면 모두 clear
+        startActivity(intent);
     }
 }

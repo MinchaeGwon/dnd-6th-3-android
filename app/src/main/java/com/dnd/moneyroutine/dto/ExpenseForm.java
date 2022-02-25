@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter @Setter
 public class ExpenseForm implements Serializable {
     private int categoryId;
-    private boolean isCustom;
+    private boolean custom;
     private String date;
     private int expense;
     private String expenseDetail;

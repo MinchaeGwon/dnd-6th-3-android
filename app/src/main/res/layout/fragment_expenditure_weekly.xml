@@ -49,7 +49,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                        android:text="5주차"
+                        android:text="4주차"
                         android:textColor="#212529"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/iv_next_week"
@@ -115,7 +115,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView36"
+                        android:id="@+id/tv_total_week"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/spoqa_han_sans_neo_medium"
@@ -150,7 +150,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView39"
+                        android:id="@+id/tv_top_week"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/spoqa_han_sans_neo_regular"
@@ -162,7 +162,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView40"
+                        android:id="@+id/tv_top_ratio_week"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -172,7 +172,7 @@
                         android:textColor="#8f30e9"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView39"
+                        app:layout_constraintStart_toEndOf="@+id/tv_top_week"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -538,7 +538,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
                     android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                    android:text="5주차 지출내역"
+                    android:text="4주차 지출내역"
                     android:textColor="#212529"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -551,8 +551,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="2dp"
                     android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                    android:text="총 100,000원 초과됐어요"
-                    android:textColor="#fc3781"
+                    android:text="아직 300,000만원 더 쓸 수 있어요"
+                    android:textColor="#107D69 "
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_nth_history" />
@@ -959,7 +959,7 @@
                     android:duplicateParentState="true"
                     android:fontFamily="@font/spoqa_han_sans_neo_regular"
                     android:gravity="right"
-                    android:text="주별 권장 지출액 250,000원"
+                    android:text="주별 권장 지출액 100,000원"
                     android:textColor="#296ef4  "
                     android:textSize="12sp" />
             </LinearLayout>

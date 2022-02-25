@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.dnd.moneyroutine.adapter.GoalCategoryGridAdapter;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
+import com.dnd.moneyroutine.dto.BasicCategoryForm;
 import com.dnd.moneyroutine.dto.GoalCategoryCompact;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.RetrofitService;
@@ -43,7 +44,6 @@ public class AddExpenseCatActivity extends AppCompatActivity {
 
     private String token;
     private int goalId;
-    private GoalCategoryCompact selectCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,8 +130,7 @@ public class AddExpenseCatActivity extends AppCompatActivity {
         goalCategoryGridAdapter.setOnItemClickListener(new GoalCategoryGridAdapter.OnItemClickListener() {
             @Override
             public void onClick(GoalCategoryCompact category) {
-                selectCategory = category;
-                addBasicCategory();
+                addBasicCategory(category);
             }
         });
 
@@ -140,7 +139,38 @@ public class AddExpenseCatActivity extends AppCompatActivity {
     }
 
     // 기본 카테고리 지출 분야로 추가
-    private void addBasicCategory() {
+    private void addBasicCategory(GoalCategoryCompact category) {
+        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+        RetrofitService retroService = retrofit.create(RetrofitService.class);
 
+        Call<JsonObject> call = retroService.addBasicGoalCategory(new BasicCategoryForm(goalId, category.getCategoryId(), category.isCustom()));
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject responseJson = response.body();
+
+                    Log.d(TAG, responseJson.toString());
+
+                    if (responseJson.get("statusCode").getAsInt() == 200) {
+                        if (!responseJson.get("data").isJsonNull()) {
+                            int catId = responseJson.get("data").getAsInt();
+
+                            if (catId > 0) {
+                                Intent intent = new Intent();
+                                setResult(RESULT_OK, intent);
+                                finish();
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(AddExpenseCatActivity.this, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
