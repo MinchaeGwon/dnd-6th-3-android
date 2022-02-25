@@ -68,19 +68,6 @@ public class WeeklyCalendarAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (holder instanceof DayViewHolder) {
             Date date = days.get(position);
             ((DayViewHolder) holder).setItem(date);
-
-//            if (selectDate != null) {
-//                Calendar cal1 = Calendar.getInstance();
-//                cal1.setTime(date);
-//
-//                Calendar cal2 = Calendar.getInstance();
-//                cal2.setTime(selectDate);
-//
-//                if (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) && cal1.get(Calendar.DATE) == cal2.get(Calendar.DATE)) {
-//                    ((DayViewHolder) holder).tvDay.setBackgroundResource(R.drawable.circle_343a40);
-//                    ((DayViewHolder) holder).tvDay.setTextColor(Color.WHITE);
-//                }
-//            }
         }
     }
 

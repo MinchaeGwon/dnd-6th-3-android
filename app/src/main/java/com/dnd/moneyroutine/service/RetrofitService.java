@@ -5,6 +5,8 @@ import com.dnd.moneyroutine.dto.BudgetDetailModel;
 import com.dnd.moneyroutine.dto.CustomCategoryCreateDto;
 import com.dnd.moneyroutine.dto.DirectCustomCategoryForm;
 import com.dnd.moneyroutine.dto.ExpenseForm;
+import com.dnd.moneyroutine.dto.GoalCategoryForm;
+import com.dnd.moneyroutine.dto.GoalTotalForm;
 import com.dnd.moneyroutine.dto.UserForm;
 import com.dnd.moneyroutine.enums.EmotionEnum;
 import com.google.gson.JsonObject;
@@ -71,10 +73,10 @@ public interface RetrofitService {
     Call<JsonObject> getGoalCategory();
 
     @DELETE("goal-category")
-    Call<JsonObject> deleteGoalCategory();
+    Call<JsonObject> deleteGoalCategory(@Body int goalCategoryId);
 
     @PATCH("goal-category")
-    Call<JsonObject> updateGoalCategory();
+    Call<JsonObject> updateGoalCategory(@Body GoalCategoryForm goalCategoryForm);
 
     @POST("goal-category/custom")
     Call<JsonObject> directAddGoalCategory(@Body DirectCustomCategoryForm categoryForm);
@@ -83,7 +85,7 @@ public interface RetrofitService {
     Call<JsonObject> addBasicGoalCategory(@Body BasicCategoryForm basicCategoryForm);
 
     @PATCH("goal/budget")
-    Call<JsonObject> updateTotalBudget();
+    Call<JsonObject> updateTotalBudget(@Body GoalTotalForm goalTotalForm);
 
     @POST("expenditure")
     Call<JsonObject> addExpenditure(@Body ExpenseForm expenseForm);

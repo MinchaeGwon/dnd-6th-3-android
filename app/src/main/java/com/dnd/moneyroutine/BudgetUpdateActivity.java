@@ -12,7 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -41,6 +45,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import retrofit2.Call;
@@ -79,6 +84,11 @@ public class BudgetUpdateActivity extends AppCompatActivity {
     private String token;
     private GoalInfo goalInfo;
     private boolean goalUpdate;
+
+    private boolean isOnTextChanged = false;
+
+    private ArrayList<String> totalAmountList;
+    private int budgetTotal = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,58 +216,83 @@ public class BudgetUpdateActivity extends AppCompatActivity {
             }
         });
 
-//        etTotalBudget.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                if (tvRemainBudget.getText().toString().contains("남음")) {
-//                    etTotalBudget.setTextColor(Color.parseColor("#212529"));
-//                    tvRemainBudget.setTextColor(Color.parseColor("#212529"));
-//                } else if (tvRemainBudget.getText().toString().contains("초과")) {
-//                    etTotalBudget.setTextColor(Color.parseColor("#E70621"));
-//                    tvRemainBudget.setTextColor(Color.parseColor("#E70621"));
-//                }
-//
-//                // 금액에 쉼표 추가
-//                if (etTotalBudget.isFocused() && !TextUtils.isEmpty(charSequence.toString()) && !charSequence.toString().equals(result)) {
-//                    result = decimalFormat.format(Double.parseDouble(charSequence.toString().replaceAll(",", "")));
-//                    etTotalBudget.setText(result);
-//                    etTotalBudget.setSelection(result.length());
-//                }
-//
-//                if (etTotalBudget.length() > 0) {
-//                    btnConfirm.setEnabled(true);
-//
-//                    if (inputManager.isAcceptingText()) {
-//                        btnConfirm.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
-//                    } else {
-//                        btnConfirm.setBackgroundResource(R.drawable.button_enabled_true);
+        etTotalBudget.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int id, int i1, int i2) {
+                isOnTextChanged = true;
+
+                // 금액에 쉼표 추가
+                if (etTotalBudget.isFocused() && !TextUtils.isEmpty(charSequence.toString()) && !charSequence.toString().equals(result)) {
+                    result = decimalFormat.format(Double.parseDouble(charSequence.toString().replaceAll(",", "")));
+                    etTotalBudget.setText(result);
+                    etTotalBudget.setSelection(result.length());
+                }
+
+                if (etTotalBudget.length() > 0) {
+                    btnConfirm.setEnabled(true);
+
+                    if (inputManager.isAcceptingText()) {
+                        btnConfirm.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
+                    } else {
+                        btnConfirm.setBackgroundResource(R.drawable.button_enabled_true);
+                    }
+                } else {
+                    btnConfirm.setEnabled(false);
+
+                    if (inputManager.isAcceptingText()) {
+                        btnConfirm.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
+                    } else {
+                        btnConfirm.setBackgroundResource(R.drawable.button_enabled_false);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (isOnTextChanged) {
+                    isOnTextChanged = false;
+
+                    if (budgetTotal == 0) {
+                        for (int i = 0; i <= totalAmountList.size() - 1; i++) {
+                            budgetTotal += Integer.parseInt(totalAmountList.get(i));
+                        }
+                    }
+
+                    tvTotalBudget.setText(etTotalBudget.length() > 0 ? result : String.valueOf(0));
+
+                    if (etTotalBudget.length() > 0) {
+                        int num = Integer.parseInt(etTotalBudget.getText().toString().replaceAll("\\,", ""));
+
+                        if (budgetTotal > num) {
+                            //예산보다 많으면
+                            String commaTotal = decimalFormat.format(budgetTotal - num);
+                            tvRemainBudget.setText(commaTotal + "원 초과");
+                            tvRemainBudget.setTextColor(Color.parseColor("#E70621"));
+                            btnConfirm.setEnabled(false); // 다음 버튼 비활성화
+                        } else {
+                            //예산보다 적으면
+                            String commaTotal = decimalFormat.format(num - budgetTotal);
+                            tvRemainBudget.setText(commaTotal + "원 남음");
+                            tvRemainBudget.setTextColor(Color.parseColor("#047E74"));
+                            btnConfirm.setEnabled(true); // 다음 버튼 활성화
+                        }
+
+//                    if (tvRemainBudget.getText().toString().contains("남음")) {
+//                        etTotalBudget.setTextColor(Color.parseColor("#212529"));
+//                        tvRemainBudget.setTextColor(Color.parseColor("#047E74"));
+//                    } else if (tvRemainBudget.getText().toString().contains("초과")) {
+//                        etTotalBudget.setTextColor(Color.parseColor("#E70621"));
+//                        tvRemainBudget.setTextColor(Color.parseColor("#E70621"));
 //                    }
-//                } else {
-//                    btnConfirm.setEnabled(false);
-//
-//                    if (inputManager.isAcceptingText()) {
-//                        btnConfirm.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
-//                    } else {
-//                        btnConfirm.setBackgroundResource(R.drawable.button_enabled_false);
-//                    }
-//                }
-//
-//                String remain = decimalFormat.format(goalInfo.getRemainder());
-//                tvRemainBudget.setText(remain + "원 남음");
-//
-//                tvTotalBudget.setText("전체 예산 " + result + "원");
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//
-//            }
-//        });
+                    }
+                }
+            }
+        });
     }
 
     private void setButtonSize() {
@@ -305,9 +340,12 @@ public class BudgetUpdateActivity extends AppCompatActivity {
 
     // 수정할 예산 정보 바인딩
     private void setBudgetInfo() {
+        totalAmountList = new ArrayList<>();
         int catBudget = 0;
+
         for (GoalCategoryDetail category : goalInfo.getGoalCategoryList()) {
             catBudget += category.getBudget();
+            totalAmountList.add(String.valueOf(category.getBudget()));
         }
 
         String remain = decimalFormat.format(goalInfo.getTotalBudget() - catBudget);
@@ -317,7 +355,32 @@ public class BudgetUpdateActivity extends AppCompatActivity {
         etTotalBudget.setText(budget);
         tvTotalBudget.setText(budget);
 
-        GoalCategoryListAdapter goalCategoryListAdapter = new GoalCategoryListAdapter(goalInfo.getGoalCategoryList());
+        GoalCategoryListAdapter goalCategoryListAdapter = new GoalCategoryListAdapter(goalInfo.getGoalId(), goalInfo.getGoalCategoryList(), totalAmountList);
+        goalCategoryListAdapter.setOnTextChangeListener(new GoalCategoryListAdapter.OnTextChangeListener() {
+            @Override
+            public void onChange(int finalTotal) {
+                budgetTotal = finalTotal;
+
+                if (etTotalBudget.length() > 0) {
+                    int num = Integer.parseInt(etTotalBudget.getText().toString().replaceAll("\\,", ""));
+
+                    if (finalTotal > num) {
+                        //예산보다 많으면
+                        String commaTotal = decimalFormat.format(finalTotal - num);
+                        tvRemainBudget.setText(commaTotal + "원 초과");
+                        tvRemainBudget.setTextColor(Color.parseColor("#E70621"));
+                        btnConfirm.setEnabled(false); // 다음 버튼 비활성화
+                    } else {
+                        //예산보다 적으면
+                        String commaTotal = decimalFormat.format(num - finalTotal);
+                        tvRemainBudget.setText(commaTotal + "원 남음");
+                        tvRemainBudget.setTextColor(Color.parseColor("#047E74"));
+                        btnConfirm.setEnabled(true); // 다음 버튼 활성화
+                    }
+                }
+            }
+        });
+
         rvCategory.setLayoutManager(new LinearLayoutManager(this));
         rvCategory.setAdapter(goalCategoryListAdapter);
     }
@@ -409,7 +472,6 @@ public class BudgetUpdateActivity extends AppCompatActivity {
     // 뒤로가기 버튼 눌렀을 때 동작하는 메소드
     @Override
     public void onBackPressed() {
-        // 게시글 목록으로 돌아갈 경우 댓글, 대댓글 추가 및 수정한 경우에 게시글 목록 새로고침 하도록 함
         Intent intent = new Intent();
         intent.putExtra("goalUpdate", goalUpdate);
 
