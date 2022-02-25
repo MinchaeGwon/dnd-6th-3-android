@@ -1,5 +1,7 @@
 package com.dnd.moneyroutine.dto;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 import lombok.Getter;
@@ -13,7 +15,8 @@ public class GoalCategoryInfo implements Comparable<GoalCategoryInfo> {
     private String categoryName;
     private int percentage;
     private int expense;
-    private List<ExpenditureDetailDto> weeklyExpenditureDetailDtoList;
+    @SerializedName("weeklyExpenditureDetailDtoList")
+    private List<ExpenditureDetailDto> expenditureDetailDtoList;
 
     @Override
     public int compareTo(GoalCategoryInfo goalCategoryInfo) {

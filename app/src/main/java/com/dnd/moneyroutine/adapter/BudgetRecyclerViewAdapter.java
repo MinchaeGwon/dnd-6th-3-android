@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,16 +26,12 @@ import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.dto.BudgetDetailModel;
-import com.dnd.moneyroutine.dto.GoalCategoryCreateDto;
 import com.dnd.moneyroutine.dto.BudgetItem;
+import com.dnd.moneyroutine.dto.GoalCategoryCreateDto;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.JWTUtils;
 import com.dnd.moneyroutine.service.RetrofitService;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -216,7 +211,6 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                             tvAlert.setText(commaTotal + "원 남음");
                             btnNext.setEnabled(true);
                             btnNext.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
-
                         }
 
                     }

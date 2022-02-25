@@ -1,14 +1,20 @@
 package com.dnd.moneyroutine;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.dnd.moneyroutine.adapter.MonthlyDetailAdapter;
+import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
+
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class MonthlyDetailActivity extends AppCompatActivity {
 
@@ -25,7 +31,8 @@ public class MonthlyDetailActivity extends AppCompatActivity {
 
     DecimalFormat dcFormat = new DecimalFormat("#,###");
 
-
+    private MonthlyDetailAdapter adapter;
+    private ArrayList<ExpenditureDetailDto> expenditureDetailDtoArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,7 @@ public class MonthlyDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_monthly_detail);
 
         initView();
+        initAdapter();
         setTextView();
         setListener();
 
@@ -60,7 +68,14 @@ public class MonthlyDetailActivity extends AppCompatActivity {
 
     }
 
-    private void initAdapter(){}
+    private void initAdapter(){
+        expenditureDetailDtoArrayList= new ArrayList<>();
+        expenditureDetailDtoArrayList.add(new ExpenditureDetailDto(LocalDate.now(),3000,"학식"));
+
+        adapter = new MonthlyDetailAdapter(expenditureDetailDtoArrayList);
+        rcContent.setLayoutManager(new LinearLayoutManager(this));
+        rcContent.setAdapter(adapter);
+    }
 
     private void setListener() {
         ivBack.setOnClickListener(new View.OnClickListener() {

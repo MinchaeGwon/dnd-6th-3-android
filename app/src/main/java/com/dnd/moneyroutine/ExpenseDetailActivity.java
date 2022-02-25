@@ -6,6 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.dnd.moneyroutine.adapter.MonthlyDetailAdapter;
+import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
+
+import java.util.ArrayList;
+
 public class ExpenseDetailActivity extends AppCompatActivity {
 
     @Override

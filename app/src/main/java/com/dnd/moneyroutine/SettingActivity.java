@@ -126,31 +126,31 @@ public class SettingActivity extends AppCompatActivity {
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);
 
-        Call<JsonObject> call = retroService.withdraw();
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.isSuccessful()) {
-                    JsonObject responseJson = response.body();
-
-                    Log.d("SettingActivity", responseJson.toString());
-
-                    if (responseJson.get("statusCode").getAsInt() == 200) {
-                        // sharedPreferences가 보관하고 있던 토큰을 삭제
-                        removeSharedPreferences();
-                        afterMoveActivity();
-                    }
-                } else {
-//                    Log.d("SettingActivity", response.);
-                    Log.d("SettingActivity", "3333333333333");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(SettingActivity.this, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        Call<JsonObject> call = retroService.withdraw();
+//        call.enqueue(new Callback<JsonObject>() {
+//            @Override
+//            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+//                if (response.isSuccessful()) {
+//                    JsonObject responseJson = response.body();
+//
+//                    Log.d("SettingActivity", responseJson.toString());
+//
+//                    if (responseJson.get("statusCode").getAsInt() == 200) {
+//                        // sharedPreferences가 보관하고 있던 토큰을 삭제
+//                        removeSharedPreferences();
+//                        afterMoveActivity();
+//                    }
+//                } else {
+////                    Log.d("SettingActivity", response.);
+//                    Log.d("SettingActivity", "3333333333333");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<JsonObject> call, Throwable t) {
+//                Toast.makeText(SettingActivity.this, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     // SharedPreferences에서 토큰 제거

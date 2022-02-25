@@ -3,14 +3,17 @@ package com.dnd.moneyroutine.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ExpenditureDetailDto implements Serializable {
     private LocalDate date;
-    private Long expense;
+    private int expense;
     private String expenseDetail;
-
 }
