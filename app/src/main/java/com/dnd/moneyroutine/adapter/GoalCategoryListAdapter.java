@@ -52,6 +52,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+// 예산 수정 : 목표 카테고리에 사용
 public class GoalCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public interface OnTextChangeListener {
@@ -370,10 +371,17 @@ public class GoalCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
                             if (changeBudget == budget) {
                                 Log.d("GoalCategoryList", "전체 예산 수정 성공");
 
-                                for (int i = 0; i < modifyList.size(); i++) {
-                                    GoalCategoryForm goalCategoryForm = modifyList.get(i);
+                                if (modifyList.size() == 0) {
+                                    Intent intent = new Intent();
+                                    intent.putExtra("goalUpdate", true);
 
-                                    changeGoalCategoryBudget(i == modifyList.size() - 1, goalCategoryForm);
+                                    ((BudgetUpdateActivity) context).setResult(Activity.RESULT_OK, intent);
+                                    ((BudgetUpdateActivity) context).finish();
+                                } else {
+                                    for (int i = 0; i < modifyList.size(); i++) {
+                                        GoalCategoryForm goalCategoryForm = modifyList.get(i);
+                                        changeGoalCategoryBudget(i == modifyList.size() - 1, goalCategoryForm);
+                                    }
                                 }
                             }
                         }

@@ -146,10 +146,10 @@ public class MainActivity extends AppCompatActivity {
 
     // fragment setting
     private void setFragment(int position) {
-        if (position == FooterEnum.HOME.getOrderingNumber() || position == FooterEnum.DIARY.getOrderingNumber()) {
-            window.setStatusBarColor(Color.parseColor("#F8F9FA"));
-        } else {
+        if (position == FooterEnum.EXPENDITURE.getOrderingNumber()) {
             window.setStatusBarColor(ContextCompat.getColor(MainActivity.this, android.R.color.white));
+        } else {
+            window.setStatusBarColor(Color.parseColor("#F8F9FA"));
         }
 
         if (fragmentList.get(position) != null) {

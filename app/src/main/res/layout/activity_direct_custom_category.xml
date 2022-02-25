@@ -20,8 +20,8 @@
 
         <ImageButton
             android:id="@+id/ib_custom_back"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="10dp"
+            android:layout_height="18dp"
             android:layout_marginStart="16dp"
             android:layout_weight="0"
             android:adjustViewBounds="true"
