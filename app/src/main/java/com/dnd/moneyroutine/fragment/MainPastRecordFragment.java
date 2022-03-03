@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.OnboardingCategoryActivity;
@@ -63,9 +65,11 @@ public class MainPastRecordFragment extends Fragment  {
     private TextView tvPastRemain;
     private TextView tvPastBudget;
     private TextView tvPastExpense;
+    private ProgressBar pbPastExpense;
 
     private RecyclerView rvCategory;
 
+    private MainFragment parentFragment;
     private String token;
 
     private boolean newMonth;
@@ -73,8 +77,9 @@ public class MainPastRecordFragment extends Fragment  {
 
     public MainPastRecordFragment() {}
 
-    public MainPastRecordFragment(boolean newMonth) {
+    public MainPastRecordFragment(boolean newMonth, MainFragment parentFragment) {
         this.newMonth = newMonth;
+        this.parentFragment = parentFragment;
     }
 
     @Override
@@ -109,8 +114,10 @@ public class MainPastRecordFragment extends Fragment  {
         tvPastRemain = v.findViewById(R.id.tv_past_remain);
         tvPastBudget = v.findViewById(R.id.tv_past_total_budget);
         tvPastExpense = v.findViewById(R.id.tv_past_total_expense);
+        pbPastExpense = v.findViewById(R.id.pb_past_remain_budget);
 
         rvCategory = v.findViewById(R.id.rv_past_category);
+        rvCategory.setLayoutManager(new LinearLayoutManager(getContext()));
 
         btnSelectMonth = v.findViewById(R.id.ll_select_month);
     }
@@ -125,6 +132,13 @@ public class MainPastRecordFragment extends Fragment  {
         tvSelectMonth.setText(Common.getMainLocalDateToString(selectDate));
         tvPastYearMonth.setText(selectDate.getYear() + "년 " + selectDate.getMonthValue() + "월");
         tvPastDate.setText(selectDate.getMonthValue() + "/1 ~ " + selectDate.getMonthValue() + "/" + selectDate.lengthOfMonth());
+
+        if (newMonth) {
+            clNewMonthStart.setVisibility(View.VISIBLE);
+            btnSelectMonth.setVisibility(View.GONE);
+
+            tvStartMonth.setText((selectDate.getMonthValue() + 1) + "월이 시작됐어요");
+        }
     }
 
     private void setListener() {
@@ -146,7 +160,7 @@ public class MainPastRecordFragment extends Fragment  {
             @Override
             public void onClick(View view) {
                 // 연도, 월 선택 다이얼로그 띄우기
-                YearMonthPickerDialog yearMonthPickerDialog = new YearMonthPickerDialog(selectDate);
+                YearMonthPickerDialog yearMonthPickerDialog = new YearMonthPickerDialog(selectDate, false);
                 yearMonthPickerDialog.show(getActivity().getSupportFragmentManager(), "YearMonthPickerDialog");
 
                 yearMonthPickerDialog.setOnSelectListener(new YearMonthPickerDialog.OnSelectListener() {
@@ -220,6 +234,11 @@ public class MainPastRecordFragment extends Fragment  {
                     JsonObject responseJson = response.body();
 
                     Log.d(TAG, responseJson.toString());
+
+                    if (responseJson.get("statusCode").getAsInt() == 200) {
+                        // tab 새로고침
+                        parentFragment.getCurrentGoalInfo();
+                    }
                 }
             }
 
@@ -232,6 +251,9 @@ public class MainPastRecordFragment extends Fragment  {
     }
 
     private void setGoalInfo(GoalInfo goalInfo) {
+        pbPastExpense.setMax(goalInfo.getTotalBudget());
+        pbPastExpense.setProgress(goalInfo.getTotalBudget() - goalInfo.getRemainder());
+
         tvGoalSuccess.setText(goalInfo.getGoalState().getState());
 
         DecimalFormat myFormatter = new DecimalFormat("###,###");
@@ -242,15 +264,11 @@ public class MainPastRecordFragment extends Fragment  {
         String totalBudget = myFormatter.format(goalInfo.getTotalBudget());
         tvPastBudget.setText(totalBudget + "원 중");
 
-        int totalExpense = 0;
-        for (GoalCategoryDetail goalCategoryDetail : goalInfo.getGoalCategoryList()) {
-            totalExpense += goalCategoryDetail.getTotalExpense();
-        }
-
+        int totalExpense = goalInfo.getTotalBudget() - goalInfo.getRemainder();
         String strTotalExpense = myFormatter.format(totalExpense);
         tvPastExpense.setText("전체 " + strTotalExpense + "원 지출");
 
-        ExpenseCategoryAdapter expenseCategoryAdapter = new ExpenseCategoryAdapter(goalInfo.getGoalCategoryList(), true);
+        ExpenseCategoryAdapter expenseCategoryAdapter = new ExpenseCategoryAdapter(goalInfo.getGoalCategoryList(), false);
         rvCategory.setAdapter(expenseCategoryAdapter);
     }
 }

@@ -76,7 +76,7 @@ public class YearMonthPickerDialog extends DialogFragment {
         LocalDate curDate = LocalDate.now();
 
         if (!diary) {
-            curDate.minusMonths(1);
+            curDate = curDate.minusMonths(1);
         }
 
         int curYear = curDate.getYear();

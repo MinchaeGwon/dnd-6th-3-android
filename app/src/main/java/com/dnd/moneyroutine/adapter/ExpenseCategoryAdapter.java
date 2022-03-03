@@ -107,14 +107,26 @@ public class ExpenseCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             String expense = myFormatter.format(category.getTotalExpense());
             String budget = myFormatter.format(category.getBudget());
-            String remain = myFormatter.format(category.getBudget() - category.getTotalExpense());
+
+            int remain = category.getBudget() - category.getTotalExpense();
+            String strRemain = myFormatter.format(remain);
 
             if (current) {
                 tvExpense.setText(expense + "원");
-                tvRemain.setText(remain + "원 남음");
+
+                if (remain >= 0) {
+                    tvRemain.setText(strRemain + "원 남음");
+                } else {
+                    tvRemain.setText(strRemain + "원 초과");
+                }
             } else {
                 tvExpense.setText(expense + "원 씀");
-                tvRemain.setText(remain + "원 아낌");
+
+                if (remain >= 0) {
+                    tvRemain.setText(strRemain + "원 아낌");
+                } else {
+                    tvRemain.setText(strRemain + "원 초과");
+                }
             }
 
             tvBudget.setText("예산 " + budget + "원");
