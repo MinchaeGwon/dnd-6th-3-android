@@ -109,8 +109,6 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
 
     //recyclerview adapter 연결
     private void initAdapter() {
-
-        ArrayList<Integer> enteredBudget = new ArrayList<>();
         rcBudget.setLayoutManager(new LinearLayoutManager(this));
         bgList = new ArrayList<>();
 
