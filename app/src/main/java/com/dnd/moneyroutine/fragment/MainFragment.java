@@ -70,7 +70,7 @@ public class MainFragment extends Fragment {
         token = PreferenceManager.getToken(getContext(), Constants.tokenKey);
 
         initView();
-        checkGoal(false);
+        checkGoal();
     }
 
     private void initView() {
@@ -78,7 +78,15 @@ public class MainFragment extends Fragment {
         ibUpdateBudget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkGoal(true);
+                if (goalInfo != null) {
+                    Intent intent = new Intent(getContext(), BudgetUpdateActivity.class);
+                    intent.putExtra("goalInfo", goalInfo);
+                    startActivityResult.launch(intent);
+                } else {
+                    // 목표 설정하지 않았다면 다이얼로그 띄우기
+                    setGoalDialog();
+                    goalDialog.show();
+                }
             }
         });
 
@@ -140,9 +148,14 @@ public class MainFragment extends Fragment {
     private Fragment getFragment(int position) {
         switch (position) {
             case 0:
+                // 이번 달 목표 정보가 없는 경우(새로운 달이 시작한 경우)
+                if (isGoalExist && goalInfo == null) {
+                    return new MainPastRecordFragment(true, this);
+                }
+
                 return new MainCurrentMonthFragment(isGoalExist, goalInfo);
             case 1:
-                return new MainPastRecordFragment();
+                return new MainPastRecordFragment(false, this);
         }
         return null;
     }
@@ -163,7 +176,7 @@ public class MainFragment extends Fragment {
         TextView tvContent = view.findViewById(R.id.tv_dialog_content);
         Button btnConfirm = view.findViewById(R.id.btn_dialog_confirm);
 
-        tvTitle.setText("예산 정보가 없습니다");
+        tvTitle.setText("이번 달 예산 정보가 없습니다");
         tvContent.setText("새로운 예산 계획을 세워주세요!");
 
         btnConfirm.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +188,7 @@ public class MainFragment extends Fragment {
     }
 
     // 사용자가 목표 설정한 적이 있는지 확인
-    private void checkGoal(boolean update) {
+    private void checkGoal() {
         HeaderRetrofit headerRetrofit = new HeaderRetrofit();
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);
@@ -191,20 +204,7 @@ public class MainFragment extends Fragment {
 
                     if (responseJson.get("statusCode").getAsInt() == 200) {
                         isGoalExist = responseJson.get("data").getAsBoolean();
-
-                        if (update) {
-                            if (isGoalExist) {
-                                Intent intent = new Intent(getContext(), BudgetUpdateActivity.class);
-                                intent.putExtra("goalInfo", goalInfo);
-                                startActivityResult.launch(intent);
-                            } else {
-                                // 목표 설정하지 않았다면 다이얼로그 띄우기
-                                setGoalDialog();
-                                goalDialog.show();
-                            }
-                        } else {
-                            getCurrentGoalInfo();
-                        }
+                        getCurrentGoalInfo();
                     }
                 }
             }
@@ -218,7 +218,7 @@ public class MainFragment extends Fragment {
     }
 
     // 이번 달 목표 정보 가져오기
-    private void getCurrentGoalInfo() {
+    public void getCurrentGoalInfo() {
         // 헤더에 토큰 추가
         HeaderRetrofit headerRetrofit = new HeaderRetrofit();
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);

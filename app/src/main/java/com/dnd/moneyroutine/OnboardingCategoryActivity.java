@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -19,30 +20,54 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.dnd.moneyroutine.adapter.CategoryGridViewAdapter;
+import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.ExpandableHeightGridView;
+import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.dto.CategoryItem;
+import com.dnd.moneyroutine.dto.GoalCategoryCompact;
 import com.dnd.moneyroutine.dto.GoalCategoryCreateDto;
+import com.dnd.moneyroutine.dto.GoalInfo;
+import com.dnd.moneyroutine.service.HeaderRetrofit;
+import com.dnd.moneyroutine.service.RetrofitService;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class OnboardingCategoryActivity extends AppCompatActivity {
 
-    private ExpandableHeightGridView gridView = null;
+    private static final String TAG = "OnBoardingCategory";
 
-    private CategoryGridViewAdapter adapter = null;
+    private ExpandableHeightGridView gridView;
+
+    private CategoryGridViewAdapter adapter;
     private CategoryItem newCategory;
     private int newCategoryId;
 
     private ConstraintLayout background;
-    private LinearLayout linearAddcategory;
+    private LinearLayout llAddCategory;
     private Button btnNext;
 
+    private String token;
+
+    private ArrayList<GoalCategoryCompact> categoryList;
     private ArrayList<CategoryItem> bgList;
+
     private ArrayList<String> icon;
     private ArrayList<String> name;
     private ArrayList<String> ex;
+
     private ArrayList<CategoryItem> newItem;
     private ArrayList<Integer> selectedItem = new ArrayList<>();
 
@@ -51,11 +76,14 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding_catecory);
 
+        token = PreferenceManager.getToken(this, Constants.tokenKey);
+
+        getCategory();
+
         initView();
         initAdapter();
         selectItem();
         setButtonListener();
-
     }
 
     private void initView() {
@@ -63,18 +91,32 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
         gridView.setExpanded(true);
         btnNext = (Button) findViewById(R.id.btn_next1);
 
-        linearAddcategory = findViewById(R.id.btn_addcategory);
+        llAddCategory = findViewById(R.id.btn_addcategory);
     }
 
     private void initAdapter() {
         String [] categoryIcons = {"@drawable/coffee_gray", "@drawable/food_gray", "@drawable/beer_gray", "@drawable/book_gray", "@drawable/bus_gray", "@drawable/bag_gray", "@drawable/computer_gray","@drawable/tissue_gray", "@drawable/pill_gray"};
-//        String[] categoryIcons = {"☕", "🥘", "🍻", "📚 ", "🚌", "👜", "🖥", "🧻", "💊"};
         String[] categoryNames = {"카페", "식비", "유흥비", "자기계발", "교통비", "쇼핑", "정기구독", "생활용품", "건강"};
         String[] categoryExs = {"커피 및 디저트", "밥값", "주류비, 취미", "책 및 강의", "택시, 버스, 지하철", "의류, 화장품", "넷플릭스 등", "가전제품 등", "병원비, 운동"};
 
         icon = new ArrayList<>();
         name = new ArrayList<>();
         ex = new ArrayList<>();
+
+        for (GoalCategoryCompact category : categoryList) {
+            if (category.isCustom()) {
+                try {
+                    icon.add(URLDecoder.decode(category.getEmoji(), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                icon.add(categoryIcons[getCategoryPosition(category.getName())]);
+            }
+
+            name.add(category.getName());
+            ex.add(category.getDetail());
+        }
 
         for (int i = 0; i < categoryNames.length; i++) {
             icon.add(i, categoryIcons[i]);
@@ -92,65 +134,52 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
     }
 
     private void selectItem() {
-
         //아이템 선택
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 ImageView ivIcon = view.findViewById(R.id.iv_category_icon);
                 String [] colorIcons = {"@drawable/coffee_color", "@drawable/food_color", "@drawable/beer_color", "@drawable/book_color", "@drawable/bus_color", "@drawable/bag_color", "@drawable/computer_color","@drawable/tissue_color", "@drawable/pill_color"};
                 String [] grayIcons = {"@drawable/coffee_gray", "@drawable/food_gray", "@drawable/beer_gray", "@drawable/book_gray", "@drawable/bus_gray", "@drawable/bag_gray", "@drawable/computer_gray","@drawable/tissue_gray", "@drawable/pill_gray"};
 
-
                 background = (ConstraintLayout) view;
                 gridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
 
-                //선택해제
                 if (selectedItem.contains(position)) {
+                    //선택해제
                     background.setSelected(false);
                     selectedItem.remove(Integer.valueOf(position));
-                }
-                //선택
-                else {
+                } else {
+                    //선택
                     background.setSelected(true);
                     selectedItem.add(position);
                 }
 
-                //선택시
                 if (background.isSelected()) {
+                    //선택시
                     background.setBackgroundResource(R.drawable.button_category_clicked);
-                    if(position<9){ //기본 카테고리는 컬러 이미지로
+                    if (position < 9){ //기본 카테고리는 컬러 이미지로
                         int resId = getResources().getIdentifier( colorIcons[position], "drawable", getPackageName());
                         ivIcon.setImageResource(resId);
                     }
-                }
-                //선택해제시
-                else {
+                } else {
+                    //선택해제시
                     background.setBackgroundResource(R.drawable.button_category_unclicked);
-                    if(position<9){ //기본 카테고리는 흑백 이미지로
+                    if (position < 9){ //기본 카테고리는 흑백 이미지로
                         int resId = getResources().getIdentifier( grayIcons[position], "drawable", getPackageName());
                         ivIcon.setImageResource(resId);
                     }
                 }
 
                 //하나라도 선택되면 다음 버튼 활성화
-                if (selectedItem.size() > 0) {
-                    btnNext.setEnabled(true);
-                } else if (selectedItem.size() == 0) {
-                    btnNext.setEnabled(false);
-                }
-
+                btnNext.setEnabled(selectedItem.size() > 0);
             }
         });
-
     }
-
-
 
     private void setButtonListener() {
         //카테고리 추가 버튼
-        linearAddcategory.setOnClickListener(new View.OnClickListener() {
+        llAddCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), NewCategoryActivity.class);
@@ -158,13 +187,10 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
             }
         });
 
-
         //다음 페이지로
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                int categoryId = 0;
-
                 bgList = new ArrayList<>();
                 Collections.sort(selectedItem);
                 String [] colorIcons = {"@drawable/coffee_color", "@drawable/food_color", "@drawable/beer_color", "@drawable/book_color", "@drawable/bus_color", "@drawable/bag_color", "@drawable/computer_color","@drawable/tissue_color", "@drawable/pill_color"};
@@ -183,17 +209,9 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
                         goalCategoryCreateDto.setCustom(false);
                     } else{
                         bgList.add(new CategoryItem(icon.get(index), name.get(index), ex.get(index))); //새로 생성한 카테고리는 아이콘으로
-//                        goalCategoryCreateDtoList.add(i, new GoalCategoryCreateDto(0, Long.valueOf(categoryId), true));
-////                        goalCategoryCreateDto.setBudget(0);
-////                        goalCategoryCreateDto.setCategoryId(Long.valueOf(categoryId));
-////                        goalCategoryCreateDto.setCustom(true);
-////                        goalCategoryCreateDtoList.add(i,goalCategoryCreateDto);
-//                        categoryId++;
-//                        goalCategoryCreateDtoList.add(i, new GoalCategoryCreateDto(0, Long.valueOf(categoryId), true));
                         goalCategoryCreateDto.setBudget(0);
                         goalCategoryCreateDto.setCategoryId(Long.valueOf(newCategoryId));
                         goalCategoryCreateDto.setCustom(true);
-                        //                        categoryId++;
                     }
 
                     goalCategoryCreateDtoList.add(i, goalCategoryCreateDto);
@@ -208,9 +226,68 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
         });
     }
 
+    private void getCategory() {
+        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+        RetrofitService retroService = retrofit.create(RetrofitService.class);
 
+        Call<JsonObject> call = retroService.getCategoryList();
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject responseJson = response.body();
 
-    //새로운 아이템 추가 페이지에서 입력된 값 받아오기
+                    Log.d(TAG, responseJson.toString());
+
+                    if (responseJson.get("statusCode").getAsInt() == 200) {
+                        if (!responseJson.get("data").isJsonNull()) {
+                            JsonArray jsonArray = responseJson.get("data").getAsJsonArray();
+
+                            Gson gson = new Gson();
+                            categoryList = gson.fromJson(jsonArray, new TypeToken<ArrayList<GoalCategoryCompact>>() {}.getType());
+
+                            if (categoryList != null) {
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(OnboardingCategoryActivity.this, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public static int getCategoryPosition(String category) {
+        switch (category) {
+            case "카페":
+                return 0;
+            case "식비":
+                return 1;
+            case "유흥비":
+                return 2;
+            case "자기계발":
+                return 3;
+            case "교통비":
+                return 4;
+            case "쇼핑":
+                return 5;
+            case "정기구독":
+                return 6;
+            case "생활용품":
+                return 7;
+            case "건강":
+                return 8;
+        }
+
+        return -1;
+    }
+
+    // 새로운 아이템 추가 페이지에서 입력된 값 받아오기
     ActivityResultLauncher<Intent> startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -219,7 +296,7 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
                         Intent intent = result.getData();
                         newCategory = (CategoryItem) intent.getSerializableExtra("new category name");
                         newCategoryId = intent.getIntExtra("newCategoryId", -1);
-//                        name.add(.);
+
                         String newIcon = newCategory.getCategoryIcon();
                         String newName = newCategory.getCategoryName();
                         String newEx = newCategory.getCategoryEx();
@@ -260,10 +337,5 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
                     }
                 }
             });
-
-
-
-
-
 
 }

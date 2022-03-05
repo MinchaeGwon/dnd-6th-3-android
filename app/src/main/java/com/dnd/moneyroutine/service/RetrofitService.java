@@ -90,6 +90,9 @@ public interface RetrofitService {
     @POST("expenditure")
     Call<JsonObject> addExpenditure(@Body ExpenseForm expenseForm);
 
+    @GET("category")
+    Call<JsonObject> getCategoryList();
+
     @GET("category/except-list")
     Call<JsonObject> getExceptCategory(@Query("goalId") int goalId);
 

@@ -141,7 +141,7 @@ public class MainCurrentMonthFragment extends Fragment {
 
     // 사용자가 목표 설정한 적이 있는지 확인
     private void checkGoal() {
-        if (isGoalExist) {
+        if (goalInfo != null) {
             clEmpty.setVisibility(View.GONE);
             clGoalBudget.setVisibility(View.VISIBLE);
             clGoalCat.setVisibility(View.VISIBLE);
@@ -166,11 +166,7 @@ public class MainCurrentMonthFragment extends Fragment {
         String totalBudget = myFormatter.format(goalInfo.getTotalBudget());
         tvTotalBudget.setText(totalBudget + "원 중");
 
-        int totalExpense = 0;
-        for (GoalCategoryDetail goalCategoryDetail : goalInfo.getGoalCategoryList()) {
-            totalExpense += goalCategoryDetail.getTotalExpense();
-        }
-
+        int totalExpense = goalInfo.getTotalBudget() - goalInfo.getRemainder();
         String strTotalExpense = myFormatter.format(totalExpense);
         tvTotalExpense.setText("전체 " + strTotalExpense + "원 지출");
 
