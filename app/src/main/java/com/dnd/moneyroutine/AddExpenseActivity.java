@@ -32,7 +32,7 @@ import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
 import com.dnd.moneyroutine.dto.ExpenseForm;
-import com.dnd.moneyroutine.dto.GoalCategoryCompact;
+import com.dnd.moneyroutine.dto.CategoryCompact;
 import com.dnd.moneyroutine.fragment.ExpenseCalendarFragment;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.RetrofitService;
@@ -83,7 +83,7 @@ public class AddExpenseActivity extends AppCompatActivity {
     private DecimalFormat decimalFormat;
     private String result = "";
     private Calendar expenseDate;
-    private GoalCategoryCompact selectCategory;
+    private CategoryCompact selectCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -338,7 +338,7 @@ public class AddExpenseActivity extends AppCompatActivity {
                             JsonArray jsonArray = responseJson.get("data").getAsJsonArray();
 
                             Gson gson = new Gson();
-                            ArrayList<GoalCategoryCompact> responseCategory = gson.fromJson(jsonArray, new TypeToken<ArrayList<GoalCategoryCompact>>() {}.getType());
+                            ArrayList<CategoryCompact> responseCategory = gson.fromJson(jsonArray, new TypeToken<ArrayList<CategoryCompact>>() {}.getType());
 
                             if (responseCategory != null) {
                                 setGoalCategory(responseCategory);
@@ -355,11 +355,11 @@ public class AddExpenseActivity extends AppCompatActivity {
         });
     }
 
-    private void setGoalCategory(ArrayList<GoalCategoryCompact> categoryList) {
+    private void setGoalCategory(ArrayList<CategoryCompact> categoryList) {
         GoalCategoryGridAdapter goalCategoryGridAdapter = new GoalCategoryGridAdapter(categoryList);
         goalCategoryGridAdapter.setOnItemClickListener(new GoalCategoryGridAdapter.OnItemClickListener() {
             @Override
-            public void onClick(GoalCategoryCompact category) {
+            public void onClick(CategoryCompact category) {
                 selectCategory = category;
 
                 if (etContent.isFocused() || etExpense.isFocused()) {

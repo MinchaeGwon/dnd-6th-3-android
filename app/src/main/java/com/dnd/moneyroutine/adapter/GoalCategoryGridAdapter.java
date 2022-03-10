@@ -2,7 +2,6 @@ package com.dnd.moneyroutine.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.custom.Common;
-import com.dnd.moneyroutine.dto.GoalCategoryCompact;
+import com.dnd.moneyroutine.dto.CategoryCompact;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -24,12 +23,12 @@ import java.util.ArrayList;
 public class GoalCategoryGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public interface OnItemClickListener {
-        void onClick(GoalCategoryCompact category);
+        void onClick(CategoryCompact category);
     }
 
     private Context context;
-    private ArrayList<GoalCategoryCompact> categoryList;
-    private GoalCategoryCompact selectCat;
+    private ArrayList<CategoryCompact> categoryList;
+    private CategoryCompact selectCat;
 
     private boolean detail = false;
     private int detailCatId;
@@ -41,11 +40,11 @@ public class GoalCategoryGridAdapter extends RecyclerView.Adapter<RecyclerView.V
         this.onItemClickListener = onItemClickListener;
     }
 
-    public GoalCategoryGridAdapter(ArrayList<GoalCategoryCompact> categoryList) {
+    public GoalCategoryGridAdapter(ArrayList<CategoryCompact> categoryList) {
         this.categoryList = categoryList;
     }
 
-    public GoalCategoryGridAdapter(ArrayList<GoalCategoryCompact> categoryList, int detailCatId, boolean detailCustom, boolean detail) {
+    public GoalCategoryGridAdapter(ArrayList<CategoryCompact> categoryList, int detailCatId, boolean detailCustom, boolean detail) {
         this.categoryList = categoryList;
         this.detailCatId = detailCatId;
         this.detailCustom = detailCustom;
@@ -63,7 +62,7 @@ public class GoalCategoryGridAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof CategoryViewHolder) {
-            GoalCategoryCompact category = categoryList.get(position);
+            CategoryCompact category = categoryList.get(position);
             ((CategoryViewHolder) holder).setItem(category);
 
             if (detail) {
@@ -134,7 +133,7 @@ public class GoalCategoryGridAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
         // 실제 view에 객체 내용을 적용시키는 메소드
-        public void setItem(GoalCategoryCompact category) {
+        public void setItem(CategoryCompact category) {
             if (category.isCustom()) {
                 ivCategory.setVisibility(View.INVISIBLE);
                 tvEmoji.setVisibility(View.VISIBLE);

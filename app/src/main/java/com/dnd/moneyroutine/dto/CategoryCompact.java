@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class GoalCategoryCompact implements Serializable {
+public class CategoryCompact implements Serializable {
     private int categoryId;
     private String emoji;
     private String name;

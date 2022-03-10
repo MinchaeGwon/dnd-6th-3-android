@@ -8,13 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter @Getter
-public class GoalCategoryDetail implements Serializable {
+public class GoalCategoryDetail extends CategoryCompact implements Serializable {
     private int goalCategoryId;
-    private int categoryId;
-    private String emoji;
-    private String name;
-    private String detail;
     private int budget;
     private int totalExpense;
-    private boolean custom;
 }
