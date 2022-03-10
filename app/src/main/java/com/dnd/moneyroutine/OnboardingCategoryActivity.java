@@ -51,13 +51,13 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
 
     private ExpandableHeightGridView gridView;
 
-    private CategoryGridViewAdapter adapter;
-
     private ConstraintLayout background;
     private LinearLayout llAddCategory;
     private Button btnNext;
 
     private String token;
+
+    private CategoryGridViewAdapter categoryGridViewAdapter;
 
     private ArrayList<CategoryCompact> categories;
     private ArrayList<CategoryCompact> selectCategories;
@@ -92,14 +92,14 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
     }
 
     private void initAdapter() {
-        String [] grayIcons = {"@drawable/coffee_gray", "@drawable/food_gray", "@drawable/beer_gray", "@drawable/book_gray", "@drawable/bus_gray", "@drawable/bag_gray", "@drawable/computer_gray","@drawable/tissue_gray", "@drawable/pill_gray"};
+        String[] grayIcons = {"@drawable/coffee_gray", "@drawable/food_gray", "@drawable/beer_gray", "@drawable/book_gray", "@drawable/bus_gray", "@drawable/bag_gray", "@drawable/computer_gray","@drawable/tissue_gray", "@drawable/pill_gray"};
 
         id = new ArrayList<>();
         icon = new ArrayList<>();
         name = new ArrayList<>();
         ex = new ArrayList<>();
 
-        adapter = new CategoryGridViewAdapter();
+        categoryGridViewAdapter = new CategoryGridViewAdapter();
 
         for (CategoryCompact category : categories) {
             if (category.isCustom()) {
@@ -116,14 +116,10 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
             name.add(category.getName());
             ex.add(category.getDetail());
 
-            adapter.addItem(category);
+            categoryGridViewAdapter.addItem(category);
         }
 
-//        for (int i = 0; i < categories.size(); i++) {
-//            adapter.addItem(new CategoryItem(id.get(i), icon.get(i), name.get(i), ex.get(i)));
-//        }
-
-        gridView.setAdapter(adapter);
+        gridView.setAdapter(categoryGridViewAdapter);
     }
 
     private void selectItem() {
@@ -189,10 +185,7 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 selectCategories = new ArrayList<>();
-//                bgList = new ArrayList<>();
-
                 Collections.sort(selectedItem);
-                String [] colorIcons = {"@drawable/coffee_color", "@drawable/food_color", "@drawable/beer_color", "@drawable/book_color", "@drawable/bus_color", "@drawable/bag_color", "@drawable/computer_color","@drawable/tissue_color", "@drawable/pill_color"};
 
                 ArrayList<GoalCategoryCreateDto> goalCategoryCreateDtoList = new ArrayList<>();
 
@@ -203,20 +196,10 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
 
                     if (index < 9){
                         selectCategories.add(new CategoryCompact(id.get(index), null, name.get(index), ex.get(index), false));
-
                         goalCategoryCreateDto = new GoalCategoryCreateDto(0, id.get(index), false);
-
-//                        goalCategoryCreateDto.setBudget(0);
-//                        goalCategoryCreateDto.setCategoryId(id.get(index)); // 기본 카테고리 id는 1 ~ 9까지이기 때문에 +1 해주는 것
-//                        goalCategoryCreateDto.setCustom(false);
                     } else{
                         selectCategories.add(new CategoryCompact(id.get(index), icon.get(index), name.get(index), ex.get(index), true));
-
                         goalCategoryCreateDto = new GoalCategoryCreateDto(0, id.get(index), true);
-
-//                        goalCategoryCreateDto.setBudget(0);
-//                        goalCategoryCreateDto.setCategoryId(id.get(index));
-//                        goalCategoryCreateDto.setCustom(true);
                     }
 
                     goalCategoryCreateDtoList.add(i, goalCategoryCreateDto);
@@ -285,10 +268,10 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
                         name.add(newName);
                         ex.add(newEx);
 
-                        adapter.addItem(new CategoryCompact(newCategoryId, newIcon, newName, newEx, true));
+                        categoryGridViewAdapter.addItem(new CategoryCompact(newCategoryId, newIcon, newName, newEx, true));
 
                         gridView.invalidateViews();
-                        gridView.setAdapter(adapter);
+                        gridView.setAdapter(categoryGridViewAdapter);
 
                         // 새 카테고리 추가 후 이전에 선택했던 항목 선택된 상태로 background 설정
                         ViewTreeObserver vto = gridView.getViewTreeObserver();
@@ -302,6 +285,7 @@ public class OnboardingCategoryActivity extends AppCompatActivity {
                                     ImageView iv = (ImageView) cl.findViewById(R.id.iv_category_icon);
                                     cl.setBackgroundResource(R.drawable.button_category_clicked);
 
+                                    // 기본 카테고리일 경우
                                     if (selectedItem.get(x) < 9){
                                         int resId = getResources().getIdentifier( colorIcons[selectedItem.get(x)], "drawable", getPackageName());
                                         iv.setImageResource(resId); // 컬러 이미지로

@@ -131,13 +131,27 @@ public class SignupStep2Activity extends AppCompatActivity {
         softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
             @Override
             public void onHiddenSoftKeyboard() {
-                if (tvPasswordConfirm.getText().equals("비밀번호가 일치하지 않습니다")) {
-                    btnNext.setBackgroundResource(R.drawable.button_enabled_false);
-                    btnNext.setEnabled(false);
-                } else {
-                    btnNext.setBackgroundResource(R.drawable.button_enabled_true);
-                    btnNext.setEnabled(true);
+                if (etPassword.isFocused()) {
+                    etPassword.clearFocus();
                 }
+
+                if (etPasswordRepeat.isFocused()) {
+                    etPasswordRepeat.clearFocus();
+                }
+
+                if (btnNext.isEnabled()) {
+                    btnNext.setBackgroundResource(R.drawable.button_enabled_true);
+                } else {
+                    btnNext.setBackgroundResource(R.drawable.button_enabled_false);
+                }
+
+//                if (tvPasswordConfirm.getText().equals("비밀번호가 일치하지 않습니다")) {
+//                    btnNext.setBackgroundResource(R.drawable.button_enabled_false);
+//                    btnNext.setEnabled(false);
+//                } else {
+//                    btnNext.setBackgroundResource(R.drawable.button_enabled_true);
+//                    btnNext.setEnabled(true);
+//                }
 
                 contentLayoutParams.setMarginStart((int) (16 * scale + 0.2f));
                 contentLayoutParams.setMarginEnd((int) (16 * scale + 0.2f));
@@ -150,13 +164,19 @@ public class SignupStep2Activity extends AppCompatActivity {
         softKeyboardDetector.setOnShownKeyboard(new SoftKeyboardDetector.OnShownKeyboardListener() {
             @Override
             public void onShowSoftKeyboard() {
-                if (tvPasswordConfirm.getVisibility() == View.VISIBLE) {
-                    btnNext.setBackgroundColor(Color.parseColor("#ADB5BD"));
-                    btnNext.setEnabled(false);
+                if (btnNext.isEnabled()) {
+                    btnNext.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
                 } else {
-                    btnNext.setBackgroundColor(Color.parseColor("#343a40"));
-                    btnNext.setEnabled(true);
+                    btnNext.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
                 }
+
+//                if (tvPasswordConfirm.getVisibility() == View.VISIBLE) {
+//                    btnNext.setBackgroundColor(Color.parseColor("#ADB5BD"));
+//                    btnNext.setEnabled(false);
+//                } else {
+//                    btnNext.setBackgroundColor(Color.parseColor("#343a40"));
+//                    btnNext.setEnabled(true);
+//                }
 
                 contentLayoutParams.setMarginStart(0);
                 contentLayoutParams.setMarginEnd(0);

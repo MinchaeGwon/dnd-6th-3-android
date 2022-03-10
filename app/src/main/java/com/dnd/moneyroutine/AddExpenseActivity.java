@@ -153,6 +153,8 @@ public class AddExpenseActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setEditClearFocus();
+
                 Intent intent = new Intent(AddExpenseActivity.this, AddEmotionActivity.class);
                 intent.putExtra("expenseForm", setExpenseForm());
                 startActivity(intent);
@@ -182,14 +184,8 @@ public class AddExpenseActivity extends AppCompatActivity {
                 switch (actionId) {
                     case EditorInfo.IME_ACTION_DONE:
                         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        setEditClearFocus();
 
-                        if (etContent.isFocused()) {
-                            etContent.clearFocus();
-                        }
-
-                        if (etExpense.isFocused()) {
-                            etExpense.clearFocus();
-                        }
                         break;
                     default:
                         // 기본 엔터키 동작
@@ -280,11 +276,11 @@ public class AddExpenseActivity extends AppCompatActivity {
         softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
             @Override
             public void onHiddenSoftKeyboard() {
-                if (etExpense.length() > 0 && etContent.length() > 0 && selectCategory != null) {
-                    btnNext.setEnabled(true);
+                setEditClearFocus();
+
+                if (btnNext.isEnabled()) {
                     btnNext.setBackgroundResource(R.drawable.button_enabled_true);
                 } else {
-                    btnNext.setEnabled(false);
                     btnNext.setBackgroundResource(R.drawable.button_enabled_false);
                 }
 
@@ -300,12 +296,9 @@ public class AddExpenseActivity extends AppCompatActivity {
         softKeyboardDetector.setOnShownKeyboard(new SoftKeyboardDetector.OnShownKeyboardListener() {
             @Override
             public void onShowSoftKeyboard() {
-
-                if (etExpense.length() > 0 && etContent.length() > 0 && selectCategory != null) {
-                    btnNext.setEnabled(true);
+                if (btnNext.isEnabled()) {
                     btnNext.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
                 } else {
-                    btnNext.setEnabled(false);
                     btnNext.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
                 }
 
@@ -316,6 +309,16 @@ public class AddExpenseActivity extends AppCompatActivity {
                 btnNext.setLayoutParams(contentLayoutParams);
             }
         });
+    }
+
+    private void setEditClearFocus() {
+        if (etContent.isFocused()) {
+            etContent.clearFocus();
+        }
+
+        if (etExpense.isFocused()) {
+            etExpense.clearFocus();
+        }
     }
 
     // 사용자가 선택한 카테고리 가져오기
@@ -360,6 +363,8 @@ public class AddExpenseActivity extends AppCompatActivity {
         goalCategoryGridAdapter.setOnItemClickListener(new GoalCategoryGridAdapter.OnItemClickListener() {
             @Override
             public void onClick(CategoryCompact category) {
+                btnNext.setEnabled(etExpense.length() > 0 && etContent.length() > 0);
+
                 selectCategory = category;
 
                 if (etContent.isFocused() || etExpense.isFocused()) {

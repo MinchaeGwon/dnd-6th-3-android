@@ -245,14 +245,32 @@ public class DirectCustomCategoryActivity extends AppCompatActivity {
         softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
             @Override
             public void onHiddenSoftKeyboard() {
+                if (etCategoryName.isFocused()) {
+                    etCategoryName.clearFocus();
+                }
+
+                if (etBudget.isFocused()) {
+                    etBudget.clearFocus();
+                }
+
+                if (etDetail.isFocused()) {
+                    etDetail.clearFocus();
+                }
+
                 //키보드 내려가면 이모지 선택시 어두워졌던 배경 다시 원래대로
                 bgBlack.setVisibility(View.GONE);
 
-                if (etCategoryName.getText().toString().length() > 0) {
+                if (btnConfirm.isEnabled()) {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_true);
                 } else {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_false);
                 }
+
+//                if (etCategoryName.getText().toString().length() > 0) {
+//                    btnConfirm.setBackgroundResource(R.drawable.button_enabled_true);
+//                } else {
+//                    btnConfirm.setBackgroundResource(R.drawable.button_enabled_false);
+//                }
 
                 contentLayoutParams.setMarginStart((int) (16 * scale + 0.2f));
                 contentLayoutParams.setMarginEnd((int) (16 * scale + 0.2f));
@@ -265,11 +283,17 @@ public class DirectCustomCategoryActivity extends AppCompatActivity {
         softKeyboardDetector.setOnShownKeyboard(new SoftKeyboardDetector.OnShownKeyboardListener() {
             @Override
             public void onShowSoftKeyboard() {
-                if (etCategoryName.getText().toString().length() > 0) {
+                if (btnConfirm.isEnabled()) {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
                 } else {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
                 }
+
+//                if (etCategoryName.getText().toString().length() > 0) {
+//                    btnConfirm.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
+//                } else {
+//                    btnConfirm.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
+//                }
 
                 contentLayoutParams.setMarginStart(0);
                 contentLayoutParams.setMarginEnd(0);

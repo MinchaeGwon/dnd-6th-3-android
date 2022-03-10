@@ -134,7 +134,6 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
         softKeyboardDetector.setOnShownKeyboard(new SoftKeyboardDetector.OnShownKeyboardListener() {
             @Override
             public void onShowSoftKeyboard() {
-
                 if (tvAlert.getText().toString().contains("남음")) {
                     tvAlert.setTextColor(Color.parseColor("#047E74"));
                 } else if (tvAlert.getText().toString().contains("초과")) {

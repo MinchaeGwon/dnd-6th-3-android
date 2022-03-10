@@ -159,13 +159,15 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
 
                 if (etEnter.length() > 0) {
                     btnNext.setEnabled(true);
-                    if (inputManager.isAcceptingText()) {
+
+                    if (etEnter.isFocused()) {
                         btnNext.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
                     } else {
                         btnNext.setBackgroundResource(R.drawable.button_enabled_true);
                     }
                 } else {
                     btnNext.setEnabled(false);
+
                     if (inputManager.isAcceptingText()) {
                         btnNext.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
                     } else {
@@ -180,7 +182,7 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
             }
         });
 
-        //n만원 버튼 클릭시 n만원으로 edittext setText
+        // n만원 버튼 클릭시 n만원으로 edittext setText
         View.OnClickListener onClickListener = new View.OnClickListener() {
             String text;
 
@@ -258,12 +260,9 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
             public void onHiddenSoftKeyboard() {
                 etEnter.clearFocus();
 
-                //입력되면 버튼 활성화
-                if (etEnter.length() > 0) {
-                    btnNext.setEnabled(true);
+                if (btnNext.isEnabled()) {
                     btnNext.setBackgroundResource(R.drawable.button_enabled_true);
                 } else {
-                    btnNext.setEnabled(false);
                     btnNext.setBackgroundResource(R.drawable.button_enabled_false);
                 }
 
@@ -278,13 +277,9 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
         softKeyboardDetector.setOnShownKeyboard(new SoftKeyboardDetector.OnShownKeyboardListener() {
             @Override
             public void onShowSoftKeyboard() {
-
-                if (etEnter.getText().toString().length() > 0) {
-                    btnNext.setEnabled(true);
-                    btnNext.setBackgroundColor(Color.parseColor("#212529"));
+                if (btnNext.isEnabled()) {
                     btnNext.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
                 } else {
-                    btnNext.setEnabled(false);
                     btnNext.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
                 }
 

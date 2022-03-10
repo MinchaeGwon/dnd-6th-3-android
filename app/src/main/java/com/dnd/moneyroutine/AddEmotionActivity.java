@@ -150,6 +150,8 @@ public class AddEmotionActivity extends AppCompatActivity {
         rgEmotion.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                btnConfirm.setEnabled(etContent.length() > 0);
+
                 if (etContent.isFocused()) {
                     inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     etContent.clearFocus();
@@ -247,11 +249,13 @@ public class AddEmotionActivity extends AppCompatActivity {
         softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
             @Override
             public void onHiddenSoftKeyboard() {
-                if (etContent.length() > 0 && selectEmotion != null) {
-                    btnConfirm.setEnabled(true);
+                if (etContent.isFocused()) {
+                    etContent.clearFocus();
+                }
+
+                if (btnConfirm.isEnabled()) {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_true);
                 } else {
-                    btnConfirm.setEnabled(false);
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_false);
                 }
 
@@ -266,12 +270,9 @@ public class AddEmotionActivity extends AppCompatActivity {
         softKeyboardDetector.setOnShownKeyboard(new SoftKeyboardDetector.OnShownKeyboardListener() {
             @Override
             public void onShowSoftKeyboard() {
-
-                if (etContent.length() > 0 && selectEmotion != null) {
-                    btnConfirm.setEnabled(true);
+                if (btnConfirm.isEnabled()) {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
                 } else {
-                    btnConfirm.setEnabled(false);
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
                 }
 
