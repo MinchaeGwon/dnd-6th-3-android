@@ -9,8 +9,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,9 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
+import com.dnd.moneyroutine.dto.CategoryCompact;
 import com.dnd.moneyroutine.dto.GoalCategoryCreateDto;
-import com.dnd.moneyroutine.dto.BudgetItem;
-import com.dnd.moneyroutine.dto.CategoryItem;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.Calendar;
 
 public class OnboardingEntireBudgetActivity extends AppCompatActivity {
 
-    private LinearLayout linearEntireBudget;
+    private LinearLayout llEntireBudget;
     private EditText etEnter;
     private TextView tvWon;
     private TextView tLastvDay;
@@ -45,45 +45,55 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
     private String budget;
     private float scale;
 
-    private ArrayList<BudgetItem> bgList;
-    private ArrayList<CategoryItem> newItem;
+    private ArrayList<CategoryCompact> selectCategories;
     private ArrayList<GoalCategoryCreateDto> goalCategoryCreateDtoList;
 
     private SoftKeyboardDetector softKeyboardDetector;
     private InputMethodManager inputManager;
     private ConstraintLayout.LayoutParams contentLayoutParams;
-    private DecimalFormat decimalFormat = new DecimalFormat("#,###");
+    private DecimalFormat decimalFormat;
     private String result = "";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding_entire_budget);
 
-
         initView();
-        setBtnSize();
-        getEndDate(); //달의 마지막 날 구하기
-        addListener();
+        initField();
 
+        addListener();
+        setBtnSize();
+
+        getEndDate(); // 달의 마지막 날 구하기
     }
 
     private void initView() {
+        ivBack = findViewById(R.id.iv_back_entire);
+        btnNext = (Button) findViewById(R.id.btn_next2);
 
-        linearEntireBudget = findViewById(R.id.linear_entire_budget);
+        llEntireBudget = findViewById(R.id.linear_entire_budget);
         etEnter = (EditText) findViewById(R.id.et_entire_budget);
         tLastvDay = (TextView) findViewById(R.id.tv_last_day);
         ivWon = findViewById(R.id.iv_won_entire);
         tvWon = findViewById(R.id.tv_won_entire);
-        ivBack = findViewById(R.id.iv_back_entire);
+
         btn_20w = findViewById(R.id.btn_20w);
         btn_30w = findViewById(R.id.btn_30w);
         btn_40w = findViewById(R.id.btn_40w);
         btn_50w = findViewById(R.id.btn_50w);
-        btnNext = (Button) findViewById(R.id.btn_next2);
+    }
 
+    private void initField() {
+        inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
+        softKeyboardDetector = new SoftKeyboardDetector(this);
+        addContentView(softKeyboardDetector, new FrameLayout.LayoutParams(-1, -1));
+
+        contentLayoutParams = (ConstraintLayout.LayoutParams) btnNext.getLayoutParams();
+        scale = getResources().getDisplayMetrics().density;
+
+        decimalFormat = new DecimalFormat("#,###");
     }
 
     //달의 마지막 날 구하기
@@ -97,77 +107,40 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
         tLastvDay.setText(month + "월 " + day + "일까지의 예산입니다");
     }
 
-    private void setBtnSize() {
-        softKeyboardDetector = new SoftKeyboardDetector(this);
-        addContentView(softKeyboardDetector, new FrameLayout.LayoutParams(-1, -1));
-        contentLayoutParams = (ConstraintLayout.LayoutParams) btnNext.getLayoutParams();
-        scale = getResources().getDisplayMetrics().density;
-
-        //키보드 내려갔을 때
-        softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
-            @Override
-            public void onHiddenSoftKeyboard() {
-                //입력되면 버튼 활성화
-                if (etEnter.getText().toString().length() > 0) {
-                    btnNext.setEnabled(true);
-                    btnNext.setBackgroundResource(R.drawable.button_enabled_true);
-                } else {
-                    btnNext.setEnabled(false);
-                    btnNext.setBackgroundResource(R.drawable.button_enabled_false);
-                }
-//                btnNext.setBackgroundResource(R.drawable.button_enable_selector);
-
-
-                contentLayoutParams.setMarginStart((int) (16 * scale + 0.2f));
-                contentLayoutParams.setMarginEnd((int) (16 * scale + 0.2f));
-                contentLayoutParams.bottomMargin = (int) (56 * scale + 0.2f);
-                btnNext.setLayoutParams(contentLayoutParams);
-            }
-        });
-
-        // 키보드가 올라왔을 때
-        softKeyboardDetector.setOnShownKeyboard(new SoftKeyboardDetector.OnShownKeyboardListener() {
-            @Override
-            public void onShowSoftKeyboard() {
-
-                if (etEnter.getText().toString().length() > 0) {
-                    btnNext.setEnabled(true);
-                    btnNext.setBackgroundColor(Color.parseColor("#212529"));
-                    btnNext.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
-                } else {
-                    btnNext.setEnabled(false);
-                    btnNext.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
-                }
-
-
-                contentLayoutParams.setMarginStart(0);
-                contentLayoutParams.setMarginEnd(0);
-                contentLayoutParams.bottomMargin = 0;
-                btnNext.setLayoutParams(contentLayoutParams);
-            }
-        });
-    }
-
     private void addListener() {
+        etEnter.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                switch (actionId) {
+                    case EditorInfo.IME_ACTION_DONE:
+                        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        etEnter.clearFocus();
+
+                        break;
+                    default:
+                        // 기본 엔터키 동작
+                        return false;
+                }
+
+                return true;
+            }
+        });
 
         //예산 입력 창이 눌리면 입력창 background 변경
         etEnter.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean isFocus) {
                 if (isFocus) {
-                    linearEntireBudget.setBackgroundResource(R.drawable.textbox_typing);
+                    llEntireBudget.setBackgroundResource(R.drawable.textbox_typing);
                     ivWon.setImageResource(R.drawable.won);
                     tvWon.setTextColor(Color.parseColor("#495057"));
                 } else {
-                    linearEntireBudget.setBackgroundResource(R.drawable.textbox_default);
+                    llEntireBudget.setBackgroundResource(R.drawable.textbox_default);
                     ivWon.setImageResource(R.drawable.won_grey);
                     tvWon.setTextColor(Color.parseColor("#ADB5BD"));
                 }
             }
         });
-
-        inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
 
         //숫자 쉼표 추가 및 버튼 활성화
         etEnter.addTextChangedListener(new TextWatcher() {
@@ -177,7 +150,6 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
                 //쉼표 추가
                 if (!TextUtils.isEmpty(charSequence.toString()) && !charSequence.toString().equals(result)) {
                     result = decimalFormat.format(Double.parseDouble(charSequence.toString().replaceAll(",", "")));
@@ -185,7 +157,7 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
                     etEnter.setSelection(result.length());
                 }
 
-                if (etEnter.getText().toString().length() > 0) {
+                if (etEnter.length() > 0) {
                     btnNext.setEnabled(true);
                     if (inputManager.isAcceptingText()) {
                         btnNext.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
@@ -200,7 +172,6 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
                         btnNext.setBackgroundResource(R.drawable.button_enabled_false);
                     }
                 }
-
             }
 
             @Override
@@ -208,7 +179,6 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
 
             }
         });
-
 
         //n만원 버튼 클릭시 n만원으로 edittext setText
         View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -232,9 +202,14 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
                     case R.id.btn_50w:
                         text = "500,000";
                         break;
-
                 }
+
                 etEnter.setText(text);
+
+                if (etEnter.isFocused()) {
+                    inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    etEnter.clearFocus();
+                }
             }
         };
 
@@ -256,21 +231,67 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (etEnter.isFocused()) {
+                    etEnter.clearFocus();
+                }
+
                 budget = etEnter.getText().toString();
                 String budgetToString = budget.replaceAll("\\,", "");
 
-
-                bgList = (ArrayList<BudgetItem>) getIntent().getSerializableExtra("BudgetItem");
-                newItem = (ArrayList<CategoryItem>) getIntent().getSerializableExtra("NewItem");
-                goalCategoryCreateDtoList=(ArrayList<GoalCategoryCreateDto>) getIntent().getSerializableExtra("goalCategoryCreateDtoList");
+                selectCategories = (ArrayList<CategoryCompact>) getIntent().getSerializableExtra("selectCategory");
+                goalCategoryCreateDtoList = (ArrayList<GoalCategoryCreateDto>) getIntent().getSerializableExtra("goalCategoryCreateDtoList");
 
                 Intent intent = new Intent(getApplicationContext(), OnboardingDetailBudgetActivity.class);
-                intent.putExtra("Budget", budgetToString);
-                intent.putExtra("BudgetItem", bgList);
-                intent.putExtra("NewItem", newItem);
+                intent.putExtra("totalBudget", budgetToString);
+                intent.putExtra("selectCategory", selectCategories);
                 intent.putExtra("goalCategoryCreateDtoList", goalCategoryCreateDtoList);
 
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void setBtnSize() {
+        //키보드 내려갔을 때
+        softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
+            @Override
+            public void onHiddenSoftKeyboard() {
+                etEnter.clearFocus();
+
+                //입력되면 버튼 활성화
+                if (etEnter.length() > 0) {
+                    btnNext.setEnabled(true);
+                    btnNext.setBackgroundResource(R.drawable.button_enabled_true);
+                } else {
+                    btnNext.setEnabled(false);
+                    btnNext.setBackgroundResource(R.drawable.button_enabled_false);
+                }
+
+                contentLayoutParams.setMarginStart((int) (16 * scale + 0.2f));
+                contentLayoutParams.setMarginEnd((int) (16 * scale + 0.2f));
+                contentLayoutParams.bottomMargin = (int) (56 * scale + 0.2f);
+                btnNext.setLayoutParams(contentLayoutParams);
+            }
+        });
+
+        // 키보드가 올라왔을 때
+        softKeyboardDetector.setOnShownKeyboard(new SoftKeyboardDetector.OnShownKeyboardListener() {
+            @Override
+            public void onShowSoftKeyboard() {
+
+                if (etEnter.getText().toString().length() > 0) {
+                    btnNext.setEnabled(true);
+                    btnNext.setBackgroundColor(Color.parseColor("#212529"));
+                    btnNext.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
+                } else {
+                    btnNext.setEnabled(false);
+                    btnNext.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
+                }
+
+                contentLayoutParams.setMarginStart(0);
+                contentLayoutParams.setMarginEnd(0);
+                contentLayoutParams.bottomMargin = 0;
+                btnNext.setLayoutParams(contentLayoutParams);
             }
         });
     }

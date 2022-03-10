@@ -21,32 +21,22 @@ import android.widget.Toast;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
+import com.dnd.moneyroutine.dto.CategoryCompact;
 import com.dnd.moneyroutine.dto.CustomCategoryCreateDto;
-import com.dnd.moneyroutine.dto.CategoryItem;
-import com.dnd.moneyroutine.dto.GoalCategoryCompact;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
-import com.dnd.moneyroutine.service.JWTUtils;
-import com.dnd.moneyroutine.service.RequestService;
 import com.dnd.moneyroutine.service.RetrofitService;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import lombok.SneakyThrows;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
-import static java.util.regex.Pattern.compile;
 
 public class NewCategoryActivity extends AppCompatActivity {
 
@@ -57,18 +47,13 @@ public class NewCategoryActivity extends AppCompatActivity {
     private TextView tvNewEmoji;
     private EditText etNewCategory;
     private EditText etNewEx;
-    //    ImageView btnEditEmoji;
     private ImageView ivEraseName;
     private ImageView ivEraseEx;
     private ImageView ivBack;
 
     private Button btnConfirm;
 
-    private CategoryItem newItem;
-    private CustomCategoryCreateDto customCategoryCreateDto;
-
     private String token;
-    private int userId;
 
     private SoftKeyboardDetector softKeyboardDetector;
     private InputMethodManager inputManager;
@@ -76,27 +61,16 @@ public class NewCategoryActivity extends AppCompatActivity {
     private float scale;
 
     boolean flag = false;
-//    private EmojIconActions emojIconActions;
-//    private EmojiconEditText emojiconEditText;
-//    private TextView emojiconTextView;
-//    private View rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_category);
 
-
-//        btnEditEmoji=findViewById(R.id.iv_edit_emoji);
-//
-//        emojiconEditText = (EmojiconEditText) findViewById(R.id.et_emoji);
-//        emojiconTextView =  findViewById(R.id.tv_emoji);
-
         initView();
         enterNewCategory(); //카테고리 이름 입력
         addEmoji(); //이모지 선택
         setBtnSize();
-
 
         //이전 버튼
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -111,38 +85,24 @@ public class NewCategoryActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-
-                String iconToByte = "";
                 String name = etNewCategory.getText().toString();
                 String ex = etNewEx.getText().toString();
                 String icon = tvNewEmoji.getText().toString();
 
-                customCategoryCreateDto =new CustomCategoryCreateDto();
-                customCategoryCreateDto.setDetail(ex);
-
+                String iconToByte = "";
                 try {
                     iconToByte = URLEncoder.encode(icon, "UTF-8");
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
 
-                customCategoryCreateDto.setEmoji(iconToByte);
-                customCategoryCreateDto.setName(name);
-
-                if (name.length() > 0) {
-                    newItem = new CategoryItem(icon, name, ex);
-                }
-
-                customCategoryServer();
+                customCategoryServer(iconToByte, name, ex);
             }
         });
-
     }
 
     private void initView() {
         token = PreferenceManager.getToken(NewCategoryActivity.this, Constants.tokenKey);
-        userId = JWTUtils.getUserId(token);
-
 
         linearNewCategory = findViewById(R.id.linear_new_category);
         linearNewEx = findViewById(R.id.linear_new_category_ex);
@@ -156,9 +116,7 @@ public class NewCategoryActivity extends AppCompatActivity {
         tvNewEmoji = findViewById(R.id.tv_emoji);
         bgBlack = findViewById(R.id.bg_black);
         inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
     }
-
 
     private void enterNewCategory() {
         //이름 edittext 누르면 background 변경경
@@ -201,16 +159,15 @@ public class NewCategoryActivity extends AppCompatActivity {
                     linearNewEx.setBackgroundResource(R.drawable.textbox_default);
                     ivEraseEx.setVisibility(View.INVISIBLE);
                 }
-
             }
         });
 
     }
 
     private void setBtnSize() {
-
         softKeyboardDetector = new SoftKeyboardDetector(this);
         addContentView(softKeyboardDetector, new FrameLayout.LayoutParams(-1, -1));
+
         contentLayoutParams = (ConstraintLayout.LayoutParams) btnConfirm.getLayoutParams();
         scale = getResources().getDisplayMetrics().density;
 
@@ -233,7 +190,6 @@ public class NewCategoryActivity extends AppCompatActivity {
 
                 if (etNewCategory.getText().toString().length() > 0) {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_true);
-
                 } else {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_false);
                 }
@@ -252,11 +208,8 @@ public class NewCategoryActivity extends AppCompatActivity {
 
                 if (etNewCategory.getText().toString().length() > 0) {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
-
                 } else {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
-
-
                 }
 
                 contentLayoutParams.setMarginStart(0);
@@ -265,7 +218,6 @@ public class NewCategoryActivity extends AppCompatActivity {
                 btnConfirm.setLayoutParams(contentLayoutParams);
             }
         });
-
 
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -276,19 +228,19 @@ public class NewCategoryActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //지출 분야가 입력돼야지만 버튼 enable
-                if (etNewCategory.getText().toString().length() > 0) {
+                if (etNewCategory.length() > 0 && etNewEx.length() > 0) {
                     btnConfirm.setEnabled(true);
+
                     if (inputManager.isAcceptingText()) {
                         btnConfirm.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
-
                     } else {
                         btnConfirm.setBackgroundResource(R.drawable.button_enabled_true);
                     }
                 } else {
                     btnConfirm.setEnabled(false);
+
                     if (inputManager.isAcceptingText()) {
                         btnConfirm.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
-
                     } else {
                         btnConfirm.setBackgroundResource(R.drawable.button_enabled_false);
                     }
@@ -302,6 +254,7 @@ public class NewCategoryActivity extends AppCompatActivity {
 
             }
         };
+
         etNewCategory.addTextChangedListener(textWatcher);
         etNewEx.addTextChangedListener(textWatcher);
     }
@@ -309,7 +262,6 @@ public class NewCategoryActivity extends AppCompatActivity {
 
     //이모지 편집
     private void addEmoji() {
-
         EditText et_emoji = findViewById(R.id.et_emoji);
         ArrayList<String> newEmoji = new ArrayList<>();
         newEmoji.add(tvNewEmoji.getText().toString());
@@ -322,6 +274,7 @@ public class NewCategoryActivity extends AppCompatActivity {
                 et_emoji.requestFocus();
                 et_emoji.setInputType(1);
                 inputManager.showSoftInput(et_emoji, 0);
+
                 et_emoji.requestFocus();
                 et_emoji.setCursorVisible(true);
                 bgBlack.setVisibility(View.VISIBLE);
@@ -381,12 +334,14 @@ public class NewCategoryActivity extends AppCompatActivity {
 //        return matcher.find();
 //    }
 
-    private void customCategoryServer() {
+    private void customCategoryServer(String emoji, String name, String detail) {
+        CustomCategoryCreateDto customCategory = new CustomCategoryCreateDto(emoji, name, detail);
+
         HeaderRetrofit headerRetrofit = new HeaderRetrofit();
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);
 
-        Call<JsonObject> call = retroService.create(customCategoryCreateDto);
+        Call<JsonObject> call = retroService.create(customCategory);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -397,18 +352,17 @@ public class NewCategoryActivity extends AppCompatActivity {
                     if (responseJson.get("statusCode").getAsInt() == 200 && !responseJson.get("data").isJsonNull()) {
                         int newCategoryId = responseJson.get("data").getAsInt();
 
+                        CategoryCompact newItem = new CategoryCompact(newCategoryId, emoji, name, detail, true);
+
                         Intent intent = new Intent(getApplicationContext(), OnboardingCategoryActivity.class);
-                        intent.putExtra("new category name", newItem);
-                        intent.putExtra("newCategoryId", newCategoryId);
+                        intent.putExtra("newCategory", newItem);
                         setResult(RESULT_OK, intent);
 
                         finish();
                     }
-                } else {
-                    Log.e("custom category", "error: " + response.code());
-                    return;
                 }
             }
+
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Log.e("custom category", "fail: " + t.getMessage());

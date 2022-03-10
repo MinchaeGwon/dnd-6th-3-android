@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.dto.BudgetItem;
 import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
 
 import java.time.format.DateTimeFormatter;

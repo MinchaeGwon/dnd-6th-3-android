@@ -16,5 +16,7 @@ import lombok.Setter;
 public class BudgetDetailModel {
     @SerializedName("goalCategoryCreateDtoList")
     private List<GoalCategoryCreateDto>  goalCategoryCreateDtoList;
-    private int total_budget;
+
+    @SerializedName("total_budget")
+    private int totalBudget;
 }

@@ -117,17 +117,6 @@ public class GoalCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (holder instanceof CategoryViewHolder) {
             GoalCategoryDetail category = categoryList.get(position);
             ((CategoryViewHolder) holder).setItem(category);
-
-            ((CategoryViewHolder) holder).etCatBudget.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View view, boolean isFocus) {
-                    if (isFocus) {
-                        ((CategoryViewHolder) holder).ivPencil.setImageResource(R.drawable.icon_pencil_green);
-                    } else {
-                        ((CategoryViewHolder) holder).ivPencil.setImageResource(R.drawable.icon_pencil_gray);
-                    }
-                }
-            });
         }
     }
 
@@ -190,6 +179,17 @@ public class GoalCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
         private void setListener() {
+            etCatBudget.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean isFocus) {
+                    if (isFocus) {
+                        ivPencil.setImageResource(R.drawable.icon_pencil_green);
+                    } else {
+                        ivPencil.setImageResource(R.drawable.icon_pencil_gray);
+                    }
+                }
+            });
+
             etCatBudget.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View view, boolean isFocus) {
