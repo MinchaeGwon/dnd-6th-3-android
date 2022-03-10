@@ -124,9 +124,6 @@ public class NormalLoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 키보드 내리기
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
                 if (etEmail.isFocused()) {
                     etEmail.clearFocus();
                 }

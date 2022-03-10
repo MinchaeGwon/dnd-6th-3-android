@@ -258,7 +258,7 @@ public class OnboardingEntireBudgetActivity extends AppCompatActivity {
         softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
             @Override
             public void onHiddenSoftKeyboard() {
-                etEnter.clearFocus();
+                getCurrentFocus().clearFocus();
 
                 if (btnNext.isEnabled()) {
                     btnNext.setBackgroundResource(R.drawable.button_enabled_true);

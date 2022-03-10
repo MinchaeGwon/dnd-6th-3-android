@@ -116,6 +116,12 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
         softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
             @Override
             public void onHiddenSoftKeyboard() {
+                getCurrentFocus().clearFocus();
+
+                if (tvAlert.getText().toString().contains("남음")) {
+                    tvAlert.setTextColor(Color.parseColor("#212529"));
+                }
+
                 if (btnNext.isEnabled()) {
                     btnNext.setBackgroundResource(R.drawable.button_enabled_true);
                 } else {
@@ -136,8 +142,6 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
             public void onShowSoftKeyboard() {
                 if (tvAlert.getText().toString().contains("남음")) {
                     tvAlert.setTextColor(Color.parseColor("#047E74"));
-                } else if (tvAlert.getText().toString().contains("초과")) {
-                    tvAlert.setTextColor(Color.parseColor("#E70621"));
                 }
 
                 if (btnNext.isEnabled()) {
