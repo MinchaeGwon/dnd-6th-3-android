@@ -131,12 +131,12 @@ public class SignupStep2Activity extends AppCompatActivity {
         softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
             @Override
             public void onHiddenSoftKeyboard() {
-                if (tvPasswordConfirm.getText().equals("비밀번호가 일치하지 않습니다")) {
-                    btnNext.setBackgroundResource(R.drawable.button_enabled_false);
-                    btnNext.setEnabled(false);
-                } else {
+                getCurrentFocus().clearFocus();
+
+                if (btnNext.isEnabled()) {
                     btnNext.setBackgroundResource(R.drawable.button_enabled_true);
-                    btnNext.setEnabled(true);
+                } else {
+                    btnNext.setBackgroundResource(R.drawable.button_enabled_false);
                 }
 
                 contentLayoutParams.setMarginStart((int) (16 * scale + 0.2f));
@@ -150,12 +150,10 @@ public class SignupStep2Activity extends AppCompatActivity {
         softKeyboardDetector.setOnShownKeyboard(new SoftKeyboardDetector.OnShownKeyboardListener() {
             @Override
             public void onShowSoftKeyboard() {
-                if (tvPasswordConfirm.getVisibility() == View.VISIBLE) {
-                    btnNext.setBackgroundColor(Color.parseColor("#ADB5BD"));
-                    btnNext.setEnabled(false);
+                if (btnNext.isEnabled()) {
+                    btnNext.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
                 } else {
-                    btnNext.setBackgroundColor(Color.parseColor("#343a40"));
-                    btnNext.setEnabled(true);
+                    btnNext.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
                 }
 
                 contentLayoutParams.setMarginStart(0);

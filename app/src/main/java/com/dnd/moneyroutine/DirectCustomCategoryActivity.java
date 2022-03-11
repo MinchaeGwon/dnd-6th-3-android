@@ -26,22 +26,14 @@ import android.widget.Toast;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
-import com.dnd.moneyroutine.dto.CategoryItem;
-import com.dnd.moneyroutine.dto.CustomCategoryCreateDto;
 import com.dnd.moneyroutine.dto.DirectCustomCategoryForm;
-import com.dnd.moneyroutine.dto.GoalCategoryCompact;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.RetrofitService;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -253,10 +245,12 @@ public class DirectCustomCategoryActivity extends AppCompatActivity {
         softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
             @Override
             public void onHiddenSoftKeyboard() {
+                getCurrentFocus().clearFocus();
+
                 //키보드 내려가면 이모지 선택시 어두워졌던 배경 다시 원래대로
                 bgBlack.setVisibility(View.GONE);
 
-                if (etCategoryName.getText().toString().length() > 0) {
+                if (btnConfirm.isEnabled()) {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_true);
                 } else {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_false);
@@ -273,7 +267,7 @@ public class DirectCustomCategoryActivity extends AppCompatActivity {
         softKeyboardDetector.setOnShownKeyboard(new SoftKeyboardDetector.OnShownKeyboardListener() {
             @Override
             public void onShowSoftKeyboard() {
-                if (etCategoryName.getText().toString().length() > 0) {
+                if (btnConfirm.isEnabled()) {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
                 } else {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);

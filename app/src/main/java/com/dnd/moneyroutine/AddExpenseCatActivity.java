@@ -16,7 +16,7 @@ import com.dnd.moneyroutine.adapter.GoalCategoryGridAdapter;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.dto.BasicCategoryForm;
-import com.dnd.moneyroutine.dto.GoalCategoryCompact;
+import com.dnd.moneyroutine.dto.CategoryCompact;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.RetrofitService;
 import com.google.gson.Gson;
@@ -108,7 +108,7 @@ public class AddExpenseCatActivity extends AppCompatActivity {
                             JsonArray jsonArray = responseJson.get("data").getAsJsonArray();
 
                             Gson gson = new Gson();
-                            ArrayList<GoalCategoryCompact> responseCategory = gson.fromJson(jsonArray, new TypeToken<ArrayList<GoalCategoryCompact>>() {}.getType());
+                            ArrayList<CategoryCompact> responseCategory = gson.fromJson(jsonArray, new TypeToken<ArrayList<CategoryCompact>>() {}.getType());
 
                             if (responseCategory != null) {
                                 setExceptCategory(responseCategory);
@@ -125,11 +125,11 @@ public class AddExpenseCatActivity extends AppCompatActivity {
         });
     }
 
-    private void setExceptCategory(ArrayList<GoalCategoryCompact> categoryList) {
+    private void setExceptCategory(ArrayList<CategoryCompact> categoryList) {
         GoalCategoryGridAdapter goalCategoryGridAdapter = new GoalCategoryGridAdapter(categoryList);
         goalCategoryGridAdapter.setOnItemClickListener(new GoalCategoryGridAdapter.OnItemClickListener() {
             @Override
-            public void onClick(GoalCategoryCompact category) {
+            public void onClick(CategoryCompact category) {
                 addBasicCategory(category);
             }
         });
@@ -139,7 +139,7 @@ public class AddExpenseCatActivity extends AppCompatActivity {
     }
 
     // 기본 카테고리 지출 분야로 추가
-    private void addBasicCategory(GoalCategoryCompact category) {
+    private void addBasicCategory(CategoryCompact category) {
         HeaderRetrofit headerRetrofit = new HeaderRetrofit();
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);

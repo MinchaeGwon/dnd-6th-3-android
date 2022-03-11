@@ -16,7 +16,7 @@ import com.dnd.moneyroutine.adapter.GoalCategoryGridAdapter;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.dto.ExpenditureDetail;
-import com.dnd.moneyroutine.dto.GoalCategoryCompact;
+import com.dnd.moneyroutine.dto.CategoryCompact;
 import com.dnd.moneyroutine.enums.EmotionEnum;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.RetrofitService;
@@ -33,11 +33,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
-import com.dnd.moneyroutine.adapter.MonthlyDetailAdapter;
-import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
-
-import java.util.ArrayList;
 
 public class ExpenseDetailActivity extends AppCompatActivity {
 
@@ -125,7 +120,7 @@ public class ExpenseDetailActivity extends AppCompatActivity {
                         JsonArray jsonArray = responseJson.get("data").getAsJsonArray();
 
                         Gson gson = new Gson();
-                        ArrayList<GoalCategoryCompact> responseCategory = gson.fromJson(jsonArray, new TypeToken<ArrayList<GoalCategoryCompact>>() {}.getType());
+                        ArrayList<CategoryCompact> responseCategory = gson.fromJson(jsonArray, new TypeToken<ArrayList<CategoryCompact>>() {}.getType());
 
                         if (responseCategory != null) {
                             setGoalCategory(responseCategory);
@@ -141,7 +136,7 @@ public class ExpenseDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void setGoalCategory(ArrayList<GoalCategoryCompact> categoryList) {
+    private void setGoalCategory(ArrayList<CategoryCompact> categoryList) {
         GoalCategoryGridAdapter goalCategoryGridAdapter = new GoalCategoryGridAdapter(categoryList, expenditure.getCategoryId(), expenditure.isCustom(), true);
 
         rvCategory.setLayoutManager(new GridLayoutManager(this, 3));

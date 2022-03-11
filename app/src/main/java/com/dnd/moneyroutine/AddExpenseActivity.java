@@ -32,7 +32,7 @@ import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
 import com.dnd.moneyroutine.dto.ExpenseForm;
-import com.dnd.moneyroutine.dto.GoalCategoryCompact;
+import com.dnd.moneyroutine.dto.CategoryCompact;
 import com.dnd.moneyroutine.fragment.ExpenseCalendarFragment;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.RetrofitService;
@@ -83,7 +83,7 @@ public class AddExpenseActivity extends AppCompatActivity {
     private DecimalFormat decimalFormat;
     private String result = "";
     private Calendar expenseDate;
-    private GoalCategoryCompact selectCategory;
+    private CategoryCompact selectCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +153,8 @@ public class AddExpenseActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setEditClearFocus();
+
                 Intent intent = new Intent(AddExpenseActivity.this, AddEmotionActivity.class);
                 intent.putExtra("expenseForm", setExpenseForm());
                 startActivity(intent);
@@ -182,14 +184,8 @@ public class AddExpenseActivity extends AppCompatActivity {
                 switch (actionId) {
                     case EditorInfo.IME_ACTION_DONE:
                         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        setEditClearFocus();
 
-                        if (etContent.isFocused()) {
-                            etContent.clearFocus();
-                        }
-
-                        if (etExpense.isFocused()) {
-                            etExpense.clearFocus();
-                        }
                         break;
                     default:
                         // 기본 엔터키 동작
@@ -280,11 +276,11 @@ public class AddExpenseActivity extends AppCompatActivity {
         softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
             @Override
             public void onHiddenSoftKeyboard() {
-                if (etExpense.length() > 0 && etContent.length() > 0 && selectCategory != null) {
-                    btnNext.setEnabled(true);
+                getCurrentFocus().clearFocus();
+
+                if (btnNext.isEnabled()) {
                     btnNext.setBackgroundResource(R.drawable.button_enabled_true);
                 } else {
-                    btnNext.setEnabled(false);
                     btnNext.setBackgroundResource(R.drawable.button_enabled_false);
                 }
 
@@ -300,12 +296,9 @@ public class AddExpenseActivity extends AppCompatActivity {
         softKeyboardDetector.setOnShownKeyboard(new SoftKeyboardDetector.OnShownKeyboardListener() {
             @Override
             public void onShowSoftKeyboard() {
-
-                if (etExpense.length() > 0 && etContent.length() > 0 && selectCategory != null) {
-                    btnNext.setEnabled(true);
+                if (btnNext.isEnabled()) {
                     btnNext.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
                 } else {
-                    btnNext.setEnabled(false);
                     btnNext.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
                 }
 
@@ -316,6 +309,16 @@ public class AddExpenseActivity extends AppCompatActivity {
                 btnNext.setLayoutParams(contentLayoutParams);
             }
         });
+    }
+
+    private void setEditClearFocus() {
+        if (etContent.isFocused()) {
+            etContent.clearFocus();
+        }
+
+        if (etExpense.isFocused()) {
+            etExpense.clearFocus();
+        }
     }
 
     // 사용자가 선택한 카테고리 가져오기
@@ -338,7 +341,7 @@ public class AddExpenseActivity extends AppCompatActivity {
                             JsonArray jsonArray = responseJson.get("data").getAsJsonArray();
 
                             Gson gson = new Gson();
-                            ArrayList<GoalCategoryCompact> responseCategory = gson.fromJson(jsonArray, new TypeToken<ArrayList<GoalCategoryCompact>>() {}.getType());
+                            ArrayList<CategoryCompact> responseCategory = gson.fromJson(jsonArray, new TypeToken<ArrayList<CategoryCompact>>() {}.getType());
 
                             if (responseCategory != null) {
                                 setGoalCategory(responseCategory);
@@ -355,11 +358,13 @@ public class AddExpenseActivity extends AppCompatActivity {
         });
     }
 
-    private void setGoalCategory(ArrayList<GoalCategoryCompact> categoryList) {
+    private void setGoalCategory(ArrayList<CategoryCompact> categoryList) {
         GoalCategoryGridAdapter goalCategoryGridAdapter = new GoalCategoryGridAdapter(categoryList);
         goalCategoryGridAdapter.setOnItemClickListener(new GoalCategoryGridAdapter.OnItemClickListener() {
             @Override
-            public void onClick(GoalCategoryCompact category) {
+            public void onClick(CategoryCompact category) {
+                btnNext.setEnabled(etExpense.length() > 0 && etContent.length() > 0);
+
                 selectCategory = category;
 
                 if (etContent.isFocused() || etExpense.isFocused()) {

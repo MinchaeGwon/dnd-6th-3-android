@@ -26,8 +26,6 @@ import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.SettingActivity;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
-import com.dnd.moneyroutine.dto.CategoryItem;
-import com.dnd.moneyroutine.dto.GoalCategoryCompact;
 import com.dnd.moneyroutine.dto.GoalInfo;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.RetrofitService;

@@ -29,22 +29,17 @@ import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.custom.Common;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
-import com.dnd.moneyroutine.dto.GoalCategoryCompact;
 import com.dnd.moneyroutine.dto.GoalCategoryDetail;
 import com.dnd.moneyroutine.dto.GoalCategoryForm;
-import com.dnd.moneyroutine.dto.GoalInfo;
 import com.dnd.moneyroutine.dto.GoalTotalForm;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.JWTUtils;
 import com.dnd.moneyroutine.service.RetrofitService;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -122,17 +117,6 @@ public class GoalCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (holder instanceof CategoryViewHolder) {
             GoalCategoryDetail category = categoryList.get(position);
             ((CategoryViewHolder) holder).setItem(category);
-
-            ((CategoryViewHolder) holder).etCatBudget.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View view, boolean isFocus) {
-                    if (isFocus) {
-                        ((CategoryViewHolder) holder).ivPencil.setImageResource(R.drawable.icon_pencil_green);
-                    } else {
-                        ((CategoryViewHolder) holder).ivPencil.setImageResource(R.drawable.icon_pencil_gray);
-                    }
-                }
-            });
         }
     }
 
@@ -195,6 +179,17 @@ public class GoalCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
         private void setListener() {
+            etCatBudget.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean isFocus) {
+                    if (isFocus) {
+                        ivPencil.setImageResource(R.drawable.icon_pencil_green);
+                    } else {
+                        ivPencil.setImageResource(R.drawable.icon_pencil_gray);
+                    }
+                }
+            });
+
             etCatBudget.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View view, boolean isFocus) {

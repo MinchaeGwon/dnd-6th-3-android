@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,9 +18,7 @@ import android.widget.TextView;
 
 import com.dnd.moneyroutine.adapter.BudgetRecyclerViewAdapter;
 import com.dnd.moneyroutine.custom.SoftKeyboardDetector;
-import com.dnd.moneyroutine.dto.GoalCategoryCreateDto;
-import com.dnd.moneyroutine.dto.BudgetItem;
-import com.dnd.moneyroutine.dto.CategoryItem;
+import com.dnd.moneyroutine.dto.CategoryCompact;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -36,18 +32,12 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
     private ImageView ivBack;
     private Button btnNext;
 
-    private ArrayList<CategoryItem> cList;
-    private ArrayList<BudgetItem> bgList;
-    private ArrayList<CategoryItem> newItem;
-    private ArrayList<GoalCategoryCreateDto> goalCategoryCreateDtoList;
+    private ArrayList<CategoryCompact> selectCategories;
 
     private BudgetRecyclerViewAdapter adapter;
 
     private SoftKeyboardDetector softKeyboardDetector;
-    private InputMethodManager inputManager;
     private LinearLayout.LayoutParams contentLayoutParams;
-
-    private EditText etItem;
 
     private float scale;
     private String entireBudget;
@@ -59,18 +49,14 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_onboarding_detail_budget);
 
 
-        entireBudget = getIntent().getStringExtra("Budget");
-        cList = (ArrayList<CategoryItem>) getIntent().getSerializableExtra("BudgetItem");
-        newItem = (ArrayList<CategoryItem>) getIntent().getSerializableExtra("NewItem");
-//        goalCategoryCreateDtoList = (ArrayList<GoalCategoryCreateDto>) getIntent().getSerializableExtra("goalCategoryCreateDtoList");
+        entireBudget = getIntent().getStringExtra("totalBudget");
+        selectCategories = (ArrayList<CategoryCompact>) getIntent().getSerializableExtra("selectCategory");
 
         initView();
         initAdapter();
         setBtnListener();
         setBtnSize();
         setTextView();
-
-
     }
 
     //edittext 외부 누르면 키보드 내려가면서 focus 없어지게
@@ -95,7 +81,6 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
         return super.dispatchTouchEvent(ev);
     }
 
-
     private void initView() {
         tvTotal = findViewById(R.id.tv_budget_total);
         tvTitle = (TextView) findViewById(R.id.tv_entire_budget);
@@ -103,20 +88,13 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
         ivBack = findViewById(R.id.iv_back_detail);
         btnNext = findViewById(R.id.btn_next_detail_budget);
         rcBudget = findViewById(R.id.rc_budget);
-        inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
     }
-
 
     //recyclerview adapter 연결
     private void initAdapter() {
         rcBudget.setLayoutManager(new LinearLayoutManager(this));
-        bgList = new ArrayList<>();
 
-        //intent로 받아온 선택된 값들 담아서 adapter에 적용
-        for (int i = 0; i < cList.size(); i++) {
-            bgList.add(new BudgetItem(i, cList.get(i).getCategoryIcon(), cList.get(i).getCategoryName()));
-        }
-        adapter = new BudgetRecyclerViewAdapter(bgList);
+        adapter = new BudgetRecyclerViewAdapter(selectCategories);
         rcBudget.setAdapter(adapter);
     }
 
@@ -124,9 +102,8 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
         budget = new DecimalFormat("#,###").format(Integer.parseInt(entireBudget));
 
         tvTitle.setText(budget + "원 안으로\n세부 예산 항목을 정해주세요"); //제목
-        tvAlert.setText(budget + " 원 남음"); //남은 예산, 초과 예산
+        tvAlert.setText(budget + "원 남음"); //남은 예산, 초과 예산
         tvTotal.setText(budget); //전체 예산
-
     }
 
     private void setBtnSize() {
@@ -135,11 +112,16 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
         contentLayoutParams = (LinearLayout.LayoutParams) btnNext.getLayoutParams();
         scale = getResources().getDisplayMetrics().density;
 
-
         //키보드 내려갔을 때
         softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
             @Override
             public void onHiddenSoftKeyboard() {
+                getCurrentFocus().clearFocus();
+
+                if (tvAlert.getText().toString().contains("남음")) {
+                    tvAlert.setTextColor(Color.parseColor("#212529"));
+                }
+
                 if (btnNext.isEnabled()) {
                     btnNext.setBackgroundResource(R.drawable.button_enabled_true);
                 } else {
@@ -158,11 +140,8 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
         softKeyboardDetector.setOnShownKeyboard(new SoftKeyboardDetector.OnShownKeyboardListener() {
             @Override
             public void onShowSoftKeyboard() {
-
                 if (tvAlert.getText().toString().contains("남음")) {
                     tvAlert.setTextColor(Color.parseColor("#047E74"));
-                } else if (tvAlert.getText().toString().contains("초과")) {
-                    tvAlert.setTextColor(Color.parseColor("#E70621"));
                 }
 
                 if (btnNext.isEnabled()) {
@@ -180,9 +159,7 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
         });
     }
 
-
     private void setBtnListener() {
-
         //뒤로가기
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,11 +167,6 @@ public class OnboardingDetailBudgetActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
-
-
-
 
 }
