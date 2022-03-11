@@ -89,6 +89,7 @@ public class BudgetUpdateActivity extends AppCompatActivity {
 
     private ArrayList<String> totalAmountList;
     private int budgetTotal = 0;
+    private boolean first = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,7 +170,6 @@ public class BudgetUpdateActivity extends AppCompatActivity {
                 Intent intent = new Intent(BudgetUpdateActivity.this, AddExpenseCatActivity.class);
                 intent.putExtra("goalId", goalInfo.getGoalId());
                 startActivityResult.launch(intent);
-//                startActivity(intent);
             }
         });
 
@@ -189,7 +189,11 @@ public class BudgetUpdateActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean isFocus) {
                 if (isFocus) {
-                    ivPencil.setImageResource(R.drawable.icon_pencil_green);
+                    if (tvRemainBudget.getText().toString().contains("남음")) {
+                        ivPencil.setImageResource(R.drawable.icon_pencil_green);
+                    } else {
+                        ivPencil.setImageResource(R.drawable.icon_pencil_red);
+                    }
                 } else {
                     ivPencil.setImageResource(R.drawable.icon_pencil_gray);
                 }
@@ -233,7 +237,7 @@ public class BudgetUpdateActivity extends AppCompatActivity {
                     etTotalBudget.setSelection(result.length());
                 }
 
-                if (etTotalBudget.length() > 0) {
+                if (etTotalBudget.length() > 0 && tvRemainBudget.getText().toString().contains("남음")) {
                     btnConfirm.setEnabled(true);
 
                     if (inputManager.isAcceptingText()) {
@@ -265,30 +269,31 @@ public class BudgetUpdateActivity extends AppCompatActivity {
 
                     tvTotalBudget.setText(etTotalBudget.length() > 0 ? result : String.valueOf(0));
 
-                    if (etTotalBudget.length() > 0) {
-                        int num = Integer.parseInt(etTotalBudget.getText().toString().replaceAll("\\,", ""));
+                    int num = etTotalBudget.length() > 0 ? Integer.parseInt(etTotalBudget.getText().toString().replaceAll("\\,", "")) : 0;
 
-                        if (budgetTotal > num) {
-                            //예산보다 많으면
-                            String commaTotal = decimalFormat.format(budgetTotal - num);
-                            tvRemainBudget.setText(commaTotal + "원 초과");
-                            tvRemainBudget.setTextColor(Color.parseColor("#E70621"));
-                            btnConfirm.setEnabled(false); // 다음 버튼 비활성화
+                    if (budgetTotal > num) {
+                        // 예산보다 많으면
+                        ivPencil.setImageResource(R.drawable.icon_pencil_red);
+                        etTotalBudget.setBackgroundResource(R.drawable.edit_under_error_selector);
+
+                        String commaTotal = decimalFormat.format(budgetTotal - num);
+                        tvRemainBudget.setText(commaTotal + "원 초과");
+                        tvRemainBudget.setTextColor(Color.parseColor("#E70621"));
+                    } else {
+                        // 예산보다 적으면
+
+                        if (first) {
+                            ivPencil.setImageResource(R.drawable.icon_pencil_gray);
+                            first = false;
                         } else {
-                            //예산보다 적으면
-                            String commaTotal = decimalFormat.format(num - budgetTotal);
-                            tvRemainBudget.setText(commaTotal + "원 남음");
-                            tvRemainBudget.setTextColor(Color.parseColor("#047E74"));
-                            btnConfirm.setEnabled(true); // 다음 버튼 활성화
+                            ivPencil.setImageResource(R.drawable.icon_pencil_green);
                         }
 
-//                    if (tvRemainBudget.getText().toString().contains("남음")) {
-//                        etTotalBudget.setTextColor(Color.parseColor("#212529"));
-//                        tvRemainBudget.setTextColor(Color.parseColor("#047E74"));
-//                    } else if (tvRemainBudget.getText().toString().contains("초과")) {
-//                        etTotalBudget.setTextColor(Color.parseColor("#E70621"));
-//                        tvRemainBudget.setTextColor(Color.parseColor("#E70621"));
-//                    }
+                        etTotalBudget.setBackgroundResource(R.drawable.edit_under_normal_selector);
+
+                        String commaTotal = decimalFormat.format(num - budgetTotal);
+                        tvRemainBudget.setText(commaTotal + "원 남음");
+                        tvRemainBudget.setTextColor(Color.parseColor("#047E74"));
                     }
                 }
             }
@@ -300,11 +305,15 @@ public class BudgetUpdateActivity extends AppCompatActivity {
         softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
             @Override
             public void onHiddenSoftKeyboard() {
-                if (etTotalBudget.length() > 0) {
-                    btnConfirm.setEnabled(true);
+                getCurrentFocus().clearFocus();
+
+                if (tvRemainBudget.getText().toString().contains("남음")) {
+                    tvRemainBudget.setTextColor(Color.parseColor("#212529"));
+                }
+
+                if (btnConfirm.isEnabled()) {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_true);
                 } else {
-                    btnConfirm.setEnabled(false);
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_false);
                 }
 
@@ -320,12 +329,13 @@ public class BudgetUpdateActivity extends AppCompatActivity {
         softKeyboardDetector.setOnShownKeyboard(new SoftKeyboardDetector.OnShownKeyboardListener() {
             @Override
             public void onShowSoftKeyboard() {
+                if (tvRemainBudget.getText().toString().contains("남음")) {
+                    tvRemainBudget.setTextColor(Color.parseColor("#047E74"));
+                }
 
-                if (etTotalBudget.length() > 0) {
-                    btnConfirm.setEnabled(true);
+                if (btnConfirm.isEnabled()) {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
                 } else {
-                    btnConfirm.setEnabled(false);
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
                 }
 

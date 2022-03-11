@@ -72,7 +72,6 @@ public class GoalCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
     private boolean isOnTextChanged = false;
     private int finalTotal; // 카테고리별 예산을 다 더한 값
     private int mBudget; // 전체 예산 저장
-    private ArrayList<GoalCategoryForm> modifyList = new ArrayList<>();
 
     private String token;
     private int userId;
@@ -238,12 +237,14 @@ public class GoalCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
 
                     if (finalTotal > mBudget) {
+                        btnConfirm.setEnabled(false);
                         if (inputManager.isAcceptingText()) {
                             btnConfirm.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
                         } else {
                             btnConfirm.setBackgroundResource(R.drawable.button_enabled_false);
                         }
                     } else {
+                        btnConfirm.setEnabled(true);
                         if (inputManager.isAcceptingText()) {
                             btnConfirm.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
                         } else {
@@ -254,7 +255,7 @@ public class GoalCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    String num = editable.toString().replaceAll("\\,", "");
+                    String num = etCatBudget.length() > 0 ? editable.toString().replaceAll("\\,", "") : "0";
                     String totalBudget = tvTotalBudget.getText().toString();
                     mBudget = Integer.parseInt(totalBudget.replaceAll("\\,", ""));
 
@@ -263,6 +264,7 @@ public class GoalCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                     if (isOnTextChanged) {
                         isOnTextChanged = false;
+
                         try {
                             for (int i = 0; i <= position; i++) {
                                 if (i == position) {
@@ -289,7 +291,6 @@ public class GoalCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 tvRemainBudget.setTextColor(Color.parseColor("#047E74"));
                                 btnConfirm.setEnabled(true);//다음 버튼 활성화
                             }
-
                         } catch (NumberFormatException e) {
                             finalTotal = 0;
 
@@ -305,12 +306,15 @@ public class GoalCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
                             if (finalTotal > mBudget) {
                                 String commaTotal = new DecimalFormat("#,###").format(finalTotal - mBudget);
                                 tvRemainBudget.setText(commaTotal + "원 초과");
-                                tvRemainBudget.setTextColor(Color.parseColor("#FD5E6E"));
+                                tvRemainBudget.setTextColor(Color.parseColor("#E70621"));
+
                                 btnConfirm.setEnabled(false);
                                 btnConfirm.setBackgroundResource(R.drawable.button_enabled_false_keyboard_up);
                             } else {
                                 String commaTotal = new DecimalFormat("#,###").format(mBudget - finalTotal);
                                 tvRemainBudget.setText(commaTotal + "원 남음");
+                                tvRemainBudget.setTextColor(Color.parseColor("#047E74"));
+
                                 btnConfirm.setEnabled(true);
                                 btnConfirm.setBackgroundResource(R.drawable.button_enabled_true_keyboard_up);
                             }
@@ -318,10 +322,8 @@ public class GoalCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                         onTextChangeListener.onChange(finalTotal);
 
-                        GoalCategoryDetail category = categoryList.get(position);
                         int budget = etCatBudget.length() > 0 ? Integer.parseInt(etCatBudget.getText().toString().replaceAll("\\,", "")) : 0;
-
-                        modifyList.add(new GoalCategoryForm(userId, category.getGoalCategoryId(), budget));
+                        categoryList.get(position).setBudget(budget);
                     }
                 }
             });
@@ -366,17 +368,11 @@ public class GoalCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
                             if (changeBudget == budget) {
                                 Log.d("GoalCategoryList", "전체 예산 수정 성공");
 
-                                if (modifyList.size() == 0) {
-                                    Intent intent = new Intent();
-                                    intent.putExtra("goalUpdate", true);
+                                for (int i = 0; i < categoryList.size(); i++) {
+                                    GoalCategoryDetail category = categoryList.get(i);
+                                    GoalCategoryForm goalCategoryForm = new GoalCategoryForm(userId, category.getGoalCategoryId(), category.getBudget());
 
-                                    ((BudgetUpdateActivity) context).setResult(Activity.RESULT_OK, intent);
-                                    ((BudgetUpdateActivity) context).finish();
-                                } else {
-                                    for (int i = 0; i < modifyList.size(); i++) {
-                                        GoalCategoryForm goalCategoryForm = modifyList.get(i);
-                                        changeGoalCategoryBudget(i == modifyList.size() - 1, goalCategoryForm);
-                                    }
+                                    changeGoalCategoryBudget(i == categoryList.size() - 1, goalCategoryForm);
                                 }
                             }
                         }
