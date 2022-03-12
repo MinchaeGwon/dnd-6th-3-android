@@ -249,7 +249,9 @@ public class AddEmotionActivity extends AppCompatActivity {
         softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
             @Override
             public void onHiddenSoftKeyboard() {
-                getCurrentFocus().clearFocus();
+                if (getCurrentFocus() != null) {
+                    getCurrentFocus().clearFocus();
+                }
 
                 if (btnConfirm.isEnabled()) {
                     btnConfirm.setBackgroundResource(R.drawable.button_enabled_true);

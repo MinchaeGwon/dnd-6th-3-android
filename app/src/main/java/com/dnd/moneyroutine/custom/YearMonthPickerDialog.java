@@ -3,7 +3,6 @@ package com.dnd.moneyroutine.custom;
 import androidx.appcompat.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +25,7 @@ public class YearMonthPickerDialog extends DialogFragment {
 
     private OnSelectListener onSelectListener;
     private LocalDate date;
-    private boolean diary = false;
+    private boolean main = false;
 
     public void setOnSelectListener(OnSelectListener onSelectListener) {
         this.onSelectListener = onSelectListener;
@@ -34,13 +33,9 @@ public class YearMonthPickerDialog extends DialogFragment {
 
     public YearMonthPickerDialog() {}
 
-    public YearMonthPickerDialog(LocalDate date) {
+    public YearMonthPickerDialog(LocalDate date, boolean main) {
         this.date = date;
-    }
-
-    public YearMonthPickerDialog(LocalDate date, boolean diary) {
-        this.date = date;
-        this.diary = diary;
+        this.main = main;
     }
 
     @Override
@@ -75,7 +70,8 @@ public class YearMonthPickerDialog extends DialogFragment {
 
         LocalDate curDate = LocalDate.now();
 
-        if (!diary) {
+        // 메인 지난 기록에서 오는 것만 -1
+        if (main) {
             curDate = curDate.minusMonths(1);
         }
 

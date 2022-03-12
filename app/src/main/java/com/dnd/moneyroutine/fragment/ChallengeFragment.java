@@ -70,7 +70,7 @@ public class ChallengeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // 연도, 월 선택 다이얼로그 띄우기
-                YearMonthPickerDialog yearMonthPickerDialog = new YearMonthPickerDialog(selectDate);
+                YearMonthPickerDialog yearMonthPickerDialog = new YearMonthPickerDialog(selectDate, false);
                 yearMonthPickerDialog.show(getActivity().getSupportFragmentManager(), "YearMonthPickerDialog");
 
                 yearMonthPickerDialog.setOnSelectListener(new YearMonthPickerDialog.OnSelectListener() {

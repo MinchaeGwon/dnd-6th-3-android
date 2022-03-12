@@ -276,7 +276,9 @@ public class AddExpenseActivity extends AppCompatActivity {
         softKeyboardDetector.setOnHiddenKeyboard(new SoftKeyboardDetector.OnHiddenKeyboardListener() {
             @Override
             public void onHiddenSoftKeyboard() {
-                getCurrentFocus().clearFocus();
+                if (getCurrentFocus() != null) {
+                    getCurrentFocus().clearFocus();
+                }
 
                 if (btnNext.isEnabled()) {
                     btnNext.setBackgroundResource(R.drawable.button_enabled_true);
