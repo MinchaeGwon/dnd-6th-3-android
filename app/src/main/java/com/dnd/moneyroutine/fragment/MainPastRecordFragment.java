@@ -160,7 +160,7 @@ public class MainPastRecordFragment extends Fragment  {
             @Override
             public void onClick(View view) {
                 // 연도, 월 선택 다이얼로그 띄우기
-                YearMonthPickerDialog yearMonthPickerDialog = new YearMonthPickerDialog(selectDate, false);
+                YearMonthPickerDialog yearMonthPickerDialog = new YearMonthPickerDialog(selectDate, true);
                 yearMonthPickerDialog.show(getActivity().getSupportFragmentManager(), "YearMonthPickerDialog");
 
                 yearMonthPickerDialog.setOnSelectListener(new YearMonthPickerDialog.OnSelectListener() {
@@ -204,6 +204,9 @@ public class MainPastRecordFragment extends Fragment  {
 
                             if (responseGoal != null) {
                                 setGoalInfo(responseGoal);
+
+                                clPastInfo.setVisibility(View.VISIBLE);
+                                clPastEmpty.setVisibility(View.GONE);
                             }
                         } else {
                             clPastInfo.setVisibility(View.GONE);
