@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,17 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.adapter.EmotionAdapter;
+import com.dnd.moneyroutine.adapter.WeeklyEmotionAdapter;
 import com.dnd.moneyroutine.adapter.WeeklyCalendarAdapter;
-import com.dnd.moneyroutine.adapter.WeeklyDiaryAdapter;
 import com.dnd.moneyroutine.custom.Common;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.WeekPickerDialog;
 import com.dnd.moneyroutine.dto.DailyDiary;
-import com.dnd.moneyroutine.dto.ExpenditureDetail;
 import com.dnd.moneyroutine.dto.WeeklyDiary;
-import com.dnd.moneyroutine.enums.EmotionEnum;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.LocalDateSerializer;
 import com.dnd.moneyroutine.service.RetrofitService;
@@ -38,12 +34,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -224,7 +218,7 @@ public class DiaryWeeklyFragment extends Fragment {
                         ArrayList<DailyDiary> dailyList = gson.fromJson(jsonArray, new TypeToken<ArrayList<DailyDiary>>() {}.getType());
 
                         if (dailyList.size() > 0) {
-                            EmotionAdapter emotionAdapter = new EmotionAdapter(dailyList);
+                            WeeklyEmotionAdapter emotionAdapter = new WeeklyEmotionAdapter(dailyList);
                             rvEmotion.setAdapter(emotionAdapter);
                             rvEmotion.setLayoutManager(new LinearLayoutManager(getContext()));
                         }
