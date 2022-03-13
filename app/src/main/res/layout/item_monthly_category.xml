@@ -7,8 +7,10 @@
 
     <View
         android:id="@+id/view17"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:background="#f1f3f5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +27,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view17">
 
         <View
+            android:id="@+id/view_month_color"
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:layout_marginStart="16dp"
@@ -67,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="2dp"
             android:layout_weight="1"
-            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+            android:fontFamily="@font/spoqa_han_sans_neo_regular"
             android:gravity="end"
             android:includeFontPadding="false"
             android:text="더보기"
@@ -102,7 +105,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_month_first"
+        android:id="@+id/rv_month_expense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#F8F9FA"

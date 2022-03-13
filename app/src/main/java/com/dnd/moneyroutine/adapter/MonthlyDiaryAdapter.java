@@ -22,8 +22,6 @@ import java.util.ArrayList;
 public class MonthlyDiaryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-
-    private EmotionEnum emotion;
     private ArrayList<ExpenditureCompact> expenditureList;
 
     public MonthlyDiaryAdapter(ArrayList<ExpenditureCompact> expenditureList) {
