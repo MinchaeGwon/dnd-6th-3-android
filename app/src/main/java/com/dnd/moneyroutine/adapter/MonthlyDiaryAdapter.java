@@ -1,7 +1,6 @@
 package com.dnd.moneyroutine.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dnd.moneyroutine.ExpenseDetailActivity;
 import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.dto.ExpenditureCompact;
-import com.dnd.moneyroutine.enums.EmotionEnum;
 
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -32,7 +28,7 @@ public class MonthlyDiaryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.item_monthly_expense, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_diary_monthly_expense, parent, false);
         return new ExpenditureViewHolder(view);
     }
 

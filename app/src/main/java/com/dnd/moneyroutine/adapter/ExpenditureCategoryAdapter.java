@@ -13,38 +13,55 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
+import com.dnd.moneyroutine.dto.GoalCategoryInfo;
 import com.dnd.moneyroutine.dto.MonthlyDiary;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class MonthlyCategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ExpenditureCategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
     private ArrayList<MonthlyDiary> monthlyList;
+    private ArrayList<GoalCategoryInfo> categoryList;
+    private boolean diary;
+    private boolean week;
 
-    public MonthlyCategoryAdapter(ArrayList<MonthlyDiary> monthlyList) {
+    public ExpenditureCategoryAdapter(ArrayList<MonthlyDiary> monthlyList, boolean diary) {
         this.monthlyList = monthlyList;
+        this.diary = diary;
+    }
+
+    public ExpenditureCategoryAdapter(ArrayList<GoalCategoryInfo> categoryList, boolean diary, boolean week) {
+        this.categoryList = categoryList;
+        this.diary = diary;
+        this.week = week;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.item_monthly_category, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_expenditure_category, parent, false);
         return new CategoryViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof CategoryViewHolder) {
-            MonthlyDiary monthly = monthlyList.get(position);
-            ((CategoryViewHolder) holder).setItem(monthly);
+            if (diary) {
+                MonthlyDiary monthly = monthlyList.get(position);
+                ((CategoryViewHolder) holder).setDiaryItem(monthly);
+            } else {
+                GoalCategoryInfo category = categoryList.get(position);
+                ((CategoryViewHolder) holder).setExpenditureItem(category);
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return monthlyList.size();
+        return diary ? monthlyList.size() : categoryList.size();
     }
 
     private class CategoryViewHolder extends RecyclerView.ViewHolder {
@@ -53,19 +70,21 @@ public class MonthlyCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         TextView tvCategoryCnt;
         TextView tvCategoryMore;
         ImageView ivHold;
-        ImageView ivMore;
+        ImageView ivBottomMore;
+        ImageView ivRightMore;
         RecyclerView rvExpense;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            colorView = itemView.findViewById(R.id.view_month_color);
-            tvCategoryName = itemView.findViewById(R.id.tv_month_cat_name);
-            tvCategoryCnt = itemView.findViewById(R.id.tv_month_cat_cnt);
-            tvCategoryMore = itemView.findViewById(R.id.tv_month_cat_more);
-            ivHold = itemView.findViewById(R.id.iv_month_cat_hold);
-            ivMore = itemView.findViewById(R.id.iv_month_cat_more);
-            rvExpense = itemView.findViewById(R.id.rv_month_expense);
+            colorView = itemView.findViewById(R.id.view_ex_color);
+            tvCategoryName = itemView.findViewById(R.id.tv_ex_cat_name);
+            tvCategoryCnt = itemView.findViewById(R.id.tv_ex_cat_cnt);
+            tvCategoryMore = itemView.findViewById(R.id.tv_ex_cat_more);
+            ivHold = itemView.findViewById(R.id.iv_ex_cat_hold);
+            ivBottomMore = itemView.findViewById(R.id.iv_ex_bottom_more);
+            ivRightMore = itemView.findViewById(R.id.iv_ex_right_more);
+            rvExpense = itemView.findViewById(R.id.rv_ex_expense);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -73,20 +92,26 @@ public class MonthlyCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     if (rvExpense.getVisibility() == View.GONE) {
                         rvExpense.setVisibility(View.VISIBLE);
                         ivHold.setVisibility(View.VISIBLE);
-                        ivMore.setVisibility(View.GONE);
-                        tvCategoryMore.setText("접기");
+                        ivBottomMore.setVisibility(View.GONE);
+
+                        if (diary) {
+                            tvCategoryMore.setText("접기");
+                        }
                     } else {
                         rvExpense.setVisibility(View.GONE);
                         ivHold.setVisibility(View.GONE);
-                        ivMore.setVisibility(View.VISIBLE);
-                        tvCategoryMore.setText("더보기");
+                        ivBottomMore.setVisibility(View.VISIBLE);
+
+                        if (diary) {
+                            tvCategoryMore.setText("더보기");
+                        }
                     }
                 }
             });
         }
 
         // 실제 view에 객체 내용을 적용시키는 메소드
-        public void setItem(MonthlyDiary monthly) {
+        public void setDiaryItem(MonthlyDiary monthly) {
             setCategoryColor(getBindingAdapterPosition());
 
             tvCategoryName.setText(monthly.getName());
@@ -95,6 +120,23 @@ public class MonthlyCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             MonthlyDiaryAdapter monthlyDiaryAdapter = new MonthlyDiaryAdapter(monthly.getExpenditureList());
             rvExpense.setAdapter(monthlyDiaryAdapter);
             rvExpense.setLayoutManager(new LinearLayoutManager(context));
+        }
+
+        // 실제 view에 객체 내용을 적용시키는 메소드
+        public void setExpenditureItem(GoalCategoryInfo category) {
+            setCategoryColor(getBindingAdapterPosition());
+
+            tvCategoryName.setText(category.getCategoryName());
+            tvCategoryCnt.setText(category.getPercentage() + "%");
+
+            DecimalFormat decimalFormat = new DecimalFormat("###,###");
+            String expense = decimalFormat.format(category.getExpense()) + "원";
+            tvCategoryMore.setText(expense);
+            tvCategoryMore.setTextColor(Color.parseColor("#212529"));
+
+//            MonthlyDiaryAdapter monthlyDiaryAdapter = new MonthlyDiaryAdapter(monthly.getExpenditureList());
+//            rvExpense.setAdapter(monthlyDiaryAdapter);
+//            rvExpense.setLayoutManager(new LinearLayoutManager(context));
         }
 
         private void setCategoryColor(int index) {

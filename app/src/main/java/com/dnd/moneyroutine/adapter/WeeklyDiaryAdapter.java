@@ -34,7 +34,7 @@ public class WeeklyDiaryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.item_weekly_expense, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_diary_weekly_expense, parent, false);
         return new ExpenditureViewHolder(view);
     }
 

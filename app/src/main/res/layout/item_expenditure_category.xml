@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/ll_month_category"
+        android:id="@+id/ll_ex_category"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical"
@@ -27,7 +27,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view17">
 
         <View
-            android:id="@+id/view_month_color"
+            android:id="@+id/view_ex_color"
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:layout_marginStart="16dp"
@@ -37,7 +37,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_month_cat_name"
+            android:id="@+id/tv_ex_cat_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -51,7 +51,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_month_cat_cnt"
+            android:id="@+id/tv_ex_cat_cnt"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginStart="4dp"
@@ -65,7 +65,7 @@
             app:layout_constraintTop_toBottomOf="@+id/view4" />
 
         <TextView
-            android:id="@+id/tv_month_cat_more"
+            android:id="@+id/tv_ex_cat_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="2dp"
@@ -81,7 +81,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/iv_month_cat_more"
+            android:id="@+id/iv_ex_bottom_more"
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_marginStart="5dp"
@@ -92,7 +92,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/iv_month_cat_hold"
+            android:id="@+id/iv_ex_cat_hold"
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_marginStart="5dp"
@@ -102,10 +102,22 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_ex_right_more"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="16dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/icon_right_arrow_light_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_month_expense"
+        android:id="@+id/rv_ex_expense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#F8F9FA"
@@ -117,5 +129,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_month_category" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_ex_category" />
 </androidx.constraintlayout.widget.ConstraintLayout>

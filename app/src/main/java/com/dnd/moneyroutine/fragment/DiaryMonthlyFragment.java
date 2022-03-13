@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.adapter.MonthlyCategoryAdapter;
+import com.dnd.moneyroutine.adapter.ExpenditureCategoryAdapter;
 import com.dnd.moneyroutine.custom.Common;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.EmotionDialog;
@@ -206,17 +206,18 @@ public class DiaryMonthlyFragment extends Fragment {
 
                     if (responseJson.get("statusCode").getAsInt() == 200 && !responseJson.get("data").isJsonNull()) {
                         Gson gson = new Gson();
-                        emotionMap = gson.fromJson(responseJson.getAsJsonObject("data"),
-                                new TypeToken<HashMap<EmotionEnum, Integer>>() {}.getType());
+                        emotionMap = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<HashMap<EmotionEnum, Integer>>() {}.getType());
 
                         if (emotionMap.size() == 0) {
                             tvBestEmotionTitle.setText("소비 내역이 없어요");
 
                             clEmotionChart.setVisibility(View.GONE);
                             clCategoryChart.setVisibility(View.GONE);
+                            rvCategory.setVisibility(View.GONE);
                         } else {
                             clEmotionChart.setVisibility(View.VISIBLE);
                             clCategoryChart.setVisibility(View.VISIBLE);
+                            rvCategory.setVisibility(View.VISIBLE);
 
                             emotionMap.putIfAbsent(EmotionEnum.GOOD, 0);
                             emotionMap.putIfAbsent(EmotionEnum.SOSO, 0);
@@ -456,7 +457,7 @@ public class DiaryMonthlyFragment extends Fragment {
 
     // 세부 소비 내역 정보 바인딩
     private void setExpenditureInfo() {
-        MonthlyCategoryAdapter monthlyCategoryAdapter = new MonthlyCategoryAdapter(monthlyList);
+        ExpenditureCategoryAdapter monthlyCategoryAdapter = new ExpenditureCategoryAdapter(monthlyList, true);
         rvCategory.setAdapter(monthlyCategoryAdapter);
         rvCategory.setLayoutManager(new LinearLayoutManager(getContext()));
     }

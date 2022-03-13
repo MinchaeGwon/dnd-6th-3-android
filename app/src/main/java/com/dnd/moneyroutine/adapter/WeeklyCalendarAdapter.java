@@ -1,7 +1,6 @@
 package com.dnd.moneyroutine.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dnd.moneyroutine.ExpenseDetailActivity;
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.dto.ExpenditureDetail;
 import com.dnd.moneyroutine.dto.ExpenditureEmotion;
 import com.dnd.moneyroutine.dto.WeeklyDiary;
 import com.dnd.moneyroutine.enums.EmotionEnum;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
