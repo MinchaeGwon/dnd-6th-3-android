@@ -54,6 +54,7 @@ public class DiaryWeeklyFragment extends Fragment {
     private RecyclerView rvCalendar;
 
     private TextView tvDate;
+    private TextView tvEmpty;
     private RecyclerView rvEmotion;
 
     private String token;
@@ -81,8 +82,9 @@ public class DiaryWeeklyFragment extends Fragment {
         tvSelectWeek = v.findViewById(R.id.tv_week_header);
 
         tvDate = v.findViewById(R.id.tv_week_date);
-        rvEmotion = v.findViewById(R.id.rv_week_emotion);
+        tvEmpty = v.findViewById(R.id.tv_week_empty);
 
+        rvEmotion = v.findViewById(R.id.rv_week_emotion);
         rvCalendar = v.findViewById(R.id.rv_week_calendar);
     }
 
@@ -218,9 +220,15 @@ public class DiaryWeeklyFragment extends Fragment {
                         ArrayList<DailyDiary> dailyList = gson.fromJson(jsonArray, new TypeToken<ArrayList<DailyDiary>>() {}.getType());
 
                         if (dailyList.size() > 0) {
+                            tvEmpty.setVisibility(View.GONE);
+                            rvEmotion.setVisibility(View.VISIBLE);
+
                             WeeklyEmotionAdapter emotionAdapter = new WeeklyEmotionAdapter(dailyList);
                             rvEmotion.setAdapter(emotionAdapter);
                             rvEmotion.setLayoutManager(new LinearLayoutManager(getContext()));
+                        } else {
+                            tvEmpty.setVisibility(View.VISIBLE);
+                            rvEmotion.setVisibility(View.GONE);
                         }
                     }
                 }

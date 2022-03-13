@@ -344,11 +344,13 @@ public class DiaryMonthlyFragment extends Fragment {
                         if (monthlyList.size() == 0) {
                             clBestCategory.setVisibility(View.GONE);
                             pcCategory.setVisibility(View.GONE);
+                            rvCategory.setVisibility(View.GONE);
 
                             tvBestEmotionCatTitle.setText("소비 내역이 없어요");
                         } else {
                             clBestCategory.setVisibility(View.VISIBLE);
                             pcCategory.setVisibility(View.VISIBLE);
+                            rvCategory.setVisibility(View.VISIBLE);
 
                             setEtcList();
                             drawCategoryPieChart();

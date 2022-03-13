@@ -95,6 +95,22 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/con_calendar" />
 
+                <TextView
+                    android:id="@+id/tv_week_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                    android:includeFontPadding="false"
+                    android:text="소비 내역이 없어요"
+                    android:textColor="#212529"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_week_date" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_week_emotion"
                     android:layout_width="match_parent"
