@@ -95,300 +95,32 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/con_calendar" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_week_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                    android:includeFontPadding="false"
+                    android:text="소비 내역이 없어요"
+                    android:textColor="#212529"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_week_date" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_week_emotion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="31dp"
-                    android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_week_date">
-
-                    <LinearLayout
-                        android:id="@+id/ll_week_good"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="55dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_marginStart="16dp"
-                                app:srcCompat="@drawable/icon_good" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="6dp"
-                                android:layout_marginEnd="7dp"
-                                android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                                android:includeFontPadding="false"
-                                android:text="행복했어"
-                                android:textColor="#107D69"
-                                android:textSize="14sp"
-                                android:textStyle="normal" />
-
-                            <TextView
-                                android:id="@+id/tv_week_good_cnt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                                android:includeFontPadding="false"
-                                android:text="0개"
-                                android:textColor="#868E96"
-                                android:textSize="14sp"
-                                android:textStyle="normal" />
-
-                            <TextView
-                                android:id="@+id/tv_week_good_money"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="5dp"
-                                android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                                android:includeFontPadding="false"
-                                android:text="총 0원"
-                                android:textColor="#107D69"
-                                android:textSize="14sp"
-                                android:textStyle="normal" />
-
-                            <ImageView
-                                android:id="@+id/iv_week_good_more"
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
-                                android:layout_marginEnd="16dp"
-                                app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
-
-                            <ImageView
-                                android:id="@+id/iv_week_good_hold"
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
-                                android:layout_marginEnd="16dp"
-                                android:rotationX="180"
-                                android:visibility="gone"
-                                app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
-                        </LinearLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_week_good_detail"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="#F8F9FA"
-                            android:clipToPadding="false"
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp"
-                            android:visibility="gone"
-                            app:layout_constrainedHeight="true" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:background="#F8F9FA"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_week_soso"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="55dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_marginStart="16dp"
-                                app:srcCompat="@drawable/icon_soso" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="6dp"
-                                android:layout_marginEnd="7dp"
-                                android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                                android:includeFontPadding="false"
-                                android:text="그냥 그랬어"
-                                android:textColor="#1E5CA4"
-                                android:textSize="14sp"
-                                android:textStyle="normal" />
-
-                            <TextView
-                                android:id="@+id/tv_week_soso_cnt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                                android:includeFontPadding="false"
-                                android:text="0개"
-                                android:textColor="#868E96"
-                                android:textSize="14sp"
-                                android:textStyle="normal" />
-
-                            <TextView
-                                android:id="@+id/tv_week_soso_money"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="5dp"
-                                android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                                android:includeFontPadding="false"
-                                android:text="총 0원"
-                                android:textColor="#1E5CA4"
-                                android:textSize="14sp"
-                                android:textStyle="normal" />
-
-                            <ImageView
-                                android:id="@+id/iv_week_soso_more"
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
-                                android:layout_marginEnd="16dp"
-                                app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
-
-                            <ImageView
-                                android:id="@+id/iv_week_soso_hold"
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
-                                android:layout_marginEnd="16dp"
-                                android:rotationX="180"
-                                android:visibility="gone"
-                                app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
-                        </LinearLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_week_soso_detail"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="#F8F9FA"
-                            android:clipToPadding="false"
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp"
-                            android:visibility="gone"
-                            app:layout_constrainedHeight="true" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:background="#F8F9FA"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_week_bad"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="55dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_marginStart="16dp"
-                                app:srcCompat="@drawable/icon_bad" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="6dp"
-                                android:layout_marginEnd="7dp"
-                                android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                                android:includeFontPadding="false"
-                                android:text="왜 썼지"
-                                android:textColor="#D13474"
-                                android:textSize="14sp"
-                                android:textStyle="normal" />
-
-                            <TextView
-                                android:id="@+id/tv_week_bad_cnt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                                android:includeFontPadding="false"
-                                android:text="0개"
-                                android:textColor="#868E96"
-                                android:textSize="14sp"
-                                android:textStyle="normal" />
-
-                            <TextView
-                                android:id="@+id/tv_week_bad_money"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="5dp"
-                                android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                                android:includeFontPadding="false"
-                                android:text="총 0원"
-                                android:textColor="#D13474"
-                                android:textSize="14sp"
-                                android:textStyle="normal" />
-
-                            <ImageView
-                                android:id="@+id/iv_week_bad_more"
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
-                                android:layout_marginEnd="16dp"
-                                app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
-
-                            <ImageView
-                                android:id="@+id/iv_week_bad_hold"
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
-                                android:layout_marginEnd="16dp"
-                                android:rotationX="180"
-                                android:visibility="gone"
-                                app:srcCompat="@drawable/icon_bottom_arrow_light_gray" />
-                        </LinearLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_week_bad_detail"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="#F8F9FA"
-                            android:clipToPadding="false"
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp"
-                            android:visibility="gone"
-                            app:layout_constrainedHeight="true" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:background="#F8F9FA"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
+                    app:layout_constraintTop_toBottomOf="@+id/tv_week_date" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

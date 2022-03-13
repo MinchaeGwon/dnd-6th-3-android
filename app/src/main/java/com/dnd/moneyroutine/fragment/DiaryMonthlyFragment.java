@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.adapter.MonthlyDiaryAdapter;
+import com.dnd.moneyroutine.adapter.ExpenditureCategoryAdapter;
 import com.dnd.moneyroutine.custom.Common;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.EmotionDialog;
@@ -64,7 +64,6 @@ public class DiaryMonthlyFragment extends Fragment {
 
     private ConstraintLayout clEmotionChart;
     private ConstraintLayout clCategoryChart;
-    private LinearLayout llCategoryList;
     private ConstraintLayout clBestCategory;
 
     private LinearLayout btnSelectYearMonth;
@@ -85,40 +84,13 @@ public class DiaryMonthlyFragment extends Fragment {
     private TextView tvBestEmotionCatTitle;
     private TextView tvBestCat;
     private TextView tvBestCatCnt;
+
     private PieChart pcCategory;
+
     private TextView tvSelectEmotionTitle;
     private TextView tvSelectEmotionCnt;
 
-    private LinearLayout btnFirstCat;
-    private TextView tvFirstCat;
-    private TextView tvFirstCnt;
-    private TextView tvFirstMore;
-    private ImageView ivFirstMore;
-    private ImageView ivFirstHold;
-    private RecyclerView rvFirstCat;
-
-    private LinearLayout btnSecondCat;
-    private TextView tvSecondCat;
-    private TextView tvSecondCnt;
-    private TextView tvSecondMore;
-    private ImageView ivSecondMore;
-    private ImageView ivSecondHold;
-    private RecyclerView rvSecondCat;
-
-    private LinearLayout btnThirdCat;
-    private TextView tvThirdCat;
-    private TextView tvThirdCnt;
-    private TextView tvThirdMore;
-    private ImageView ivThirdMore;
-    private ImageView ivThirdHold;
-    private RecyclerView rvThirdCat;
-
-    private LinearLayout btnEtcCat;
-    private TextView tvEtcCnt;
-    private TextView tvEtcMore;
-    private ImageView ivEtcMore;
-    private ImageView ivEtcHold;
-    private RecyclerView rvEtcCat;
+    private RecyclerView rvCategory;
 
     private String token;
     private LocalDate selectDate;
@@ -143,7 +115,6 @@ public class DiaryMonthlyFragment extends Fragment {
     private void initView(View v) {
         clEmotionChart = v.findViewById(R.id.cl_emotion_chart);
         clCategoryChart = v.findViewById(R.id.cl_month_pie_chart);
-        llCategoryList = v.findViewById(R.id.ll_category);
         clBestCategory = v.findViewById(R.id.cl_best_category);
 
         btnSelectYearMonth = v.findViewById(R.id.ll_diary_select_month);
@@ -168,36 +139,7 @@ public class DiaryMonthlyFragment extends Fragment {
         tvSelectEmotionTitle = v.findViewById(R.id.tv_month_select_emotion_title);
         tvSelectEmotionCnt = v.findViewById(R.id.tv_month_select_emotion_cnt);
 
-        btnFirstCat = v.findViewById(R.id.ll_month_first);
-        tvFirstCat = v.findViewById(R.id.tv_month_first_cat);
-        tvFirstCnt = v.findViewById(R.id.tv_month_first_cnt);
-        tvFirstMore = v.findViewById(R.id.tv_month_more_first);
-        ivFirstMore = v.findViewById(R.id.iv_month_first_more);
-        ivFirstHold = v.findViewById(R.id.iv_month_first_hold);
-        rvFirstCat = v.findViewById(R.id.rv_month_first);
-
-        btnSecondCat = v.findViewById(R.id.ll_month_second);
-        tvSecondCat = v.findViewById(R.id.tv_month_second_cat);
-        tvSecondCnt = v.findViewById(R.id.tv_month_second_cnt);
-        tvSecondMore = v.findViewById(R.id.tv_month_more_second);
-        ivSecondMore = v.findViewById(R.id.iv_month_second_more);
-        ivSecondHold = v.findViewById(R.id.iv_month_second_hold);
-        rvSecondCat = v.findViewById(R.id.rv_month_second);
-
-        btnThirdCat = v.findViewById(R.id.ll_month_third);
-        tvThirdCat = v.findViewById(R.id.tv_month_third_cat);
-        tvThirdCnt = v.findViewById(R.id.tv_month_third_cnt);
-        tvThirdMore = v.findViewById(R.id.tv_month_more_third);
-        ivThirdMore = v.findViewById(R.id.iv_month_third_more);
-        ivThirdHold = v.findViewById(R.id.iv_month_third_hold);
-        rvThirdCat = v.findViewById(R.id.rv_month_third);
-
-        btnEtcCat = v.findViewById(R.id.ll_month_etc);
-        tvEtcCnt = v.findViewById(R.id.tv_month_etc_cnt);
-        tvEtcMore = v.findViewById(R.id.tv_month_more_etc);
-        ivEtcMore = v.findViewById(R.id.iv_month_etc_more);
-        ivEtcHold = v.findViewById(R.id.iv_month_etc_hold);
-        rvEtcCat = v.findViewById(R.id.rv_month_etc);
+        rvCategory = v.findViewById(R.id.rv_month_category);
     }
 
     private void initField() {
@@ -239,70 +181,12 @@ public class DiaryMonthlyFragment extends Fragment {
                     public void onSelect(EmotionEnum emotion) {
                         selectEmotion = emotion;
 
-                        setGoneRecycler(false, rvFirstCat, ivFirstMore, ivFirstHold, tvFirstMore);
-                        setGoneRecycler(false, rvSecondCat, ivSecondMore, ivSecondHold, tvSecondMore);
-                        setGoneRecycler(false, rvThirdCat, ivThirdMore, ivThirdHold, tvThirdMore);
-                        setGoneRecycler(false, rvEtcCat, ivEtcMore, ivEtcHold, tvEtcMore);
-
                         setSelectEmotion();
                         getMonthlyDiaryByEmotion();
                     }
                 });
             }
         });
-
-        btnFirstCat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setGoneRecycler(rvFirstCat.getVisibility() == View.GONE, rvFirstCat, ivFirstMore, ivFirstHold, tvFirstMore);
-            }
-        });
-
-        btnSecondCat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setGoneRecycler(rvSecondCat.getVisibility() == View.GONE, rvSecondCat, ivSecondMore, ivSecondHold, tvSecondMore);
-            }
-        });
-
-        btnThirdCat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setGoneRecycler(rvThirdCat.getVisibility() == View.GONE, rvThirdCat, ivThirdMore, ivThirdHold, tvThirdMore);
-            }
-        });
-
-        btnEtcCat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setGoneRecycler(rvEtcCat.getVisibility() == View.GONE, rvEtcCat, ivEtcMore, ivEtcHold, tvEtcMore);
-            }
-        });
-    }
-
-    // 선택한 소비 감정 정보 바인딩
-    private void setSelectEmotion() {
-        tvSelectEmotion.setText(selectEmotion.getDetail());
-        tvSelectEmotionTitle.setText(selectEmotion.getDetail() + " 소비 횟수");
-        tvSelectEmotionCnt.setText(emotionMap.get(selectEmotion) + "번");
-
-        switch (selectEmotion) {
-            case GOOD:
-                ivSelectEmotion.setImageResource(R.drawable.icon_good);
-                tvSelectEmotionDetail.setText("행복했어");
-                tvSelectEmotionDetail.setTextColor(Color.parseColor("#107D69"));
-                break;
-            case SOSO:
-                ivSelectEmotion.setImageResource(R.drawable.icon_soso);
-                tvSelectEmotionDetail.setText("그냥 그랬어");
-                tvSelectEmotionDetail.setTextColor(Color.parseColor("#1E5CA4"));
-                break;
-            case BAD:
-                ivSelectEmotion.setImageResource(R.drawable.icon_bad);
-                tvSelectEmotionDetail.setText("왜썼지");
-                tvSelectEmotionDetail.setTextColor(Color.parseColor("#D13474"));
-                break;
-        }
     }
 
     // 소비 감정 횟수 가져오기
@@ -322,19 +206,18 @@ public class DiaryMonthlyFragment extends Fragment {
 
                     if (responseJson.get("statusCode").getAsInt() == 200 && !responseJson.get("data").isJsonNull()) {
                         Gson gson = new Gson();
-                        emotionMap = gson.fromJson(responseJson.getAsJsonObject("data"),
-                                new TypeToken<HashMap<EmotionEnum, Integer>>() {}.getType());
+                        emotionMap = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<HashMap<EmotionEnum, Integer>>() {}.getType());
 
                         if (emotionMap.size() == 0) {
                             tvBestEmotionTitle.setText("소비 내역이 없어요");
 
                             clEmotionChart.setVisibility(View.GONE);
                             clCategoryChart.setVisibility(View.GONE);
-                            llCategoryList.setVisibility(View.GONE);
+                            rvCategory.setVisibility(View.GONE);
                         } else {
                             clEmotionChart.setVisibility(View.VISIBLE);
                             clCategoryChart.setVisibility(View.VISIBLE);
-                            llCategoryList.setVisibility(View.VISIBLE);
+                            rvCategory.setVisibility(View.VISIBLE);
 
                             emotionMap.putIfAbsent(EmotionEnum.GOOD, 0);
                             emotionMap.putIfAbsent(EmotionEnum.SOSO, 0);
@@ -354,8 +237,6 @@ public class DiaryMonthlyFragment extends Fragment {
     }
 
     private void setEmotionInfo() {
-        drawEmotionChart();
-
         // 가장 큰 값을 가지는 소비 감정 찾기
         Comparator<Map.Entry<EmotionEnum, Integer>> comparator = new Comparator<Map.Entry<EmotionEnum, Integer>>() {
             @Override
@@ -384,12 +265,13 @@ public class DiaryMonthlyFragment extends Fragment {
 
         selectEmotion = maxEntry.getKey();
 
+        drawEmotionBarChart(); // 소비 감정 그래프 그리기
         setSelectEmotion();
         getMonthlyDiaryByEmotion(); // 가장 많은 소비 감정으로 지출 내역 먼저 가져오기
     }
 
-    // 소비 감정 그래프 그리기
-    private void drawEmotionChart() {
+    // 소비 감정 그래프 그리기 : 막대그래프
+    private void drawEmotionBarChart() {
         hcEmotion.setVisibility(View.VISIBLE);
         hcEmotion.removeAllViews();
 
@@ -412,6 +294,31 @@ public class DiaryMonthlyFragment extends Fragment {
         hcEmotion.getData().setDrawValues(false); // 그래프 수치 표시 X
         hcEmotion.getDescription().setEnabled(false); // 그래프 하단 설명 사용 X
         hcEmotion.getLegend().setEnabled(false); // 그래프 왼쪽 하단 설명 사용 X
+    }
+
+    // 선택한 소비 감정 정보 바인딩
+    private void setSelectEmotion() {
+        tvSelectEmotion.setText(selectEmotion.getDetail());
+        tvSelectEmotionTitle.setText(selectEmotion.getDetail() + " 소비 횟수");
+        tvSelectEmotionCnt.setText(emotionMap.get(selectEmotion) + "번");
+
+        switch (selectEmotion) {
+            case GOOD:
+                ivSelectEmotion.setImageResource(R.drawable.icon_good);
+                tvSelectEmotionDetail.setText("행복했어");
+                tvSelectEmotionDetail.setTextColor(Color.parseColor("#107D69"));
+                break;
+            case SOSO:
+                ivSelectEmotion.setImageResource(R.drawable.icon_soso);
+                tvSelectEmotionDetail.setText("그냥 그랬어");
+                tvSelectEmotionDetail.setTextColor(Color.parseColor("#1E5CA4"));
+                break;
+            case BAD:
+                ivSelectEmotion.setImageResource(R.drawable.icon_bad);
+                tvSelectEmotionDetail.setText("왜썼지");
+                tvSelectEmotionDetail.setTextColor(Color.parseColor("#D13474"));
+                break;
+        }
     }
 
     // 소비 감정으로 지출 내역 가져오기
@@ -438,16 +345,17 @@ public class DiaryMonthlyFragment extends Fragment {
                         if (monthlyList.size() == 0) {
                             clBestCategory.setVisibility(View.GONE);
                             pcCategory.setVisibility(View.GONE);
-                            llCategoryList.setVisibility(View.GONE);
+                            rvCategory.setVisibility(View.GONE);
 
                             tvBestEmotionCatTitle.setText("소비 내역이 없어요");
                         } else {
                             clBestCategory.setVisibility(View.VISIBLE);
                             pcCategory.setVisibility(View.VISIBLE);
-                            llCategoryList.setVisibility(View.VISIBLE);
+                            rvCategory.setVisibility(View.VISIBLE);
 
-                            drawCategoryChart();
-                            setCategoryInfo();
+                            setEtcList();
+                            drawCategoryPieChart();
+                            setBestCategoryInfo();
                             setExpenditureInfo();
                         }
                     }
@@ -462,8 +370,34 @@ public class DiaryMonthlyFragment extends Fragment {
         });
     }
 
-    // 카테고리 파이 차트 그리기
-    private void drawCategoryChart() {
+    // 상위 3개 카테고리와 나머지 카테고리 분류
+    private void setEtcList() {
+        ArrayList<ExpenditureCompact> etcList = new ArrayList<>();
+        int etcCnt = 0;
+
+        for (int i = 0; i < monthlyList.size(); i++) {
+            MonthlyDiary monthlyDiary = monthlyList.get(i);
+
+            if (i >= 3) {
+                etcCnt += monthlyDiary.getCount();
+                etcList.addAll(monthlyDiary.getExpenditureList());
+            }
+        }
+
+        if (etcCnt > 0) {
+            MonthlyDiary monthlyDiary = monthlyList.get(3);
+            monthlyDiary.setName("나머지");
+            monthlyDiary.setCount(etcCnt);
+            monthlyDiary.setExpenditureList(etcList);
+
+            for (int i = 4; i < monthlyList.size(); i++) {
+                monthlyList.remove(i--);
+            }
+        }
+    }
+
+    // 카테고리 소비 그래프 그리기 : 파이 차트
+    private void drawCategoryPieChart() {
         pcCategory.setVisibility(View.VISIBLE);
         pcCategory.removeAllViews();
 
@@ -477,19 +411,15 @@ public class DiaryMonthlyFragment extends Fragment {
         pcCategory.setHoleRadius(55f); // hole 크기 설정
         pcCategory.setTransparentCircleRadius(0);
 
-        ArrayList<PieEntry> yValues = new ArrayList();
+        ArrayList<PieEntry> yValues = new ArrayList<>();
 
-        int etcCnt = 0;
-        if (monthlyList.size() > 3) {
-            for (int i = 3; i < monthlyList.size(); i++) {
-                etcCnt += monthlyList.get(i).getCount();
+        for (int i = 3; i >= 0; i--) {
+            try {
+                yValues.add(new PieEntry(monthlyList.get(i).getCount()));
+            } catch ( IndexOutOfBoundsException e ) {
+                yValues.add(new PieEntry(0));
             }
         }
-
-        yValues.add(new PieEntry(etcCnt, "나머지"));
-        yValues.add(new PieEntry(monthlyList.size() > 2 ? monthlyList.get(2).getCount() : 0));
-        yValues.add(new PieEntry(monthlyList.size() > 1 ? monthlyList.get(1).getCount() : 0));
-        yValues.add(new PieEntry(monthlyList.size() > 0 ? monthlyList.get(0).getCount() : 0));
 
         PieDataSet dataSet = new PieDataSet(yValues, "Countries");
 
@@ -505,129 +435,34 @@ public class DiaryMonthlyFragment extends Fragment {
         pcCategory.setData(data);
     }
 
-    private void setCategoryInfo() {
-        String category = null;
-        int cnt = 0;
-
-        for (MonthlyDiary monthlyDiary : monthlyList) {
-            if (monthlyDiary.getCount() > cnt) {
-                cnt = monthlyDiary.getCount();
-                category = monthlyDiary.getName();
-            }
-        }
+    // 가장 소비가 많았던 카테고리 정보 바인딩
+    private void setBestCategoryInfo() {
+        MonthlyDiary best = monthlyList.get(0); // 첫 번째에 있는 것이 가장 소비가 많은 카테고리
 
         switch (selectEmotion) {
             case GOOD:
-                tvBestEmotionCatTitle.setText(category + "에서 가장 만족을 느꼈어요!");
+                tvBestEmotionCatTitle.setText(best.getName() + "에서 가장 만족을 느꼈어요!");
                 break;
             case SOSO:
-                tvBestEmotionCatTitle.setText(category + " 관련 소비가 그냥 그랬어요");
+                tvBestEmotionCatTitle.setText(best.getName() + " 관련 소비가 그냥 그랬어요");
                 break;
             case BAD:
-                tvBestEmotionCatTitle.setText(category + " 관련 소비를 체크해볼까요?");
+                tvBestEmotionCatTitle.setText(best.getName() + " 관련 소비를 체크해볼까요?");
                 break;
         }
 
-        tvBestCat.setText(category);
-        tvBestCatCnt.setText(cnt + "번");
+        tvBestCat.setText(best.getName());
+        tvBestCatCnt.setText(best.getCount() + "번");
     }
 
+    // 세부 소비 내역 정보 바인딩
     private void setExpenditureInfo() {
-        ArrayList<ExpenditureCompact> firstList = new ArrayList<>();
-        ArrayList<ExpenditureCompact> secondList = new ArrayList<>();
-        ArrayList<ExpenditureCompact> thirdList = new ArrayList<>();
-        ArrayList<ExpenditureCompact> etcList = new ArrayList<>();
-
-        int etcCnt = 0;
-
-        for (int i = 0; i < monthlyList.size(); i++) {
-            MonthlyDiary monthlyDiary = monthlyList.get(i);
-
-            if (i < 3) {
-                switch (i) {
-                    case 0:
-                        tvFirstCat.setText(monthlyDiary.getName());
-                        tvFirstCnt.setText(monthlyDiary.getCount() + "번");
-                        firstList.addAll(monthlyDiary.getExpenditureList());
-                        break;
-                    case 1:
-                        tvSecondCat.setText(monthlyDiary.getName());
-                        tvSecondCnt.setText(monthlyDiary.getCount() + "번");
-                        secondList.addAll(monthlyDiary.getExpenditureList());
-                        break;
-                    case 2:
-                        tvThirdCat.setText(monthlyDiary.getName());
-                        tvThirdCnt.setText(monthlyDiary.getCount() + "번");
-                        thirdList.addAll(monthlyDiary.getExpenditureList());
-                        break;
-                }
-            } else {
-                etcCnt += monthlyDiary.getCount();
-                etcList.addAll(monthlyDiary.getExpenditureList());
-            }
-        }
-
-        tvEtcCnt.setText(etcCnt + "번");
-
-        if (firstList.size() > 0) {
-            btnFirstCat.setVisibility(View.VISIBLE);
-
-            MonthlyDiaryAdapter monthlyDiaryAdapter = new MonthlyDiaryAdapter(firstList);
-            rvFirstCat.setAdapter(monthlyDiaryAdapter);
-            rvFirstCat.setLayoutManager(new LinearLayoutManager(getContext()));
-        } else {
-            btnFirstCat.setVisibility(View.GONE);
-            setGoneRecycler(false, rvFirstCat, ivFirstMore, ivFirstHold, tvFirstMore);
-        }
-
-        if (secondList.size() > 0) {
-            btnSecondCat.setVisibility(View.VISIBLE);
-
-            MonthlyDiaryAdapter monthlyDiaryAdapter = new MonthlyDiaryAdapter(secondList);
-            rvSecondCat.setAdapter(monthlyDiaryAdapter);
-            rvSecondCat.setLayoutManager(new LinearLayoutManager(getContext()));
-        } else {
-            btnSecondCat.setVisibility(View.GONE);
-            setGoneRecycler(false, rvSecondCat, ivSecondMore, ivSecondHold, tvSecondMore);
-        }
-
-        if (thirdList.size() > 0) {
-            btnThirdCat.setVisibility(View.VISIBLE);
-
-            MonthlyDiaryAdapter monthlyDiaryAdapter = new MonthlyDiaryAdapter(thirdList);
-            rvThirdCat.setAdapter(monthlyDiaryAdapter);
-            rvThirdCat.setLayoutManager(new LinearLayoutManager(getContext()));
-        } else {
-            btnThirdCat.setVisibility(View.GONE);
-            setGoneRecycler(false, rvThirdCat, ivThirdMore, ivThirdHold, tvThirdMore);
-        }
-
-        if (etcList.size() > 0) {
-            btnEtcCat.setVisibility(View.VISIBLE);
-
-            MonthlyDiaryAdapter monthlyDiaryAdapter = new MonthlyDiaryAdapter(etcList);
-            rvEtcCat.setAdapter(monthlyDiaryAdapter);
-            rvEtcCat.setLayoutManager(new LinearLayoutManager(getContext()));
-        } else {
-            btnEtcCat.setVisibility(View.GONE);
-            setGoneRecycler(false, rvEtcCat, ivEtcMore, ivEtcHold, tvEtcMore);
-        }
+        ExpenditureCategoryAdapter monthlyCategoryAdapter = new ExpenditureCategoryAdapter(monthlyList, true);
+        rvCategory.setAdapter(monthlyCategoryAdapter);
+        rvCategory.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    private void setGoneRecycler(boolean visible, RecyclerView rvCat, ImageView ivMore, ImageView ivHold, TextView tvMore) {
-        if (visible) {
-            rvCat.setVisibility(View.VISIBLE);
-            ivHold.setVisibility(View.VISIBLE);
-            ivMore.setVisibility(View.GONE);
-            tvMore.setText("접기");
-        } else {
-            rvCat.setVisibility(View.GONE);
-            ivHold.setVisibility(View.GONE);
-            ivMore.setVisibility(View.VISIBLE);
-            tvMore.setText("더보기");
-        }
-    }
-
+    // 그래프 컬러 배열 반환하는 메소드
     private List<Integer> getColorArray(boolean emotion) {
         String[] colorStringArray;
 
