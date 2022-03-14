@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +13,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.dnd.moneyroutine.MonthlyDetailActivity;
 import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.custom.Constants;
-import com.dnd.moneyroutine.custom.Exclude;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
 import com.dnd.moneyroutine.dto.GoalCategoryInfo;
 import com.dnd.moneyroutine.dto.MonthlyExpense;
-import com.dnd.moneyroutine.dto.MonthlyStatistics;
+import com.dnd.moneyroutine.dto.ExpenditureStatistics;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.JWTUtils;
 import com.dnd.moneyroutine.service.RetrofitService;
@@ -115,7 +112,7 @@ public class ExpenditureMonthlyFragment extends Fragment {
     private TextView tvBarChartMonth5;
 
 
-    private MonthlyStatistics responseMonthDetail;
+    private ExpenditureStatistics responseMonthDetail;
     private ArrayList<GoalCategoryInfo> goal;
     DecimalFormat dcFormat = new DecimalFormat("#,###");
 
@@ -234,12 +231,12 @@ public class ExpenditureMonthlyFragment extends Fragment {
         pieChart.setTransparentCircleRadius(0);
 
         goal = new ArrayList<>();
-        for (int i = 0; i < responseMonthDetail.getGoalCategoryInfoDtoList().size(); i++) {
+        for (int i = 0; i < responseMonthDetail.getGoalCategoryInfoList().size(); i++) {
 //            String name = responseMonthDetail.getGoalCategoryInfoDtoList().get(i).getCategoryName();
 //            double percentage  = responseMonthDetail.getGoalCategoryInfoDtoList().get(i).getPercentage();
 //            long expense = responseMonthDetail.getGoalCategoryInfoDtoList().get(i).getExpense();
 //
-            goal.add(responseMonthDetail.getGoalCategoryInfoDtoList().get(i));
+            goal.add(responseMonthDetail.getGoalCategoryInfoList().get(i));
         }
 
         Collections.sort(goal, Collections.reverseOrder());
@@ -341,7 +338,7 @@ public class ExpenditureMonthlyFragment extends Fragment {
 
 //                            Gson gson = new GsonBuilder().addDeserializationExclusionStrategy(ex).addSerializationExclusionStrategy(ex).create();
                             Gson gson = new Gson();
-                            responseMonthDetail = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<MonthlyStatistics>() {}.getType());
+                            responseMonthDetail = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<ExpenditureStatistics>() {}.getType());
                             drawPieChart();
                             setTextView();
                             setContent();
@@ -672,7 +669,7 @@ public class ExpenditureMonthlyFragment extends Fragment {
         ivDetail1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getDetailServer(startDate, endDate, goal.get(0).getCategoryType().getCategoryId(),goal.get(0).getCategoryType().getCustom());
+                getDetailServer(startDate, endDate, goal.get(0).getCategoryType().getCategoryId(),goal.get(0).getCategoryType().isCustom());
                 Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
 //                intent.putExtra("detail",expenditureDetailDto.getExpenseDetail());
 ////                intent.putExtra("isElse",false);
@@ -694,7 +691,7 @@ public class ExpenditureMonthlyFragment extends Fragment {
                 intent.putExtra("category name",goal.get(1).getCategoryName());
                 intent.putExtra("percentage", goal.get(1).getPercentage());
                 intent.putExtra("expense", goal.get(1).getExpense());
-                intent.putExtra("detail", (ArrayList)goal.get(1).getExpenditureDetailDtoList());
+                intent.putExtra("detail", (ArrayList)goal.get(1).getExpenditureList());
                 startActivity(intent);
             }
         });
@@ -707,7 +704,7 @@ public class ExpenditureMonthlyFragment extends Fragment {
                 intent.putExtra("category name",goal.get(2).getCategoryName());
                 intent.putExtra("percentage", goal.get(2).getPercentage());
                 intent.putExtra("expense", goal.get(2).getExpense());
-                intent.putExtra("detail", (ArrayList)goal.get(2).getExpenditureDetailDtoList());
+                intent.putExtra("detail", (ArrayList)goal.get(2).getExpenditureList());
                 startActivity(intent);
             }
         });
@@ -721,7 +718,7 @@ public class ExpenditureMonthlyFragment extends Fragment {
                 intent.putExtra("percentage", 100-percentSum);
                 intent.putExtra("expense", responseMonthDetail.getTotalExpense()-expenseSum);
                 for(int i=2; i<goal.size();i++){
-                    intent.putExtra("detail"+(i-2), (ArrayList)goal.get(i).getExpenditureDetailDtoList());
+                    intent.putExtra("detail"+(i-2), (ArrayList)goal.get(i).getExpenditureList());
                 }
                 startActivity(intent);
             }

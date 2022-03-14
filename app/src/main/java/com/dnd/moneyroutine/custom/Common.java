@@ -118,7 +118,10 @@ public class Common {
         } else {
             return calendar.get(Calendar.YEAR) + "년 " + (calendar.get(Calendar.MONTH) + 1) + "월 " + calendar.get(Calendar.WEEK_OF_MONTH) + "주차";
         }
+    }
 
+    public static String getExpenditureWeekString(Calendar calendar) {
+        return calendar.get(Calendar.YEAR) + ". " + (calendar.get(Calendar.MONTH) + 1) + "월 " + calendar.get(Calendar.WEEK_OF_MONTH) + "주차";
     }
 
     public static int getBasicColorCategoryResId(String category) {

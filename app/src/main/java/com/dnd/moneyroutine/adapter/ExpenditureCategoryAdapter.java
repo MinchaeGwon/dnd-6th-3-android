@@ -19,6 +19,7 @@ import com.dnd.moneyroutine.dto.MonthlyDiary;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+// 다이어리 월별 카테고리, 소비내역 주/월별 카테고리에 사용되는 adpater
 public class ExpenditureCategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
@@ -134,9 +135,9 @@ public class ExpenditureCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
             tvCategoryMore.setText(expense);
             tvCategoryMore.setTextColor(Color.parseColor("#212529"));
 
-//            MonthlyDiaryAdapter monthlyDiaryAdapter = new MonthlyDiaryAdapter(monthly.getExpenditureList());
-//            rvExpense.setAdapter(monthlyDiaryAdapter);
-//            rvExpense.setLayoutManager(new LinearLayoutManager(context));
+            WeeklyExpenditureAdapter weeklyExpenditureAdapter = new WeeklyExpenditureAdapter(category.getExpenditureList());
+            rvExpense.setAdapter(weeklyExpenditureAdapter);
+            rvExpense.setLayoutManager(new LinearLayoutManager(context));
         }
 
         private void setCategoryColor(int index) {

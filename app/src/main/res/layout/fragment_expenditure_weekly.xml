@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="17dp"
     android:background="@color/white"
     tools:context=".fragment.ExpenditureWeeklyFragment">
 
@@ -27,56 +26,51 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout4"
-                    android:layout_width="128dp"
-                    android:layout_height="22dp"
+                <LinearLayout
+                    android:id="@+id/ll_ex_select_week"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:id="@+id/iv_previous_week"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_left"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/icon_left" />
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:rotationY="180"
+                        app:srcCompat="@drawable/icon_right_arrow_light_gray" />
 
                     <TextView
                         android:id="@+id/tv_week_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                        android:fontFamily="@font/spoqa_han_sans_neo_bold"
                         android:text="4주차"
-                        android:textColor="#212529"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/iv_next_week"
-                        app:layout_constraintStart_toEndOf="@+id/iv_previous_week"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:textColor="#212529" />
 
                     <ImageView
                         android:id="@+id/iv_next_week"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_right"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/icon_right_arrow_light_gray" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_start_end_week"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="4dp"
                     android:fontFamily="@font/spoqa_han_sans_neo_regular"
                     android:text="12.25 ~ 12.31"
                     android:textColor="#868e96"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+                    app:layout_constraintTop_toBottomOf="@+id/ll_ex_select_week" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -90,6 +84,7 @@
                     android:id="@+id/pie_chart_week"
                     android:layout_width="184dp"
                     android:layout_height="184dp"
+                    android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -150,7 +145,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tv_top_week"
+                        android:id="@+id/tv_top_category_week"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/spoqa_han_sans_neo_regular"
@@ -172,352 +167,18 @@
                         android:textColor="#8f30e9"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/tv_top_week"
+                        app:layout_constraintStart_toEndOf="@+id/tv_top_category_week"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_ex_week_category"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="16dp"
+                android:layout_height="match_parent"
                 android:layout_marginTop="28dp"
-                android:layout_marginRight="16dp"
-                android:layout_weight="0">
-
-                <View
-                    android:id="@+id/view4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="#f1f3f5"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <View
-                    android:id="@+id/view6"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:background="@drawable/square_c896fa"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_first_category_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                    android:text="식비"
-                    android:textColor="#212529"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/view6"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_first_percent_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="4dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                    android:text="65%"
-                    android:textColor="#8f30e9"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_first_category_week"
-                    app:layout_constraintTop_toBottomOf="@+id/view4" />
-
-                <TextView
-                    android:id="@+id/tv_first_amount_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="2dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                    android:text="125,000원"
-                    android:textColor="#212529"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/iv_show_content_first"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/iv_show_content_first"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/icon_down"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/icon_down" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rc_first_content_week"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:background="#f8f9fa"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:visibility="gone" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_weight="0">
-
-                <View
-                    android:id="@+id/view7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="#f1f3f5"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <View
-                    android:id="@+id/view8"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:background="@drawable/square_a3bcff"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_second_category_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                    android:text="식비"
-                    android:textColor="#212529"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/view8"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_second_percent_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="4dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                    android:text="65%"
-                    android:textColor="#2f6ee0"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_second_category_week"
-                    app:layout_constraintTop_toBottomOf="@+id/view7" />
-
-                <TextView
-                    android:id="@+id/tv_second_amount_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="2dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                    android:text="125,000원"
-                    android:textColor="#212529"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/iv_show_content_second"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/iv_show_content_second"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/icon_down"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/icon_down" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rc_second_content_week"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:background="#f8f9fa"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:visibility="gone" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_weight="0">
-
-                <View
-                    android:id="@+id/view9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="#f1f3f5"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <View
-                    android:id="@+id/view10"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:background="@drawable/square_7ae2f9"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_third_category_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                    android:text="식비"
-                    android:textColor="#212529"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/view10"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_third_percent_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="4dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                    android:text="65%"
-                    android:textColor="#0c6672"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_third_category_week"
-                    app:layout_constraintTop_toBottomOf="@+id/view9" />
-
-                <TextView
-                    android:id="@+id/tv_third_amount_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="2dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                    android:text="125,000원"
-                    android:textColor="#212529"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/iv_show_content_third"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/iv_show_content_third"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/icon_down"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/icon_down" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rc_third_content_week"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:background="#f8f9fa"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:visibility="gone" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_weight="0">
-
-                <View
-                    android:id="@+id/view11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="#f1f3f5"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <View
-                    android:id="@+id/view12"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:background="@drawable/square_ced4da"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_else_category_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                    android:text="식비"
-                    android:textColor="#212529"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/view12"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_else_percent_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="4dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                    android:text="65%"
-                    android:textColor="#868e96"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_else_category_week"
-                    app:layout_constraintTop_toBottomOf="@+id/view11" />
-
-                <TextView
-                    android:id="@+id/tv_else_amount_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="2dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                    android:text="125,000원"
-                    android:textColor="#212529"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/iv_show_content_else"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/iv_show_content_else"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/icon_down"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/icon_down" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rc_content_else_week"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:background="#f8f9fa"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:visibility="gone" />
+                android:layout_weight="0" />
 
             <View
                 android:id="@+id/view13"
