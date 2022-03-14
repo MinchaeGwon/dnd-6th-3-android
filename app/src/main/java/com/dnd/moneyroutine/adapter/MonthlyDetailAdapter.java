@@ -1,22 +1,16 @@
 package com.dnd.moneyroutine.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
 
-import org.w3c.dom.Text;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class MonthlyDetailAdapter  extends RecyclerView.Adapter<MonthlyDetailAdapter.ViewHolder> {

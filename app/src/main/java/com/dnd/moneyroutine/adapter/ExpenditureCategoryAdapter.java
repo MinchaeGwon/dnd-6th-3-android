@@ -1,6 +1,7 @@
 package com.dnd.moneyroutine.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dnd.moneyroutine.MonthlyDetailActivity;
 import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.dto.GoalCategoryInfo;
 import com.dnd.moneyroutine.dto.MonthlyDiary;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 // 다이어리 월별 카테고리, 소비내역 주/월별 카테고리에 사용되는 adpater
@@ -28,6 +31,9 @@ public class ExpenditureCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
     private boolean diary;
     private boolean week;
 
+    private LocalDate startDate;
+    private LocalDate endDate;
+
     public ExpenditureCategoryAdapter(ArrayList<MonthlyDiary> monthlyList, boolean diary) {
         this.monthlyList = monthlyList;
         this.diary = diary;
@@ -37,6 +43,14 @@ public class ExpenditureCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
         this.categoryList = categoryList;
         this.diary = diary;
         this.week = week;
+    }
+
+    public ExpenditureCategoryAdapter(ArrayList<GoalCategoryInfo> categoryList, boolean diary, boolean week, LocalDate startDate, LocalDate endDate) {
+        this.categoryList = categoryList;
+        this.diary = diary;
+        this.week = week;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     @NonNull
@@ -90,22 +104,38 @@ public class ExpenditureCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (rvExpense.getVisibility() == View.GONE) {
-                        rvExpense.setVisibility(View.VISIBLE);
-                        ivHold.setVisibility(View.VISIBLE);
-                        ivBottomMore.setVisibility(View.GONE);
+                    if (diary || week) {
+                        if (rvExpense.getVisibility() == View.GONE) {
+                            rvExpense.setVisibility(View.VISIBLE);
+                            ivHold.setVisibility(View.VISIBLE);
+                            ivBottomMore.setVisibility(View.GONE);
 
-                        if (diary) {
-                            tvCategoryMore.setText("접기");
+                            if (diary) {
+                                tvCategoryMore.setText("접기");
+                            }
+                        } else {
+                            rvExpense.setVisibility(View.GONE);
+                            ivHold.setVisibility(View.GONE);
+                            ivBottomMore.setVisibility(View.VISIBLE);
+
+                            if (diary) {
+                                tvCategoryMore.setText("더보기");
+                            }
                         }
                     } else {
-                        rvExpense.setVisibility(View.GONE);
-                        ivHold.setVisibility(View.GONE);
-                        ivBottomMore.setVisibility(View.VISIBLE);
+                        Intent intent = new Intent(context, MonthlyDetailActivity.class);
 
-                        if (diary) {
-                            tvCategoryMore.setText("더보기");
-                        }
+                        GoalCategoryInfo category = categoryList.get(getBindingAdapterPosition());
+
+                        intent.putExtra("totalExpense", category.getExpense());
+                        intent.putExtra("percentage", category.getPercentage());
+                        intent.putExtra("categoryName", category.getCategoryName());
+                        intent.putExtra("categoryType", category.getCategoryType());
+
+                        intent.putExtra("startDate", startDate);
+                        intent.putExtra("endDate", endDate);
+
+                        context.startActivity(intent);
                     }
                 }
             });
@@ -138,6 +168,14 @@ public class ExpenditureCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
             WeeklyExpenditureAdapter weeklyExpenditureAdapter = new WeeklyExpenditureAdapter(category.getExpenditureList());
             rvExpense.setAdapter(weeklyExpenditureAdapter);
             rvExpense.setLayoutManager(new LinearLayoutManager(context));
+
+            if (week) {
+                ivRightMore.setVisibility(View.GONE);
+                ivBottomMore.setVisibility(View.VISIBLE);
+            } else {
+                ivRightMore.setVisibility(View.VISIBLE);
+                ivBottomMore.setVisibility(View.GONE);
+            }
         }
 
         private void setCategoryColor(int index) {

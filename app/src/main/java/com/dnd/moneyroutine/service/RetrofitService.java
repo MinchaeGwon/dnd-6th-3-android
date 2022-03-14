@@ -64,7 +64,7 @@ public interface RetrofitService {
     Call<JsonObject> getMonthlyDetail(@Path("startDate") LocalDate startDate,
                                       @Path("endDate") LocalDate endDate,
                                       @Path("categoryId") int categoryId,
-                                      @Path("isCustom") boolean isCustom);
+                                      @Path("isCustom") boolean custom);
 
     @POST("goal/continue")
     Call<JsonObject> continueGoal();

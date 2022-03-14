@@ -1,46 +1,48 @@
 package com.dnd.moneyroutine.fragment;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.MonthlyDetailActivity;
 import com.dnd.moneyroutine.R;
+import com.dnd.moneyroutine.adapter.ExpenditureCategoryAdapter;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
+import com.dnd.moneyroutine.custom.YearMonthPickerDialog;
 import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
 import com.dnd.moneyroutine.dto.GoalCategoryInfo;
 import com.dnd.moneyroutine.dto.MonthlyExpense;
 import com.dnd.moneyroutine.dto.ExpenditureStatistics;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
-import com.dnd.moneyroutine.service.JWTUtils;
+import com.dnd.moneyroutine.service.LocalDateSerializer;
 import com.dnd.moneyroutine.service.RetrofitService;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,44 +54,17 @@ import retrofit2.Retrofit;
 
 public class ExpenditureMonthlyFragment extends Fragment {
 
-    private String token;
-    private int userId;
-
-    private PieChart pieChart;
+    private LinearLayout llSelectMonth;
     private TextView tvMonth;
     private TextView tvDate;
 
-    private Calendar calendar;
-    private SimpleDateFormat formatter;
-    private SimpleDateFormat tvFormatter;
+    private PieChart pieChart;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
-
-    private ImageView ivPrevious;
-    private ImageView ivNext;
-
-    private ImageView ivDetail1;
-    private ImageView ivDetail2;
-    private ImageView ivDetail3;
-    private ImageView ivDetail4;
-
-    private TextView tvTop;
+    private TextView tvTopCategory;
     private TextView tvTopRatio;
-    private TextView totalExpenditure;
+    private TextView tvTotalExpenditure;
 
-    private TextView tvCategoryName1;
-    private TextView tvPercentage1;
-    private TextView tvExpense1;
-    private TextView tvCategoryName2;
-    private TextView tvPercentage2;
-    private TextView tvExpense2;
-    private TextView tvCategoryName3;
-    private TextView tvPercentage3;
-    private TextView tvExpense3;
-    private TextView tvCategoryName4;
-    private TextView tvPercentage4;
-    private TextView tvExpense4;
+    private RecyclerView rvCategory;
 
     private TextView tvNotice; //이번주 지출이 위험해요
     private TextView tvDifference; //얼마 초과 됐어요
@@ -111,83 +86,56 @@ public class ExpenditureMonthlyFragment extends Fragment {
     private TextView tvBarChartMonth4;
     private TextView tvBarChartMonth5;
 
+    private String token;
 
-    private ExpenditureStatistics responseMonthDetail;
-    private ArrayList<GoalCategoryInfo> goal;
-    DecimalFormat dcFormat = new DecimalFormat("#,###");
+    private ExpenditureStatistics responseMonthStatistics;
+    private ArrayList<GoalCategoryInfo> goalCategoryInfoList;
+    private DecimalFormat decimalFormat;
 
     private ExpenditureDetailDto expenditureDetailDto;
 
     private List<MonthlyExpense> monthlyTrend;
 
-    private LocalDate now;
+    private SimpleDateFormat formatter;
+    private SimpleDateFormat tvFormatter;
 
-    private int percentSum;
-    private int expenseSum;
-    private int monthDifference;
+    private LocalDate nowDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
-    public ExpenditureMonthlyFragment() {
-    }
-
+    public ExpenditureMonthlyFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_expenditure_monthly, container, false);
     }
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         initView(view);
-        setDate();
-//        setTextView();
-//        drawPieChart();
-//        setContent();
-//        drawBarChart();
-        showDetail();
-//        drawBarChart();
+        initField();
+
+        setMonthDate();
         setListener();
+
         getMonthlyStatistics(startDate, endDate);
-        getMonthlyTrend(now);
-//        drawPieChart();
+        getMonthlyTrend(nowDate);
     }
 
     private void initView(View v) {
-        token = PreferenceManager.getToken(getContext(), Constants.tokenKey);
-        userId = JWTUtils.getUserId(token);
-
-
-        pieChart = v.findViewById(R.id.pie_chart_month);
+        llSelectMonth = v.findViewById(R.id.ll_month_select);
         tvMonth = v.findViewById(R.id.tv_expenditure_month);
         tvDate = v.findViewById(R.id.tv_start_end_month);
-        ivPrevious = v.findViewById(R.id.iv_previous_month);
-        ivNext = v.findViewById(R.id.iv_next_month);
 
-        tvCategoryName1 = v.findViewById(R.id.tv_first_category_month);
-        tvCategoryName2 = v.findViewById(R.id.tv_second_category_month);
-        tvCategoryName3 = v.findViewById(R.id.tv_third_category_month);
-        tvCategoryName4 = v.findViewById(R.id.tv_else_category_month);
+        pieChart = v.findViewById(R.id.pie_chart_month);
 
-        tvPercentage1 = v.findViewById(R.id.tv_first_percent_month);
-        tvPercentage2 = v.findViewById(R.id.tv_second_percent_month);
-        tvPercentage3 = v.findViewById(R.id.tv_third_percent_month);
-        tvPercentage4 = v.findViewById(R.id.tv_else_percent_month);
-
-        tvExpense1 = v.findViewById(R.id.tv_first_amount_month);
-        tvExpense2 = v.findViewById(R.id.tv_second_amount_month);
-        tvExpense3 = v.findViewById(R.id.tv_third_amount_month);
-        tvExpense4 = v.findViewById(R.id.tv_else_amount_month);
-
-        ivDetail1 = v.findViewById(R.id.iv_detail1_month);
-        ivDetail2 = v.findViewById(R.id.iv_detail2_month);
-        ivDetail3 = v.findViewById(R.id.iv_detail3_month);
-        ivDetail4 = v.findViewById(R.id.iv_detail4_month);
-
-        tvTop = v.findViewById(R.id.tv_month_top_category);
+        tvTopCategory = v.findViewById(R.id.tv_month_top_category);
         tvTopRatio = v.findViewById(R.id.tv_month_top_percent);
-        totalExpenditure = v.findViewById(R.id.tv_total_month);
+        tvTotalExpenditure = v.findViewById(R.id.tv_total_month);
+
+        rvCategory = v.findViewById(R.id.rv_month_category);
 
         tvNotice = v.findViewById(R.id.tv_monthly_notice);
         tvDifference = v.findViewById(R.id.tv_monthly_difference);
@@ -208,119 +156,59 @@ public class ExpenditureMonthlyFragment extends Fragment {
         tvBarChartMonth3 = v.findViewById(R.id.tv_month_bar_chart_text3);
         tvBarChartMonth4 = v.findViewById(R.id.tv_month_bar_chart_text4);
         tvBarChartMonth5 = v.findViewById(R.id.tv_month_bar_chart_text5);
+    }
 
-        calendar = Calendar.getInstance();
+    private void initField() {
+        token = PreferenceManager.getToken(getContext(), Constants.tokenKey);
+
+        nowDate = LocalDate.now();
+
+        decimalFormat = new DecimalFormat("#,###");
         formatter = new SimpleDateFormat("yyyy-MM-dd");
         tvFormatter = new SimpleDateFormat("M.d");
-        now = LocalDate.now();
-
     }
 
-    private void drawPieChart() {
+    private void setMonthDate() {
+        startDate = nowDate.withDayOfMonth(1);
+        endDate = nowDate.withDayOfMonth(nowDate.lengthOfMonth());
 
-        totalExpenditure.setText(dcFormat.format(responseMonthDetail.getTotalExpense()) + "원");
+        String start = startDate.format(DateTimeFormatter.ofPattern("M.d"));
+        String end = endDate.format(DateTimeFormatter.ofPattern("M.d"));
 
-        pieChart.setRotationAngle(-100); //시작 위치 설정 (3시방향이 기본)
-        pieChart.getDescription().setEnabled(false); //차트 설명 제거
-        pieChart.getLegend().setEnabled(false); //아래 색깔별 항목 설명 제거
+        tvMonth.setText(startDate.getYear() + ". " + startDate.getMonthValue() + "월");
+        tvDate.setText(start + " ~ " + end);
 
-        pieChart.setExtraOffsets(0, 0, 0, 0); //차트 주변 margin 설정
-        pieChart.setTouchEnabled(false); // 터치 애니메이션 설정
-        pieChart.setDrawHoleEnabled(true); //가운데 hole
-        pieChart.setHoleRadius(55f); //hole 크기 설정
-        pieChart.setTransparentCircleRadius(0);
+//        startDate = YearMonth.now().atDay(1);
+//        endDate = YearMonth.now().atEndOfMonth();
+    }
 
-        goal = new ArrayList<>();
-        for (int i = 0; i < responseMonthDetail.getGoalCategoryInfoList().size(); i++) {
-//            String name = responseMonthDetail.getGoalCategoryInfoDtoList().get(i).getCategoryName();
-//            double percentage  = responseMonthDetail.getGoalCategoryInfoDtoList().get(i).getPercentage();
-//            long expense = responseMonthDetail.getGoalCategoryInfoDtoList().get(i).getExpense();
-//
-            goal.add(responseMonthDetail.getGoalCategoryInfoList().get(i));
-        }
+    private void setListener(){
+        llSelectMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 연도, 월 선택 다이얼로그 띄우기
+                YearMonthPickerDialog yearMonthPickerDialog = new YearMonthPickerDialog(nowDate, false);
+                yearMonthPickerDialog.show(getActivity().getSupportFragmentManager(), "YearMonthPickerDialog");
 
-        Collections.sort(goal, Collections.reverseOrder());
-        tvTop.setText(goal.get(0).getCategoryName());
-        tvTopRatio.setText(goal.get(0).getPercentage() + "%");
+                yearMonthPickerDialog.setOnSelectListener(new YearMonthPickerDialog.OnSelectListener() {
+                    @Override
+                    public void onSelect(LocalDate date) {
+                        nowDate = date;
 
-        int p1 =goal.get(0).getExpense()/responseMonthDetail.getTotalExpense()*100;
-        int p2 =goal.get(1).getExpense()/responseMonthDetail.getTotalExpense()*100;
-        int p3 =goal.get(2).getExpense()/responseMonthDetail.getTotalExpense()*100;
-
-
-        percentSum = 0;
-        expenseSum = 0;
-
-        if (goal.size() < 4) {
-            for (int i = 0; i < goal.size(); i++) {
-                expenseSum += goal.get(i).getExpense();
-                percentSum += goal.get(i).getPercentage();
+                        setMonthDate();
+                        getMonthlyStatistics(startDate, endDate);
+                        getMonthlyTrend(startDate);
+                    }
+                });
             }
-        } else {
-            for (int i = 0; i < 3; i++) {
-                expenseSum += goal.get(i).getExpense();
-                percentSum += goal.get(i).getPercentage();
-            }
-        }
-
-
-        ArrayList<PieEntry> values = new ArrayList();
-
-//        values.add(new PieEntry(goal.get(0).getPercentage(), goal.get(0).getCategoryName()));
-//        values.add(new PieEntry((100 - percentSum), "나머지"));
-//        values.add(new PieEntry(goal.get(2).getPercentage(), goal.get(2).getCategoryName()));
-//        values.add(new PieEntry(goal.get(1).getPercentage(), goal.get(1).getCategoryName()));
-
-        values.add(new PieEntry(60f,"1"));
-        values.add(new PieEntry(0, "나머지"));
-        values.add(new PieEntry(0,"3"));
-        values.add(new PieEntry(40f,"2"));
-
-
-        PieDataSet dataSet = new PieDataSet(values, "총 지출");
-
-        //차트 색상 설정
-        final int[] MY_COLORS = {Color.parseColor("#c896fa"), Color.parseColor("#ced4da"),
-                Color.parseColor("#7ae2f9"), Color.parseColor("#a3bcff")};
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-        for (int c : MY_COLORS) colors.add(c);
-        dataSet.setColors(colors);
-
-        pieChart.setDrawMarkers(false); //차트 색상 사이 간격
-        pieChart.setDrawEntryLabels(false); //차트위 설명 제거
-
-        PieData data = new PieData((dataSet));
-        dataSet.setDrawValues(false);
-
-        pieChart.setData(data);
+        });
     }
 
-    private void setContent() {
-        tvCategoryName1.setText(goal.get(0).getCategoryName());
-//        tvPercentage1.setText(goal.get(0).getPercentage() + "%");
-        tvPercentage1.setText(60 + "%");
-        tvExpense1.setText(dcFormat.format(goal.get(0).getExpense()) + "원");
-
-        tvCategoryName2.setText(goal.get(1).getCategoryName());
-//        tvPercentage2.setText(goal.get(1).getPercentage() + "%");
-        tvPercentage2.setText(40 + "%");
-        tvExpense2.setText(dcFormat.format(goal.get(1).getExpense()) + "원");
-
-        tvCategoryName3.setText(goal.get(2).getCategoryName());
-        tvPercentage3.setText(goal.get(2).getPercentage() + "%");
-        tvExpense3.setText(dcFormat.format(goal.get(2).getExpense()) + "원");
-
-        tvCategoryName4.setText("나머지");
-        tvPercentage4.setText(goal.get(3).getPercentage() + "%");
-        tvExpense4.setText(dcFormat.format(goal.get(3).getExpense()) + "원");
-
-    }
-
+    // 월별 소비 내역 가져오기
     private void getMonthlyStatistics(LocalDate startDate, LocalDate endDate) {
         HeaderRetrofit headerRetrofit = new HeaderRetrofit();
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);
-
 
         Call<JsonObject> call = retroService.getMonthlyStatistics(startDate, endDate);
         call.enqueue(new Callback<JsonObject>() {
@@ -328,26 +216,21 @@ public class ExpenditureMonthlyFragment extends Fragment {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     JsonObject responseJson = response.body();
-                    Log.d("month", responseJson.toString());
 
+                    Log.d("month", responseJson.toString());
 
                     if (responseJson.get("statusCode").getAsInt() == 200) {
                         if (!responseJson.get("data").isJsonNull()) {
-//                            JsonArray jsonArray = responseJson.get("data").getAsJsonArray();
-//                            Gson gson = new Gson();
+                            Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
+                            responseMonthStatistics = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<ExpenditureStatistics>() {}.getType());
 
-//                            Gson gson = new GsonBuilder().addDeserializationExclusionStrategy(ex).addSerializationExclusionStrategy(ex).create();
-                            Gson gson = new Gson();
-                            responseMonthDetail = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<ExpenditureStatistics>() {}.getType());
+                            setEtcList();
                             drawPieChart();
-                            setTextView();
                             setContent();
                         }
-
                     }
                 } else {
                     Log.e("month", "error: " + response.code());
-
                     return;
                 }
             }
@@ -360,6 +243,97 @@ public class ExpenditureMonthlyFragment extends Fragment {
         });
     }
 
+    private void setEtcList() {
+        goalCategoryInfoList = (ArrayList<GoalCategoryInfo>) responseMonthStatistics.getGoalCategoryInfoList();
+        goalCategoryInfoList.sort(Collections.reverseOrder());
+
+        ArrayList<ExpenditureDetailDto> etcList = new ArrayList<>();
+        int etcPercent = 0;
+        int etcExpense = 0;
+
+        for (int i = 0; i < goalCategoryInfoList.size(); i++) {
+            GoalCategoryInfo info = goalCategoryInfoList.get(i);
+
+            if (i >= 3) {
+                etcPercent += info.getPercentage();
+                etcExpense += info.getExpense();
+
+                if (info.getExpenditureList().size() > 0) {
+                    for (ExpenditureDetailDto expenditure : info.getExpenditureList()) {
+                        expenditure.setCategoryName(info.getCategoryName());
+                        expenditure.setCategoryType(info.getCategoryType());
+                    }
+
+                    etcList.addAll(info.getExpenditureList());
+                }
+            }
+        }
+
+        if (etcExpense > 0) {
+            GoalCategoryInfo info = goalCategoryInfoList.get(3);
+
+            info.setCategoryName("나머지");
+            info.setPercentage(etcPercent);
+            info.setExpense(etcExpense);
+            info.setExpenditureList(etcList);
+
+            for (int i = 4; i < goalCategoryInfoList.size(); i++) {
+                goalCategoryInfoList.remove(i--);
+            }
+        }
+    }
+
+    // 카테고리 파이 차트 그리기
+    private void drawPieChart() {
+        pieChart.setVisibility(View.VISIBLE);
+        pieChart.removeAllViews();
+
+//        pieChart.setRotationAngle(-100); //시작 위치 설정 (3시방향이 기본)
+        pieChart.getDescription().setEnabled(false); //차트 설명 제거
+        pieChart.getLegend().setEnabled(false); //아래 색깔별 항목 설명 제거
+
+        pieChart.setExtraOffsets(0, 0, 0, 0); //차트 주변 margin 설정
+        pieChart.setTouchEnabled(false); // 터치 애니메이션 설정
+        pieChart.setDrawHoleEnabled(true); //가운데 hole
+        pieChart.setHoleRadius(55f); //hole 크기 설정
+        pieChart.setTransparentCircleRadius(0);
+
+        ArrayList<PieEntry> values = new ArrayList<>();
+
+        for (int i = 0; i < 4; i++) {
+            try {
+                values.add(new PieEntry(goalCategoryInfoList.get(i).getPercentage()));
+            } catch ( IndexOutOfBoundsException e ) {
+                values.add(new PieEntry(0));
+            }
+        }
+
+        PieDataSet dataSet = new PieDataSet(values, "총 지출");
+
+        //차트 색상 설정
+        List<Integer> colors = getColorArray();
+        dataSet.setColors(colors);
+
+        pieChart.setDrawMarkers(false); //차트 색상 사이 간격
+        pieChart.setDrawEntryLabels(false); //차트위 설명 제거
+
+        PieData data = new PieData((dataSet));
+        dataSet.setDrawValues(false);
+
+        pieChart.setData(data);
+    }
+
+    private void setContent() {
+        tvTotalExpenditure.setText(decimalFormat.format(responseMonthStatistics.getTotalExpense()) + "원");
+        tvTopCategory.setText(goalCategoryInfoList.get(0).getCategoryName());
+        tvTopRatio.setText(goalCategoryInfoList.get(0).getPercentage() + "%");
+
+        ExpenditureCategoryAdapter expenditureCategoryAdapter = new ExpenditureCategoryAdapter(goalCategoryInfoList, false, false, startDate, endDate);
+        rvCategory.setAdapter(expenditureCategoryAdapter);
+        rvCategory.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    // 월별 소비 동향 가져오기 : 막대 그래프에 사용
     private void getMonthlyTrend(LocalDate currentDate) {
         HeaderRetrofit headerRetrofit = new HeaderRetrofit();
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
@@ -374,8 +348,8 @@ public class ExpenditureMonthlyFragment extends Fragment {
                     Log.d("monthly Trend", responseJson.toString());
 
                     Gson gson = new Gson();
-                    monthlyTrend = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<MonthlyDetailActivity>() {
-                    }.getType());
+                    monthlyTrend = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<MonthlyDetailActivity>() {}.getType());
+
 //                    if (responseJson.get("statusCode").getAsInt() == 200) {
 //                        if (!responseJson.get("data").isJsonNull()) {
 ////                            JsonArray jsonArray = responseJson.get("data").getAsJsonArray();
@@ -398,63 +372,18 @@ public class ExpenditureMonthlyFragment extends Fragment {
         });
     }
 
+    // 그래프 컬러 배열 반환하는 메소드
+    private List<Integer> getColorArray() {
+        String[] colorStringArray = getResources().getStringArray(R.array.category_color);;
 
-    private void setDate() {
-        startDate = YearMonth.now().atDay(1);
-        endDate = YearMonth.now().atEndOfMonth();
+        List<Integer> colorIntList = new ArrayList<>();
 
+        for(String color : colorStringArray) {
+            colorIntList.add(Color.parseColor(color));
+        }
 
-        ivNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startDate = startDate.plusMonths(1);
-                LocalDate end = endDate.plusMonths(1);
-                endDate = end.withDayOfMonth(end.lengthOfMonth());
-
-                setTextView();
-                getMonthlyStatistics(startDate, endDate);
-                getMonthlyTrend(endDate);
-                drawPieChart();
-                setContent();
-
-//                setMonthlyTrendText();
-
-            }
-        });
-
-        ivPrevious.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startDate = startDate.minusMonths(1);
-                LocalDate end = endDate.minusMonths(1);
-                endDate = end.withDayOfMonth(end.lengthOfMonth());
-                setTextView();
-                getMonthlyStatistics(startDate, endDate);
-                getMonthlyTrend(endDate);
-                drawPieChart();
-                setContent();
-
-                if (now.getMonthValue() > startDate.getMonthValue()) {
-//                    setMonthlyTrendText();
-                }
-            }
-        });
-
+        return colorIntList;
     }
-
-    private void setTextView() {
-//        tvMonth.setText(calendar.get(Calendar.MONTH)+1+ "월");
-//        tvDate.setText(tvFormatter.format(getStartDay()) + "~" + tvFormatter.format(getEndDay()));
-        String start = startDate.format(DateTimeFormatter.ofPattern("M.d"));
-        String end = endDate.format(DateTimeFormatter.ofPattern("M.d"));
-        tvMonth.setText(startDate.getYear() + ". " + startDate.getMonthValue() + "월");
-        tvDate.setText(start + "-" + end);
-
-//        if(responseMonthDetail.getTotalExpense()>responseMonthDetail.)
-
-    }
-
-
 
 //    private void drawBarChart() {
 //
@@ -622,120 +551,6 @@ public class ExpenditureMonthlyFragment extends Fragment {
 //            tvRemainAmount.setTextColor(Color.parseColor("#FC3781"));
 //        }
 //    }
-//
 
-    private void getDetailServer(LocalDate startDate, LocalDate endDate, int categoryId, boolean isCustom) {
-
-        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
-        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
-        RetrofitService retroService = retrofit.create(RetrofitService.class);
-
-        Call<JsonObject> call = retroService.getMonthlyDetail(startDate, endDate, categoryId, isCustom);
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.isSuccessful()) {
-                    JsonObject responseJson = response.body();
-                    Log.d("monthly Trend", responseJson.toString());
-
-                    if (responseJson.get("statusCode").getAsInt() == 200) {
-                        if (!responseJson.get("data").isJsonNull()) {
-//                            JsonArray jsonArray = responseJson.get("data").getAsJsonArray();
-
-                            Gson gson = new Gson();
-                            expenditureDetailDto = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<ExpenditureDetailDto>() {
-                            }.getType());
-
-                        }
-
-                    }
-
-                } else {
-                    Log.e("monthly Trend", "error: " + response.code());
-                    return;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d("monthly Trend", t.getMessage());
-                Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void setListener(){
-
-        ivDetail1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getDetailServer(startDate, endDate, goal.get(0).getCategoryType().getCategoryId(),goal.get(0).getCategoryType().isCustom());
-                Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
-//                intent.putExtra("detail",expenditureDetailDto.getExpenseDetail());
-////                intent.putExtra("isElse",false);
-                intent.putExtra("month",startDate.getMonthValue());
-
-                intent.putExtra("category name",goal.get(0).getCategoryName());
-                intent.putExtra("percentage", goal.get(0).getPercentage());
-                intent.putExtra("expense", goal.get(0).getExpense());
-//                intent.putExtra("detail", (ArrayList)goal.get(0).getExpenditureDetailDtoList());
-                startActivity(intent);
-            }
-        });
-
-        ivDetail2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
-                intent.putExtra("isElse",false);
-                intent.putExtra("category name",goal.get(1).getCategoryName());
-                intent.putExtra("percentage", goal.get(1).getPercentage());
-                intent.putExtra("expense", goal.get(1).getExpense());
-                intent.putExtra("detail", (ArrayList)goal.get(1).getExpenditureList());
-                startActivity(intent);
-            }
-        });
-
-        ivDetail3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
-                intent.putExtra("isElse",false);
-                intent.putExtra("category name",goal.get(2).getCategoryName());
-                intent.putExtra("percentage", goal.get(2).getPercentage());
-                intent.putExtra("expense", goal.get(2).getExpense());
-                intent.putExtra("detail", (ArrayList)goal.get(2).getExpenditureList());
-                startActivity(intent);
-            }
-        });
-
-        ivDetail4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
-                intent.putExtra("isElse",true);
-                intent.putExtra("category name","나머지");
-                intent.putExtra("percentage", 100-percentSum);
-                intent.putExtra("expense", responseMonthDetail.getTotalExpense()-expenseSum);
-                for(int i=2; i<goal.size();i++){
-                    intent.putExtra("detail"+(i-2), (ArrayList)goal.get(i).getExpenditureList());
-                }
-                startActivity(intent);
-            }
-        });
-
-    }
-
-    private void showDetail() {
-//        View.OnClickListener onClickListener = new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getContext(), MonthlyDetailActivity.class);
-//                startActivity(intent);
-//
-//            }
-//        };
-//        ivDetail1.setOnClickListener(onClickListener);
-    }
 }
 

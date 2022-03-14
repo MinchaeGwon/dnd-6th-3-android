@@ -2,13 +2,14 @@ package com.dnd.moneyroutine.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class GoalCategoryInfo implements Comparable<GoalCategoryInfo> {
+public class GoalCategoryInfo implements Comparable<GoalCategoryInfo>, Serializable {
     private CategoryType categoryType;
     private String categoryName;
     private int percentage;

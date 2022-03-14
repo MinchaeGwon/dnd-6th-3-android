@@ -50,6 +50,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/spoqa_han_sans_neo_bold"
                         android:text="4주차"
+                        android:textSize="16sp"
                         android:textColor="#212529" />
 
                     <ImageView

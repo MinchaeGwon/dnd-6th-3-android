@@ -1,11 +1,9 @@
 package com.dnd.moneyroutine.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
-import com.dnd.moneyroutine.dto.GoalCategoryInfo;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -76,7 +73,7 @@ public class WeeklyExpenditureAdapter extends RecyclerView.Adapter<RecyclerView.
             }
 
             tvContent.setText(expenditure.getExpenseDetail());
-            tvCategoryName.setText(expenditure.getCategory());
+            tvCategoryName.setText(expenditure.getCategoryName());
 
             DecimalFormat decimalFormat = new DecimalFormat("###,###");
             String expense = decimalFormat.format(expenditure.getExpense()) + "원";

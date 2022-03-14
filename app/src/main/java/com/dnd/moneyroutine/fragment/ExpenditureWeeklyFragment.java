@@ -298,7 +298,7 @@ public class ExpenditureWeeklyFragment extends Fragment {
 
                 if (info.getExpenditureList().size() > 0) {
                     for (ExpenditureDetailDto expenditure : info.getExpenditureList()) {
-                        expenditure.setCategory(info.getCategoryName());
+                        expenditure.setCategoryName(info.getCategoryName());
                     }
 
                     etcList.addAll(info.getExpenditureList());

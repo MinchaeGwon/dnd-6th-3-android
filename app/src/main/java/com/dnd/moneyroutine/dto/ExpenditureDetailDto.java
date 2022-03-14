@@ -15,5 +15,6 @@ public class ExpenditureDetailDto implements Serializable {
     private LocalDate date;
     private int expense;
     private String expenseDetail;
-    private String category;
+    private String categoryName;
+    private CategoryType categoryType;
 }
