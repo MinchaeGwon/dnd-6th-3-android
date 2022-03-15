@@ -15,12 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.MonthlyDetailActivity;
 import com.dnd.moneyroutine.R;
+import com.dnd.moneyroutine.dto.CategoryType;
+import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
 import com.dnd.moneyroutine.dto.GoalCategoryInfo;
 import com.dnd.moneyroutine.dto.MonthlyDiary;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 // 다이어리 월별 카테고리, 소비내역 주/월별 카테고리에 사용되는 adpater
 public class ExpenditureCategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -123,14 +126,19 @@ public class ExpenditureCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
                             }
                         }
                     } else {
-                        Intent intent = new Intent(context, MonthlyDetailActivity.class);
-
                         GoalCategoryInfo category = categoryList.get(getBindingAdapterPosition());
 
+                        Intent intent = new Intent(context, MonthlyDetailActivity.class);
+
+                        intent.putExtra("categoryColor", getColor(getBindingAdapterPosition()));
                         intent.putExtra("totalExpense", category.getExpense());
                         intent.putExtra("percentage", category.getPercentage());
                         intent.putExtra("categoryName", category.getCategoryName());
                         intent.putExtra("categoryType", category.getCategoryType());
+
+                        intent.putExtra("etc", category.getCategoryName().equals("나머지"));
+                        intent.putExtra("etcCategoryType", category.getEtcCategoryTypes());
+                        intent.putExtra("etcCategoryName", category.getEtcCategoryNames());
 
                         intent.putExtra("startDate", startDate);
                         intent.putExtra("endDate", endDate);
@@ -197,6 +205,21 @@ public class ExpenditureCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
                     tvCategoryCnt.setTextColor(Color.parseColor("#868E96"));
                     break;
             }
+        }
+
+        private String getColor(int index) {
+            switch (index) {
+                case 0:
+                    return "#8F30E9";
+                case 1:
+                    return "#2F6EE0";
+                case 2:
+                    return "#0C6672";
+                case 3:
+                    return "#868E96";
+            }
+
+            return null;
         }
     }
 }

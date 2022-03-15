@@ -22,6 +22,7 @@ import com.dnd.moneyroutine.adapter.ExpenditureCategoryAdapter;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.YearMonthPickerDialog;
+import com.dnd.moneyroutine.dto.CategoryType;
 import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
 import com.dnd.moneyroutine.dto.GoalCategoryInfo;
 import com.dnd.moneyroutine.dto.MonthlyExpense;
@@ -96,9 +97,6 @@ public class ExpenditureMonthlyFragment extends Fragment {
 
     private List<MonthlyExpense> monthlyTrend;
 
-    private SimpleDateFormat formatter;
-    private SimpleDateFormat tvFormatter;
-
     private LocalDate nowDate;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -160,12 +158,8 @@ public class ExpenditureMonthlyFragment extends Fragment {
 
     private void initField() {
         token = PreferenceManager.getToken(getContext(), Constants.tokenKey);
-
         nowDate = LocalDate.now();
-
         decimalFormat = new DecimalFormat("#,###");
-        formatter = new SimpleDateFormat("yyyy-MM-dd");
-        tvFormatter = new SimpleDateFormat("M.d");
     }
 
     private void setMonthDate() {
@@ -174,9 +168,9 @@ public class ExpenditureMonthlyFragment extends Fragment {
 
         String start = startDate.format(DateTimeFormatter.ofPattern("M.d"));
         String end = endDate.format(DateTimeFormatter.ofPattern("M.d"));
-
-        tvMonth.setText(startDate.getYear() + ". " + startDate.getMonthValue() + "월");
         tvDate.setText(start + " ~ " + end);
+
+        tvMonth.setText(startDate.format(DateTimeFormatter.ofPattern("y. M월")));
 
 //        startDate = YearMonth.now().atDay(1);
 //        endDate = YearMonth.now().atEndOfMonth();
@@ -247,25 +241,21 @@ public class ExpenditureMonthlyFragment extends Fragment {
         goalCategoryInfoList = (ArrayList<GoalCategoryInfo>) responseMonthStatistics.getGoalCategoryInfoList();
         goalCategoryInfoList.sort(Collections.reverseOrder());
 
-        ArrayList<ExpenditureDetailDto> etcList = new ArrayList<>();
+        ArrayList<CategoryType> etcCategoryTypes = new ArrayList<>();
+        ArrayList<String> etcCategoryNames = new ArrayList<>();
+
         int etcPercent = 0;
         int etcExpense = 0;
 
-        for (int i = 0; i < goalCategoryInfoList.size(); i++) {
+        for (int i = 3; i < goalCategoryInfoList.size(); i++) {
             GoalCategoryInfo info = goalCategoryInfoList.get(i);
 
-            if (i >= 3) {
-                etcPercent += info.getPercentage();
-                etcExpense += info.getExpense();
+            etcPercent += info.getPercentage();
+            etcExpense += info.getExpense();
 
-                if (info.getExpenditureList().size() > 0) {
-                    for (ExpenditureDetailDto expenditure : info.getExpenditureList()) {
-                        expenditure.setCategoryName(info.getCategoryName());
-                        expenditure.setCategoryType(info.getCategoryType());
-                    }
-
-                    etcList.addAll(info.getExpenditureList());
-                }
+            if (!etcCategoryNames.contains(info.getCategoryName())) {
+                etcCategoryNames.add(info.getCategoryName());
+                etcCategoryTypes.add(info.getCategoryType());
             }
         }
 
@@ -275,7 +265,9 @@ public class ExpenditureMonthlyFragment extends Fragment {
             info.setCategoryName("나머지");
             info.setPercentage(etcPercent);
             info.setExpense(etcExpense);
-            info.setExpenditureList(etcList);
+
+            info.setEtcCategoryNames(etcCategoryNames);
+            info.setEtcCategoryTypes(etcCategoryTypes);
 
             for (int i = 4; i < goalCategoryInfoList.size(); i++) {
                 goalCategoryInfoList.remove(i--);
