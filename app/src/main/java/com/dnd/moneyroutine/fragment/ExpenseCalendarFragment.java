@@ -37,6 +37,8 @@ public class ExpenseCalendarFragment extends BottomSheetDialogFragment {
     private ImageButton ibCancel;
     private GridView gvCalendar;
     private TextView tvHeader;
+    private ImageButton ibPrev;
+    private ImageButton ibNext;
 
     private Calendar selectDate;
 
@@ -86,6 +88,8 @@ public class ExpenseCalendarFragment extends BottomSheetDialogFragment {
     private void initView(View v) {
         ibCancel = v.findViewById(R.id.ib_calendar_cancel);
         tvHeader = v.findViewById(R.id.tv_calendar_header);
+        ibPrev = v.findViewById(R.id.ib_calendar_prev);
+        ibNext = v.findViewById(R.id.ib_calendar_next);
         gvCalendar = v.findViewById(R.id.gv_calendar);
     }
 
@@ -98,12 +102,26 @@ public class ExpenseCalendarFragment extends BottomSheetDialogFragment {
             }
         });
 
+        ibPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectDate.add(Calendar.MONTH, -1);
+                setCalendar();
+            }
+        });
+
+        ibNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectDate.add(Calendar.MONTH, 1);
+                setCalendar();
+            }
+        });
+
         gvCalendar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Date date = (Date) adapterView.getItemAtPosition(position);
-
-                Log.d("CalendarAdapter", date.toString());
 
                 selectDate = Calendar.getInstance();
                 selectDate.setTime(date);
