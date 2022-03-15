@@ -289,21 +289,17 @@ public class ExpenditureWeeklyFragment extends Fragment {
         int etcPercent = 0;
         int etcExpense = 0;
 
-        for (int i = 0; i < goalCategoryInfoList.size(); i++) {
+        for (int i = 3; i < goalCategoryInfoList.size(); i++) {
             GoalCategoryInfo info = goalCategoryInfoList.get(i);
 
-            if (i >= 3) {
-                etcPercent += info.getPercentage();
-                etcExpense += info.getExpense();
+            etcPercent += info.getPercentage();
+            etcExpense += info.getExpense();
 
-                if (info.getExpenditureList().size() > 0) {
-                    for (ExpenditureDetailDto expenditure : info.getExpenditureList()) {
-                        expenditure.setCategoryName(info.getCategoryName());
-                    }
-
-                    etcList.addAll(info.getExpenditureList());
-                }
+            for (ExpenditureDetailDto expenditure : info.getExpenditureList()) {
+                expenditure.setCategoryName(info.getCategoryName());
             }
+
+            etcList.addAll(info.getExpenditureList());
         }
 
         if (etcExpense > 0) {
