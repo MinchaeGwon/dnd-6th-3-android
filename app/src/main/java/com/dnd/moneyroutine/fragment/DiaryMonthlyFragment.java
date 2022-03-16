@@ -379,6 +379,11 @@ public class DiaryMonthlyFragment extends Fragment {
             MonthlyDiary monthlyDiary = monthlyList.get(i);
 
             etcCnt += monthlyDiary.getCount();
+
+            for (ExpenditureCompact expenditure : monthlyDiary.getExpenditureList()) {
+                expenditure.setName(monthlyDiary.getName());
+            }
+
             etcList.addAll(monthlyDiary.getExpenditureList());
         }
 
