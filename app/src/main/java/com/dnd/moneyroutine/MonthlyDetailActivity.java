@@ -1,23 +1,42 @@
 package com.dnd.moneyroutine;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.adapter.MonthlyDetailAdapter;
+import com.dnd.moneyroutine.custom.Constants;
+import com.dnd.moneyroutine.custom.PreferenceManager;
+import com.dnd.moneyroutine.dto.CategoryType;
 import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
+import com.dnd.moneyroutine.service.HeaderRetrofit;
+import com.dnd.moneyroutine.service.LocalDateSerializer;
+import com.dnd.moneyroutine.service.RetrofitService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class MonthlyDetailActivity extends AppCompatActivity {
+
+    private static final String TAG = "MonthlyDetailActivity";
 
     private ImageView ivBack;
     private TextView tvTitle;
@@ -28,12 +47,21 @@ public class MonthlyDetailActivity extends AppCompatActivity {
 
     private ExpenditureDetailDto expenditureDetailDto;
 
-    private String getCategoryName;
-    private String getMonth;
-    private int getPercent;
-    private int getTotal;
+    private String token;
 
-    DecimalFormat dcFormat = new DecimalFormat("#,###");
+    private LocalDate startDate;
+    private LocalDate endDate;
+
+    private String color;
+    private CategoryType type;
+    private String categoryName;
+    private int percent;
+    private int totalExpense;
+
+    private boolean etc;
+    private ArrayList<CategoryType> etcCategory;
+
+    DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
     private MonthlyDetailAdapter adapter;
     private ArrayList<ExpenditureDetailDto> expenditureDetailDtoArrayList;
@@ -43,11 +71,23 @@ public class MonthlyDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monthly_detail);
 
+        token = PreferenceManager.getToken(this, Constants.tokenKey);
+
         initView();
+        initField();
+        setCategoryInfo();
+
         initAdapter();
-        setTextView();
         setListener();
 
+        if (etc) {
+            for (int i = 0; i < etcCategory.size(); i++) {
+                CategoryType etcType = etcCategory.get(i);
+                getDetailServer(startDate, endDate, etcType.getCategoryId(), etcType.isCustom(), i == etcCategory.size() - 1);
+            }
+        } else {
+            getDetailServer(startDate, endDate, type.getCategoryId(), type.isCustom(), true);
+        }
     }
 
     private void initView() {
@@ -59,18 +99,41 @@ public class MonthlyDetailActivity extends AppCompatActivity {
         rcContent = findViewById(R.id.rc_monthly_detail);
     }
 
+    private void initField() {
+        Intent intent = getIntent();
 
-    private void setTextView(){
-        getCategoryName=getIntent().getStringExtra("category name");
-        getPercent=getIntent().getIntExtra("percentage",0);
-        getTotal=getIntent().getIntExtra("expense",0);
-        getMonth=getIntent().getStringExtra("month");
+        startDate = (LocalDate) intent.getSerializableExtra("startDate");
+        endDate = (LocalDate) intent.getSerializableExtra("endDate");
 
-        tvTitle.setText(getCategoryName);
-        tvCategoryName.setText(getMonth+"월 "+getCategoryName+" 지출액");
-        tvPercent.setText(getPercent+"%");
-        tvTotal.setText("총 "+dcFormat.format(getTotal)+"원");
+        type = (CategoryType) intent.getSerializableExtra("categoryType");
 
+        color = intent.getStringExtra("categoryColor");
+        categoryName = intent.getStringExtra("categoryName");
+        percent = intent.getIntExtra("percentage",0);
+        totalExpense = intent.getIntExtra("totalExpense",0);
+
+        etc = intent.getBooleanExtra("etc", false);
+
+        if (etc) {
+            etcCategory = (ArrayList<CategoryType>) intent.getSerializableExtra("etcCategoryType");
+        }
+    }
+
+    private void setCategoryInfo() {
+        Log.d(TAG,  "start : " + startDate.toString() + ", end : " + endDate.toString() +  ", categoryId : " + type.getCategoryId() + ", custom : " + type.isCustom());
+
+        LocalDate today = LocalDate.now();
+        if (today.getYear() != startDate.getYear()) {
+            tvCategoryName.setText(startDate.getYear() + "년 " + startDate.getMonthValue() + "월 " + categoryName + " 지출액");
+        } else {
+            tvCategoryName.setText(startDate.getMonthValue() + "월 " + categoryName + " 지출액");
+        }
+
+        tvPercent.setText(percent + "%");
+        tvPercent.setTextColor(Color.parseColor(color));
+
+        tvTitle.setText(categoryName);
+        tvTotal.setText("총 " + decimalFormat.format(totalExpense) + "원");
     }
 
     private void initAdapter(){
@@ -80,8 +143,6 @@ public class MonthlyDetailActivity extends AppCompatActivity {
         adapter = new MonthlyDetailAdapter(expenditureDetailDtoArrayList);
         rcContent.setLayoutManager(new LinearLayoutManager(this));
         rcContent.setAdapter(adapter);
-
-
     }
 
     private void setListener() {
@@ -89,6 +150,47 @@ public class MonthlyDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+    }
+
+    // 월별 카테고리 소비 상세 내역 가져오기
+    private void getDetailServer(LocalDate startDate, LocalDate endDate, int categoryId, boolean custom, boolean last) {
+        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+        RetrofitService retroService = retrofit.create(RetrofitService.class);
+
+        Call<JsonObject> call = retroService.getMonthlyDetail(startDate, endDate, categoryId, custom);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject responseJson = response.body();
+                    Log.d(TAG, responseJson.toString());
+
+                    if (responseJson.get("statusCode").getAsInt() == 200) {
+                        if (!responseJson.get("data").isJsonNull()) {
+                            Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
+//                            expenditureDetailDto = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<WeeklyExpenditureDetail>() {}.getType());
+
+                            if (last) {
+
+                            } else {
+
+                            }
+                        }
+
+                    }
+                } else {
+                    Log.e(TAG, "error: " + response.code());
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.d(TAG, t.getMessage());
+                Toast.makeText(MonthlyDetailActivity.this, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }

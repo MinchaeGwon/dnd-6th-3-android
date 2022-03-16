@@ -13,6 +13,7 @@ import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.dto.ExpenditureCompact;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class MonthlyDiaryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -48,6 +49,7 @@ public class MonthlyDiaryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private class ExpenditureViewHolder extends RecyclerView.ViewHolder {
         TextView tvExpenseDetail;
         TextView tvEmotionDetail;
+        TextView tvCategoryName;
         TextView tvDate;
 
         public ExpenditureViewHolder(@NonNull View itemView) {
@@ -55,6 +57,7 @@ public class MonthlyDiaryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             tvExpenseDetail = itemView.findViewById(R.id.tv_month_expense_content);
             tvEmotionDetail = itemView.findViewById(R.id.tv_month_emotion_content);
+            tvCategoryName = itemView.findViewById(R.id.tv_month_expense_category);
             tvDate = itemView.findViewById(R.id.tv_month_date);
         }
 
@@ -62,13 +65,14 @@ public class MonthlyDiaryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public void setItem(ExpenditureCompact expenditure) {
             tvExpenseDetail.setText(expenditure.getExpenseDetail());
             tvEmotionDetail.setText(expenditure.getEmotionDetail());
+            tvCategoryName.setText(expenditure.getName());
 
             LocalDate today = LocalDate.now();
             LocalDate date = expenditure.getDate();
             if (date.getYear() != today.getYear()) {
-                tvDate.setText(date.getYear() + "." + date.getMonthValue() + "." +date.getDayOfMonth());
+                tvDate.setText(date.format(DateTimeFormatter.ofPattern("y.M.d")));
             } else {
-                tvDate.setText(date.getMonthValue() + "." +date.getDayOfMonth());
+                tvDate.setText(date.format(DateTimeFormatter.ofPattern("M.d")));
             }
         }
     }

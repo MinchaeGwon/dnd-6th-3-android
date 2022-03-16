@@ -2,34 +2,34 @@ package com.dnd.moneyroutine.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.ArrayList;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-public class GoalCategoryInfo implements Comparable<GoalCategoryInfo> {
-
-    @SerializedName("categoryType")
+@Getter @Setter
+public class GoalCategoryInfo implements Comparable<GoalCategoryInfo>, Serializable {
     private CategoryType categoryType;
-    @SerializedName("categoryName")
     private String categoryName;
-    @SerializedName("percentage")
     private int percentage;
-    @SerializedName("expense")
     private int expense;
+
     @SerializedName("weeklyExpenditureDetailDtoList")
-    private List<ExpenditureDetailDto> expenditureDetailDtoList;
+    private ArrayList<ExpenditureDetailDto> expenditureList;
+
+    // 나머지 카테고리를 위해 추가한 것 : 월별 상세 소비 내역 카테고리에 사용
+    private ArrayList<String> etcCategoryNames;
+    private ArrayList<CategoryType> etcCategoryTypes;
 
     @Override
     public int compareTo(GoalCategoryInfo goalCategoryInfo) {
-        if(goalCategoryInfo.expense<expense){
+        if (goalCategoryInfo.expense < expense){
             return 1;
-        }
-        else if(goalCategoryInfo.expense>expense){
+        } else if(goalCategoryInfo.expense > expense){
             return -1;
         }
+
         return 0;
     }
 }

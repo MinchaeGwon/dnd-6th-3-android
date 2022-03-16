@@ -375,13 +375,16 @@ public class DiaryMonthlyFragment extends Fragment {
         ArrayList<ExpenditureCompact> etcList = new ArrayList<>();
         int etcCnt = 0;
 
-        for (int i = 0; i < monthlyList.size(); i++) {
+        for (int i = 3; i < monthlyList.size(); i++) {
             MonthlyDiary monthlyDiary = monthlyList.get(i);
 
-            if (i >= 3) {
-                etcCnt += monthlyDiary.getCount();
-                etcList.addAll(monthlyDiary.getExpenditureList());
+            etcCnt += monthlyDiary.getCount();
+
+            for (ExpenditureCompact expenditure : monthlyDiary.getExpenditureList()) {
+                expenditure.setName(monthlyDiary.getName());
             }
+
+            etcList.addAll(monthlyDiary.getExpenditureList());
         }
 
         if (etcCnt > 0) {

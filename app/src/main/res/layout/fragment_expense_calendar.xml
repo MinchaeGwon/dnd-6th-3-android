@@ -35,33 +35,63 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icon_cancel" />
 
-    <TextView
-        android:id="@+id/tv_calendar_header"
+    <LinearLayout
+        android:id="@+id/linearLayout24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="36dp"
-        android:fontFamily="@font/spoqa_han_sans_neo_medium"
-        android:includeFontPadding="false"
-        android:text="2022년 2월"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="normal"
+        android:layout_marginTop="31dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView27" />
+        app:layout_constraintTop_toBottomOf="@+id/textView27">
+
+        <ImageButton
+            android:id="@+id/ib_calendar_prev"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="5dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/btn_right_more_black"
+            android:rotationY="180"
+            android:scaleType="centerInside" />
+
+        <TextView
+            android:id="@+id/tv_calendar_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+            android:includeFontPadding="false"
+            android:text="2022년 2월"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView27" />
+
+        <ImageButton
+            android:id="@+id/ib_calendar_next"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="5dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/btn_right_more_black"
+            android:scaleType="centerInside" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout23"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="27dp"
         android:layout_marginEnd="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_calendar_header">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout24">
 
         <TextView
             android:layout_width="wrap_content"

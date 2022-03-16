@@ -37,6 +37,13 @@
         <item>#C896FA</item>
     </string-array>
 
+    <string-array name="category_color">
+        <item>#C896FA</item>
+        <item>#A3BCFF</item>
+        <item>#7AE2F9</item>
+        <item>#E9ECEF</item>
+    </string-array>
+
     <array name="badgeStartArray">
         <item>@drawable/badge_start_budget</item>
         <item>@drawable/badge_start_record</item>
