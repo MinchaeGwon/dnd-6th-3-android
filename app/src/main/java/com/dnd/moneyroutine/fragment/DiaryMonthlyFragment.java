@@ -62,14 +62,13 @@ public class DiaryMonthlyFragment extends Fragment {
 
     private static final String TAG = "DiaryMonthly";
 
-    private ConstraintLayout clEmotionChart;
-    private ConstraintLayout clCategoryChart;
-    private ConstraintLayout clBestCategory;
+    private LinearLayout llContent;
+    private ConstraintLayout clTopCategory;
 
     private LinearLayout btnSelectYearMonth;
     private TextView tvSelectYearMonth;
 
-    private TextView tvBestEmotionTitle;
+    private TextView tvTopEmotionTitle;
 
     private HorizontalBarChart hcEmotion;
     private TextView tvGoodCnt;
@@ -81,9 +80,9 @@ public class DiaryMonthlyFragment extends Fragment {
     private TextView tvSelectEmotion;
     private TextView tvSelectEmotionDetail;
 
-    private TextView tvBestEmotionCatTitle;
-    private TextView tvBestCat;
-    private TextView tvBestCatCnt;
+    private TextView tvTopEmotionCatTitle;
+    private TextView tvTopCat;
+    private TextView tvtopCatCnt;
 
     private PieChart pcCategory;
 
@@ -113,14 +112,13 @@ public class DiaryMonthlyFragment extends Fragment {
     }
 
     private void initView(View v) {
-        clEmotionChart = v.findViewById(R.id.cl_emotion_chart);
-        clCategoryChart = v.findViewById(R.id.cl_month_pie_chart);
-        clBestCategory = v.findViewById(R.id.cl_best_category);
+        llContent = v.findViewById(R.id.ll_monthly_diary_content);
+        clTopCategory = v.findViewById(R.id.cl_top_category);
 
         btnSelectYearMonth = v.findViewById(R.id.ll_diary_select_month);
         tvSelectYearMonth = v.findViewById(R.id.tv_diary_select_month);
 
-        tvBestEmotionTitle = v.findViewById(R.id.tv_month_best_emotion_title);
+        tvTopEmotionTitle = v.findViewById(R.id.tv_month_top_emotion_title);
 
         hcEmotion = v.findViewById(R.id.bar_month_emotion);
         tvGoodCnt = v.findViewById(R.id.tv_month_good_cnt);
@@ -132,9 +130,9 @@ public class DiaryMonthlyFragment extends Fragment {
         tvSelectEmotion = v.findViewById(R.id.tv_month_select_emotion);
         tvSelectEmotionDetail = v.findViewById(R.id.tv_month_select_emotion_detail);
 
-        tvBestEmotionCatTitle = v.findViewById(R.id.tv_month_best_cat_emotion_title);
-        tvBestCat = v.findViewById(R.id.tv_month_best_category);
-        tvBestCatCnt = v.findViewById(R.id.tv_month_best_cat_cnt);
+        tvTopEmotionCatTitle = v.findViewById(R.id.tv_month_top_cat_emotion_title);
+        tvTopCat = v.findViewById(R.id.tv_month_top_category);
+        tvtopCatCnt = v.findViewById(R.id.tv_month_top_cat_cnt);
         pcCategory = v.findViewById(R.id.pie_chart_month);
         tvSelectEmotionTitle = v.findViewById(R.id.tv_month_select_emotion_title);
         tvSelectEmotionCnt = v.findViewById(R.id.tv_month_select_emotion_cnt);
@@ -209,21 +207,15 @@ public class DiaryMonthlyFragment extends Fragment {
                         emotionMap = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<HashMap<EmotionEnum, Integer>>() {}.getType());
 
                         if (emotionMap.size() == 0) {
-                            tvBestEmotionTitle.setText("소비 내역이 없어요");
-
-                            clEmotionChart.setVisibility(View.GONE);
-                            clCategoryChart.setVisibility(View.GONE);
-                            rvCategory.setVisibility(View.GONE);
+                            tvTopEmotionTitle.setText("소비 내역이 없어요");
+                            llContent.setVisibility(View.GONE);
                         } else {
-                            clEmotionChart.setVisibility(View.VISIBLE);
-                            clCategoryChart.setVisibility(View.VISIBLE);
-                            rvCategory.setVisibility(View.VISIBLE);
-
                             emotionMap.putIfAbsent(EmotionEnum.GOOD, 0);
                             emotionMap.putIfAbsent(EmotionEnum.SOSO, 0);
                             emotionMap.putIfAbsent(EmotionEnum.BAD, 0);
 
                             setEmotionInfo();
+                            llContent.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -249,13 +241,13 @@ public class DiaryMonthlyFragment extends Fragment {
         Map.Entry<EmotionEnum, Integer> maxEntry = Collections.max(emotionMap.entrySet(), comparator);
         switch (maxEntry.getKey()) {
             case GOOD:
-                tvBestEmotionTitle.setText("'만족'한 소비가 가장 많아요!");
+                tvTopEmotionTitle.setText("'만족'한 소비가 가장 많아요!");
                 break;
             case SOSO:
-                tvBestEmotionTitle.setText("'보통' 소비가 가장 많아요");
+                tvTopEmotionTitle.setText("'보통' 소비가 가장 많아요");
                 break;
             case BAD:
-                tvBestEmotionTitle.setText("이번 달 소비를 조금 더 살펴볼까요?");
+                tvTopEmotionTitle.setText("이번 달 소비를 조금 더 살펴볼까요?");
                 break;
         }
 
@@ -343,13 +335,13 @@ public class DiaryMonthlyFragment extends Fragment {
                         monthlyList = gson.fromJson(jsonArray, new TypeToken<ArrayList<MonthlyDiary>>() {}.getType());
 
                         if (monthlyList.size() == 0) {
-                            clBestCategory.setVisibility(View.GONE);
+                            clTopCategory.setVisibility(View.GONE);
                             pcCategory.setVisibility(View.GONE);
                             rvCategory.setVisibility(View.GONE);
 
-                            tvBestEmotionCatTitle.setText("소비 내역이 없어요");
+                            tvTopEmotionCatTitle.setText("소비 내역이 없어요");
                         } else {
-                            clBestCategory.setVisibility(View.VISIBLE);
+                            clTopCategory.setVisibility(View.VISIBLE);
                             pcCategory.setVisibility(View.VISIBLE);
                             rvCategory.setVisibility(View.VISIBLE);
 
@@ -444,18 +436,18 @@ public class DiaryMonthlyFragment extends Fragment {
 
         switch (selectEmotion) {
             case GOOD:
-                tvBestEmotionCatTitle.setText(best.getName() + "에서 가장 만족을 느꼈어요!");
+                tvTopEmotionCatTitle.setText(best.getName() + "에서 가장 만족을 느꼈어요!");
                 break;
             case SOSO:
-                tvBestEmotionCatTitle.setText(best.getName() + " 관련 소비가 그냥 그랬어요");
+                tvTopEmotionCatTitle.setText(best.getName() + " 관련 소비가 그냥 그랬어요");
                 break;
             case BAD:
-                tvBestEmotionCatTitle.setText(best.getName() + " 관련 소비를 체크해볼까요?");
+                tvTopEmotionCatTitle.setText(best.getName() + " 관련 소비를 체크해볼까요?");
                 break;
         }
 
-        tvBestCat.setText(best.getName());
-        tvBestCatCnt.setText(best.getCount() + "번");
+        tvTopCat.setText(best.getName());
+        tvtopCatCnt.setText(best.getCount() + "번");
     }
 
     // 세부 소비 내역 정보 바인딩
