@@ -40,7 +40,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -54,6 +53,11 @@ import retrofit2.Retrofit;
 
 
 public class ExpenditureMonthlyFragment extends Fragment {
+
+    private static final String TAG = "ExpenditureMonthly";
+
+    private TextView tvEmpty;
+    private LinearLayout llExpenditure;
 
     private LinearLayout llSelectMonth;
     private TextView tvMonth;
@@ -123,6 +127,9 @@ public class ExpenditureMonthlyFragment extends Fragment {
     }
 
     private void initView(View v) {
+        tvEmpty = v.findViewById(R.id.tv_monthly_empty);
+        llExpenditure = v.findViewById(R.id.ll_montly_expenditure_content);
+
         llSelectMonth = v.findViewById(R.id.ll_month_select);
         tvMonth = v.findViewById(R.id.tv_expenditure_month);
         tvDate = v.findViewById(R.id.tv_start_end_month);
@@ -211,27 +218,34 @@ public class ExpenditureMonthlyFragment extends Fragment {
                 if (response.isSuccessful()) {
                     JsonObject responseJson = response.body();
 
-                    Log.d("month", responseJson.toString());
+                    Log.d(TAG, "1111111111111");
+                    Log.d(TAG, responseJson.toString());
 
                     if (responseJson.get("statusCode").getAsInt() == 200) {
                         if (!responseJson.get("data").isJsonNull()) {
                             Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
                             responseMonthStatistics = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<ExpenditureStatistics>() {}.getType());
 
+                            tvEmpty.setVisibility(View.GONE);
+                            llExpenditure.setVisibility(View.VISIBLE);
+
                             setEtcList();
                             drawPieChart();
                             setContent();
+                        } else {
+                            tvEmpty.setVisibility(View.VISIBLE);
+                            llExpenditure.setVisibility(View.GONE);
                         }
                     }
                 } else {
-                    Log.e("month", "error: " + response.code());
+                    Log.e(TAG, "error 1111: " + response.code());
                     return;
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d("month", t.getMessage());
+                Log.d(TAG, "1111" + t.getMessage());
                 Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -337,7 +351,9 @@ public class ExpenditureMonthlyFragment extends Fragment {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     JsonObject responseJson = response.body();
-                    Log.d("monthly Trend", responseJson.toString());
+
+                    Log.d(TAG, "22222222222");
+                    Log.d(TAG, responseJson.toString());
 
                     Gson gson = new Gson();
                     monthlyTrend = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<MonthlyDetailActivity>() {}.getType());
@@ -351,14 +367,14 @@ public class ExpenditureMonthlyFragment extends Fragment {
 //                    }
 
                 } else {
-                    Log.e("monthly Trend", "error: " + response.code());
+                    Log.e(TAG, "error22222: " + response.code());
                     return;
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d("monthly Trend", t.getMessage());
+                Log.d(TAG, "2222222222" + t.getMessage());
                 Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
