@@ -54,6 +54,9 @@ import retrofit2.Retrofit;
 
 public class ExpenditureWeeklyFragment extends Fragment {
 
+    private TextView tvEmpty;
+    private LinearLayout llExpenditure;
+
     private LinearLayout llSelectWeek;
     private TextView tvWeekNum;
     private TextView tvShowWeekDate;
@@ -118,6 +121,9 @@ public class ExpenditureWeeklyFragment extends Fragment {
     }
 
     private void initView(View v) {
+        tvEmpty = v.findViewById(R.id.tv_weekly_empty);
+        llExpenditure = v.findViewById(R.id.ll_weekly_expenditure_content);
+
         llSelectWeek = v.findViewById(R.id.ll_ex_select_week);
         tvWeekNum = v.findViewById(R.id.tv_week_num);
         tvShowWeekDate = v.findViewById(R.id.tv_start_end_week);
@@ -262,9 +268,15 @@ public class ExpenditureWeeklyFragment extends Fragment {
                             Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
                             responseStatistics = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<ExpenditureStatistics>() {}.getType());
 
+                            tvEmpty.setVisibility(View.GONE);
+                            llExpenditure.setVisibility(View.VISIBLE);
+
                             setEtcList();
                             drawCategoryPieChart();
                             setContent();
+                        } else {
+                            tvEmpty.setVisibility(View.VISIBLE);
+                            llExpenditure.setVisibility(View.GONE);
                         }
                     }
                 } else {

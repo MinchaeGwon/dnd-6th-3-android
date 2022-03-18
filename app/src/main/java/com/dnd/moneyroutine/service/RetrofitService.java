@@ -1,5 +1,7 @@
 package com.dnd.moneyroutine.service;
 
+import com.dnd.moneyroutine.custom.Common;
+import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.dto.BasicCategoryForm;
 import com.dnd.moneyroutine.dto.BudgetDetailModel;
 import com.dnd.moneyroutine.dto.CustomCategoryCreateDto;
@@ -14,10 +16,13 @@ import com.google.gson.JsonObject;
 import java.time.LocalDate;
 import java.util.HashMap;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
+import retrofit2.http.Header;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -72,8 +77,8 @@ public interface RetrofitService {
     @GET("goal-category")
     Call<JsonObject> getGoalCategory();
 
-    @DELETE("goal-category")
-    Call<JsonObject> deleteGoalCategory(@Body int goalCategoryId);
+    @DELETE("goal-category/{goalCategoryId}")
+    Call<JsonObject> deleteGoalCategory(@Path("goalCategoryId") int goalCategoryId);
 
     @PATCH("goal-category")
     Call<JsonObject> updateGoalCategory(@Body GoalCategoryForm goalCategoryForm);

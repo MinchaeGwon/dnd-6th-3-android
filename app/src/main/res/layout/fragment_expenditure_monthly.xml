@@ -73,493 +73,524 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ll_month_select" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_pie_chart"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:layout_weight="0">
-
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/pie_chart_month"
-                    android:layout_width="184dp"
-                    android:layout_height="184dp"
-                    android:visibility="invisible"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/pie_chart_month"
-                    app:layout_constraintStart_toStartOf="@+id/pie_chart_month"
-                    app:layout_constraintTop_toTopOf="@+id/pie_chart_month">
-
-                    <TextView
-                        android:id="@+id/textView33"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:text="총 지출액"
-                        android:textColor="#868e96"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_total_month"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                        android:text="1,350,000원"
-                        android:textColor="#212529"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView33" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:layout_marginStart="147dp"
-                    android:layout_marginTop="36dp"
-                    android:background="@drawable/stroke_dee2e5_radius_16"
-                    app:layout_constraintStart_toStartOf="@+id/pie_chart_month"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/textView37"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:text="1위 "
-                        android:textColor="#212529"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_month_top_category"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:text="식비"
-                        android:textColor="#212529"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView37"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_month_top_percent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginEnd="9dp"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:text="65%"
-                        android:textColor="#8f30e9"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/tv_month_top_category"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_month_category"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="28dp"
-                android:layout_weight="0" />
-
-            <View
-                android:id="@+id/view13"
-                android:layout_width="match_parent"
-                android:layout_height="12dp"
-                android:layout_weight="0"
-                android:background="#f8f9fa" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="80dp"
-                android:layout_weight="0">
-
                 <TextView
-                    android:id="@+id/tv_monthly_notice"
+                    android:id="@+id/tv_monthly_empty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                    android:text="이번달 지출이 위험해요"
+                    android:includeFontPadding="false"
+                    android:text="소비 내역이 없어요"
                     android:textColor="#212529"
                     android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_monthly_difference"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="2dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                    android:text="500,000원 초과됐어요"
-                    android:textColor="#FC3781"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_monthly_notice" />
-
-                <View
-                    android:id="@+id/view15"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="15dp"
-                    android:layout_weight="1"
-                    android:background="#F1F3F5"
-                    app:layout_constraintBottom_toBottomOf="@id/ll_monthly_chart"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_start_end_month" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_montly_expenditure_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cl_bar_chart_monthly"
+                    android:id="@+id/cl_pie_chart"
                     android:layout_width="match_parent"
-                    android:layout_height="202dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="19dp"
-                    android:layout_marginEnd="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_monthly_difference">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:layout_weight="0">
 
-                    <View
-                        android:id="@+id/view_monthly_bar_chart_1"
-                        android:layout_width="42dp"
-                        android:layout_height="74dp"
-                        android:layout_marginStart="15dp"
-                        android:background="@drawable/bar_chart_previous"
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pie_chart_month"
+                        android:layout_width="184dp"
+                        android:layout_height="184dp"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintEnd_toEndOf="@+id/pie_chart_month"
+                        app:layout_constraintStart_toStartOf="@+id/pie_chart_month"
+                        app:layout_constraintTop_toTopOf="@+id/pie_chart_month">
 
-                    <View
-                        android:id="@+id/view_monthly_bar_chart_2"
-                        android:layout_width="42dp"
-                        android:layout_height="121dp"
-                        android:background="@drawable/bar_chart_previous"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/view_monthly_bar_chart_3"
-                        app:layout_constraintStart_toEndOf="@+id/view_monthly_bar_chart_1" />
+                        <TextView
+                            android:id="@+id/textView33"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="총 지출액"
+                            android:textColor="#868e96"
+                            android:textSize="12sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <View
-                        android:id="@+id/view_monthly_bar_chart_3"
-                        android:layout_width="42dp"
-                        android:layout_height="74dp"
-                        android:background="@drawable/bar_chart_previous"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/view_monthly_bar_chart_5"
-                        app:layout_constraintStart_toEndOf="@+id/view_monthly_bar_chart_1" />
+                        <TextView
+                            android:id="@+id/tv_total_month"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                            android:text="1,350,000원"
+                            android:textColor="#212529"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView33" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <View
-                        android:id="@+id/view_monthly_bar_chart_4"
-                        android:layout_width="42dp"
-                        android:layout_height="121dp"
-                        android:background="@drawable/bar_chart_previous"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/view_monthly_bar_chart_5"
-                        app:layout_constraintStart_toEndOf="@+id/view_monthly_bar_chart_3" />
-
-                    <View
-                        android:id="@+id/view_monthly_bar_chart_5"
-                        android:layout_width="42dp"
-                        android:layout_height="169dp"
-                        android:layout_marginEnd="15dp"
-                        android:background="@drawable/bar_chart_now_high"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView31"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:text="초과"
-                        android:textColor="#FC3781 "
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toTopOf="@+id/view_monthly_bar_chart_1"
-                        app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_1"
-                        app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_1" />
+                        android:layout_height="32dp"
+                        android:layout_marginStart="147dp"
+                        android:layout_marginTop="36dp"
+                        android:background="@drawable/stroke_dee2e5_radius_16"
+                        app:layout_constraintStart_toStartOf="@+id/pie_chart_month"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/textView32"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:text="5만원"
-                        android:textColor="#343A40 "
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toTopOf="@+id/textView31"
-                        app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_1"
-                        app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_1" />
+                        <TextView
+                            android:id="@+id/textView37"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="1위 "
+                            android:textColor="#212529"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/textView30"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:text="아낌"
-                        android:textColor="#107D69 "
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toTopOf="@+id/view_monthly_bar_chart_2"
-                        app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_2"
-                        app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_2" />
+                        <TextView
+                            android:id="@+id/tv_month_top_category"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="식비"
+                            android:textColor="#212529"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/textView37"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/textView34"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:text="3만원"
-                        android:textColor="#343A40"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toTopOf="@+id/textView30"
-                        app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_2"
-                        app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_2" />
-
-                    <TextView
-                        android:id="@+id/textView41"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:text="초과"
-                        android:textColor="#FC3781"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toTopOf="@+id/view_monthly_bar_chart_3"
-                        app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_3"
-                        app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_3" />
-
-                    <TextView
-                        android:id="@+id/textView46"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:text="5만원"
-                        android:textColor="#343A40 "
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toTopOf="@+id/textView41"
-                        app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_3"
-                        app:layout_constraintHorizontal_bias="0.437"
-                        app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_3" />
-
-                    <TextView
-                        android:id="@+id/textView47"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:text="아낌"
-                        android:textColor="#107D69 "
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toTopOf="@+id/view_monthly_bar_chart_4"
-                        app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_4"
-                        app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_4" />
-
-                    <TextView
-                        android:id="@+id/textView56"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:text="3만원"
-                        android:textColor="#343A40"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toTopOf="@+id/textView47"
-                        app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_4"
-                        app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_4" />
-
-                    <TextView
-                        android:id="@+id/textView57"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:text="이번달"
-                        android:textColor="#FC3781"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toTopOf="@+id/view_monthly_bar_chart_5"
-                        app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_5"
-                        app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_5" />
+                        <TextView
+                            android:id="@+id/tv_month_top_percent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="9dp"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="65%"
+                            android:textColor="#8f30e9"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tv_month_top_category"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <LinearLayout
-                    android:id="@+id/ll_monthly_chart"
+                <View
+                    android:id="@+id/view13"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:layout_weight="0"
+                    android:background="#f8f9fa" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_month_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="28dp"
+                    android:layout_weight="0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="bottom"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cl_bar_chart_monthly">
+                    android:layout_marginBottom="80dp"
+                    android:layout_weight="0">
 
                     <TextView
-                        android:id="@+id/tv_month_bar_chart_text1"
+                        android:id="@+id/tv_monthly_notice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:gravity="center"
-                        android:text="10월"
-                        android:textColor="#868E96"
-                        android:textSize="10sp" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="24dp"
+                        android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                        android:text="이번달 지출이 위험해요"
+                        android:textColor="#212529"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tv_month_bar_chart_text2"
+                        android:id="@+id/tv_monthly_difference"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="2dp"
                         android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:gravity="center"
-                        android:text="11월"
-                        android:textColor="#868E96"
-                        android:textSize="10sp" />
+                        android:text="500,000원 초과됐어요"
+                        android:textColor="#FC3781"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_monthly_notice" />
+
+                    <View
+                        android:id="@+id/view15"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_weight="1"
+                        android:background="#F1F3F5"
+                        app:layout_constraintBottom_toBottomOf="@id/ll_monthly_chart"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_bar_chart_monthly"
+                        android:layout_width="match_parent"
+                        android:layout_height="202dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="19dp"
+                        android:layout_marginEnd="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_monthly_difference">
+
+                        <View
+                            android:id="@+id/view_monthly_bar_chart_1"
+                            android:layout_width="42dp"
+                            android:layout_height="74dp"
+                            android:layout_marginStart="15dp"
+                            android:background="@drawable/bar_chart_previous"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <View
+                            android:id="@+id/view_monthly_bar_chart_2"
+                            android:layout_width="42dp"
+                            android:layout_height="121dp"
+                            android:background="@drawable/bar_chart_previous"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/view_monthly_bar_chart_3"
+                            app:layout_constraintStart_toEndOf="@+id/view_monthly_bar_chart_1" />
+
+                        <View
+                            android:id="@+id/view_monthly_bar_chart_3"
+                            android:layout_width="42dp"
+                            android:layout_height="74dp"
+                            android:background="@drawable/bar_chart_previous"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/view_monthly_bar_chart_5"
+                            app:layout_constraintStart_toEndOf="@+id/view_monthly_bar_chart_1" />
+
+                        <View
+                            android:id="@+id/view_monthly_bar_chart_4"
+                            android:layout_width="42dp"
+                            android:layout_height="121dp"
+                            android:background="@drawable/bar_chart_previous"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/view_monthly_bar_chart_5"
+                            app:layout_constraintStart_toEndOf="@+id/view_monthly_bar_chart_3" />
+
+                        <View
+                            android:id="@+id/view_monthly_bar_chart_5"
+                            android:layout_width="42dp"
+                            android:layout_height="169dp"
+                            android:layout_marginEnd="15dp"
+                            android:background="@drawable/bar_chart_now_high"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView31"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="초과"
+                            android:textColor="#FC3781 "
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toTopOf="@+id/view_monthly_bar_chart_1"
+                            app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_1"
+                            app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_1" />
+
+                        <TextView
+                            android:id="@+id/textView32"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="5만원"
+                            android:textColor="#343A40 "
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView31"
+                            app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_1"
+                            app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_1" />
+
+                        <TextView
+                            android:id="@+id/textView30"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="아낌"
+                            android:textColor="#107D69 "
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toTopOf="@+id/view_monthly_bar_chart_2"
+                            app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_2"
+                            app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_2" />
+
+                        <TextView
+                            android:id="@+id/textView34"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="3만원"
+                            android:textColor="#343A40"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView30"
+                            app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_2"
+                            app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_2" />
+
+                        <TextView
+                            android:id="@+id/textView41"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="초과"
+                            android:textColor="#FC3781"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toTopOf="@+id/view_monthly_bar_chart_3"
+                            app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_3"
+                            app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_3" />
+
+                        <TextView
+                            android:id="@+id/textView46"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="5만원"
+                            android:textColor="#343A40 "
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView41"
+                            app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_3"
+                            app:layout_constraintHorizontal_bias="0.437"
+                            app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_3" />
+
+                        <TextView
+                            android:id="@+id/textView47"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="아낌"
+                            android:textColor="#107D69 "
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toTopOf="@+id/view_monthly_bar_chart_4"
+                            app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_4"
+                            app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_4" />
+
+                        <TextView
+                            android:id="@+id/textView56"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="3만원"
+                            android:textColor="#343A40"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView47"
+                            app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_4"
+                            app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_4" />
+
+                        <TextView
+                            android:id="@+id/textView57"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:text="이번달"
+                            android:textColor="#FC3781"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toTopOf="@+id/view_monthly_bar_chart_5"
+                            app:layout_constraintEnd_toEndOf="@+id/view_monthly_bar_chart_5"
+                            app:layout_constraintStart_toStartOf="@+id/view_monthly_bar_chart_5" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_monthly_chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="bottom"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_bar_chart_monthly">
+
+                        <TextView
+                            android:id="@+id/tv_month_bar_chart_text1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:gravity="center"
+                            android:text="10월"
+                            android:textColor="#868E96"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/tv_month_bar_chart_text2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:gravity="center"
+                            android:text="11월"
+                            android:textColor="#868E96"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/tv_month_bar_chart_text3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:gravity="center"
+                            android:text="12월"
+                            android:textColor="#868E96"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/tv_month_bar_chart_text4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:gravity="center"
+                            android:text="1월"
+                            android:textColor="#868E96"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/tv_month_bar_chart_text5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                            android:gravity="center"
+                            android:text="2월"
+                            android:textColor="#868E96"
+                            android:textSize="10sp" />
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/tv_month_bar_chart_text3"
+                        android:id="@+id/textView61"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="21dp"
                         android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:gravity="center"
-                        android:text="12월"
+                        android:text="예산"
                         android:textColor="#868E96"
-                        android:textSize="10sp" />
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ll_monthly_chart" />
 
                     <TextView
-                        android:id="@+id/tv_month_bar_chart_text4"
+                        android:id="@+id/tv_month_budget_bar_chart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_marginTop="21dp"
+                        android:layout_marginEnd="16dp"
                         android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:gravity="center"
-                        android:text="1월"
-                        android:textColor="#868E96"
-                        android:textSize="10sp" />
+                        android:text="100,000원"
+                        android:textColor="#212529"
+                        android:textSize="13sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ll_monthly_chart" />
 
                     <TextView
-                        android:id="@+id/tv_month_bar_chart_text5"
+                        android:id="@+id/tv_month_possible_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="4dp"
                         android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                        android:gravity="center"
-                        android:text="2월"
+                        android:text="쓸 수 있는 돈"
                         android:textColor="#868E96"
-                        android:textSize="10sp" />
-                </LinearLayout>
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView61" />
 
-                <TextView
-                    android:id="@+id/textView61"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="21dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                    android:text="예산"
-                    android:textColor="#868E96"
-                    android:textSize="13sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ll_monthly_chart" />
+                    <TextView
+                        android:id="@+id/tv_month_possible_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:text="100,000원"
+                        android:textColor="#FC3781"
+                        android:textSize="13sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_month_budget_bar_chart" />
 
-                <TextView
-                    android:id="@+id/tv_month_budget_bar_chart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="21dp"
-                    android:layout_marginEnd="16dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                    android:text="100,000원"
-                    android:textColor="#212529"
-                    android:textSize="13sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ll_monthly_chart" />
+                    <TextView
+                        android:id="@+id/tv_remain_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:text="초과된 돈"
+                        android:textColor="#868E96"
+                        android:textSize="13sp"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_month_possible_text" />
 
-                <TextView
-                    android:id="@+id/tv_month_possible_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                    android:text="쓸 수 있는 돈"
-                    android:textColor="#868E96"
-                    android:textSize="13sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView61" />
+                    <TextView
+                        android:id="@+id/tv_remain_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+                        android:text="100,000원"
+                        android:textColor="#FC3781"
+                        android:textSize="13sp"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_month_possible_amount" />
 
-                <TextView
-                    android:id="@+id/tv_month_possible_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="16dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                    android:text="100,000원"
-                    android:textColor="#FC3781"
-                    android:textSize="13sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_month_budget_bar_chart" />
-
-                <TextView
-                    android:id="@+id/tv_remain_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                    android:text="초과된 돈"
-                    android:textColor="#868E96"
-                    android:textSize="13sp"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_month_possible_text" />
-
-                <TextView
-                    android:id="@+id/tv_remain_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="16dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo_regular"
-                    android:text="100,000원"
-                    android:textColor="#FC3781"
-                    android:textSize="13sp"
-                    android:visibility="invisible"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_month_possible_amount" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
