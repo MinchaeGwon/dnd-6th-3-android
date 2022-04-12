@@ -509,21 +509,13 @@ public class BudgetUpdateActivity extends AppCompatActivity {
 
         TextView tvTitle = view.findViewById(R.id.tv_dialog_title);
         TextView tvContent = view.findViewById(R.id.tv_dialog_content);
-        Button btnConfirm;
-        Button btnCancel;
+        Button btnConfirm = view.findViewById(R.id.btn_dialog_confirm);
+        Button btnCancel = view.findViewById(R.id.btn_dialog_cancel);
 
         if (position >= 0) {
-            btnConfirm = view.findViewById(R.id.btn_dialog_cancel);
-            btnCancel = view.findViewById(R.id.btn_dialog_confirm);
-
             tvTitle.setText(categoryList.get(position).getName() + "을(를) 삭제할까요?");
             tvContent.setText("해당 소비 기록도 같이 삭제됩니다");
-            btnConfirm.setText("확인");
-            btnCancel.setText("취소");
         } else {
-            btnConfirm = view.findViewById(R.id.btn_dialog_confirm);
-            btnCancel = view.findViewById(R.id.btn_dialog_cancel);
-
             tvTitle.setText("예산 수정을 종료할까요?");
             tvContent.setText("작성한 정보는 저장되지 않습니다");
         }
