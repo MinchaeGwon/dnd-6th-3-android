@@ -17,15 +17,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dnd.moneyroutine.custom.Constants;
+import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.enums.FooterEnum;
 import com.dnd.moneyroutine.fragment.ChallengeFragment;
 import com.dnd.moneyroutine.fragment.DiaryFragment;
 import com.dnd.moneyroutine.fragment.ExpenditureFragment;
 import com.dnd.moneyroutine.fragment.MainFragment;
+import com.dnd.moneyroutine.service.HeaderRetrofit;
+import com.dnd.moneyroutine.service.RetrofitService;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
     private int nowTabPosition = 0;
     private long backPressedTime = 0;
 
+    private String token;
+    private boolean isGoalExist;
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(newBase);
@@ -57,9 +70,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initField();
-        initTabView();
-        initFragment();
-        setTab();
+        checkGoalInfo();
     }
 
     private void initField() {
@@ -72,6 +83,40 @@ public class MainActivity extends AppCompatActivity {
         fragmentList = new ArrayList<>();
         bottomIconList = new ArrayList<>();
         bottomTextList = new ArrayList<>();
+
+        token = PreferenceManager.getToken(this, Constants.tokenKey);
+    }
+
+    // 사용자가 목표 설정한 적이 있는지 확인
+    private void checkGoalInfo() {
+        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
+        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
+        RetrofitService retroService = retrofit.create(RetrofitService.class);
+
+        Call<JsonObject> call = retroService.checkGoal();
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject responseJson = response.body();
+
+                    Log.d(TAG, responseJson.toString());
+
+                    if (responseJson.get("statusCode").getAsInt() == 200) {
+                        isGoalExist = responseJson.get("data").getAsBoolean();
+
+                        initTabView();
+                        initFragment();
+                        setTab();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // custom tab view 만들기
@@ -107,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
     // fragment 초기화
     private void initFragment() {
-        fragmentList.add(new MainFragment());
+        fragmentList.add(new MainFragment(isGoalExist));
         fragmentList.add(null);
         fragmentList.add(null);
         fragmentList.add(null);
@@ -124,6 +169,12 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 nowTabPosition = position;
+
+                // 소비내역, 다이어리 탭 선택하면 Toast 띄우기
+                if (position != 0 && !isGoalExist) {
+                    Toast.makeText(MainActivity.this, "예산 플랜을 설정해주세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 setFragment(position);
                 setBottomIcon(position, true);
@@ -176,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragment mappingFragment(int position) {
         switch (position) {
             case 0:
-                return new MainFragment();
+                return new MainFragment(isGoalExist);
             case 1:
                 return new ExpenditureFragment();
             case 2:

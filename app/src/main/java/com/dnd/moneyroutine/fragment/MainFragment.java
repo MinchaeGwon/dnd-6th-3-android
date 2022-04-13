@@ -57,6 +57,12 @@ public class MainFragment extends Fragment {
     private List<Fragment> fragmentList;
     private boolean isGoalExist;
 
+    public MainFragment() {}
+
+    public MainFragment(boolean isGoalExist) {
+        this.isGoalExist = isGoalExist;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_main, container, false);
@@ -68,7 +74,7 @@ public class MainFragment extends Fragment {
         token = PreferenceManager.getToken(getContext(), Constants.tokenKey);
 
         initView();
-        checkGoal();
+        getCurrentGoalInfo();
     }
 
     private void initView() {
@@ -181,36 +187,6 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 goalDialog.dismiss();
-            }
-        });
-    }
-
-    // 사용자가 목표 설정한 적이 있는지 확인
-    private void checkGoal() {
-        HeaderRetrofit headerRetrofit = new HeaderRetrofit();
-        Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
-        RetrofitService retroService = retrofit.create(RetrofitService.class);
-
-        Call<JsonObject> call = retroService.checkGoal();
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.isSuccessful()) {
-                    JsonObject responseJson = response.body();
-
-                    Log.d(TAG, responseJson.toString());
-
-                    if (responseJson.get("statusCode").getAsInt() == 200) {
-                        isGoalExist = responseJson.get("data").getAsBoolean();
-                        getCurrentGoalInfo();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d(TAG, t.getMessage());
-                Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }
