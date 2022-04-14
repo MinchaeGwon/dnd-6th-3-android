@@ -78,12 +78,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
                     android:fontFamily="@font/spoqa_han_sans_neo_medium"
                     android:includeFontPadding="false"
                     android:text="소비 내역이 없어요"
                     android:textColor="#212529"
                     android:textSize="16sp"
                     android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_start_end_month" />
@@ -101,8 +103,8 @@
                     android:id="@+id/cl_pie_chart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"
-                    android:layout_weight="0">
+                    android:layout_marginTop="26dp"
+                    android:layout_marginBottom="28dp">
 
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/pie_chart_month"
@@ -200,19 +202,10 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <View
-                    android:id="@+id/view13"
-                    android:layout_width="match_parent"
-                    android:layout_height="12dp"
-                    android:layout_weight="0"
-                    android:background="#f8f9fa" />
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_month_category"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="28dp"
-                    android:layout_weight="0" />
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -221,6 +214,13 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0"
                 android:orientation="vertical">
+
+                <View
+                    android:id="@+id/view13"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:layout_weight="0"
+                    android:background="#f8f9fa" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

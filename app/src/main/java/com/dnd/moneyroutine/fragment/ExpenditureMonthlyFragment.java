@@ -218,7 +218,6 @@ public class ExpenditureMonthlyFragment extends Fragment {
                 if (response.isSuccessful()) {
                     JsonObject responseJson = response.body();
 
-                    Log.d(TAG, "1111111111111");
                     Log.d(TAG, responseJson.toString());
 
                     if (responseJson.get("statusCode").getAsInt() == 200) {
@@ -226,26 +225,24 @@ public class ExpenditureMonthlyFragment extends Fragment {
                             Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
                             responseMonthStatistics = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<ExpenditureStatistics>() {}.getType());
 
-                            tvEmpty.setVisibility(View.GONE);
-                            llExpenditure.setVisibility(View.VISIBLE);
+                            if (responseMonthStatistics.getGoalCategoryInfoList().isEmpty()) {
+                                tvEmpty.setVisibility(View.VISIBLE);
+                                llExpenditure.setVisibility(View.GONE);
+                            } else {
+                                tvEmpty.setVisibility(View.GONE);
+                                llExpenditure.setVisibility(View.VISIBLE);
 
-                            setEtcList();
-                            drawPieChart();
-                            setContent();
-                        } else {
-                            tvEmpty.setVisibility(View.VISIBLE);
-                            llExpenditure.setVisibility(View.GONE);
+                                setEtcList();
+                                drawPieChart();
+                                setContent();
+                            }
                         }
                     }
-                } else {
-                    Log.e(TAG, "error 1111: " + response.code());
-                    return;
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d(TAG, "1111" + t.getMessage());
                 Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -352,29 +349,15 @@ public class ExpenditureMonthlyFragment extends Fragment {
                 if (response.isSuccessful()) {
                     JsonObject responseJson = response.body();
 
-                    Log.d(TAG, "22222222222");
                     Log.d(TAG, responseJson.toString());
 
-                    Gson gson = new Gson();
-                    monthlyTrend = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<MonthlyDetailActivity>() {}.getType());
+                    Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
 
-//                    if (responseJson.get("statusCode").getAsInt() == 200) {
-//                        if (!responseJson.get("data").isJsonNull()) {
-////                            JsonArray jsonArray = responseJson.get("data").getAsJsonArray();
-//
-//                        }
-//
-//                    }
-
-                } else {
-                    Log.e(TAG, "error22222: " + response.code());
-                    return;
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d(TAG, "2222222222" + t.getMessage());
                 Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });

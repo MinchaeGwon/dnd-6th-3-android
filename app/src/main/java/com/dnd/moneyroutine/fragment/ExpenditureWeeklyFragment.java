@@ -61,15 +61,14 @@ public class ExpenditureWeeklyFragment extends Fragment {
     private TextView tvWeekNum;
     private TextView tvShowWeekDate;
 
-    private PieChart pieChart;
-
     private TextView tvTopCategory;
     private TextView tvTopRatio;
     private TextView tvTotalExpenditure;
 
-    private AlertDialog infoDialog;
-
+    private PieChart pieChart;
     private RecyclerView rvCategory;
+
+    private TextView tvHistoryWeek;
 
     private ConstraintLayout c1Chart1;
     private ConstraintLayout c1Chart2;
@@ -84,6 +83,8 @@ public class ExpenditureWeeklyFragment extends Fragment {
     private View chart3;
     private View chart4;
     private View chart5;
+
+    private AlertDialog infoDialog;
 
     private String token;
 
@@ -135,6 +136,8 @@ public class ExpenditureWeeklyFragment extends Fragment {
         pieChart = v.findViewById(R.id.pie_chart_week);
         rvCategory = v.findViewById(R.id.rv_ex_week_category);
 
+        tvHistoryWeek = v.findViewById(R.id.tv_nth_history);
+
         c1Chart1 = v.findViewById(R.id.cl_chart1_week);
         c1Chart2 = v.findViewById(R.id.cl_chart2_week);
         c1Chart3 = v.findViewById(R.id.cl_chart3_week);
@@ -162,6 +165,7 @@ public class ExpenditureWeeklyFragment extends Fragment {
     // 주, 날짜 설정
     private void setWeekDate() {
         tvWeekNum.setText(Common.getExpenditureWeekString(selectDate));
+        tvHistoryWeek.setText(Common.getExpenditureWeekString(selectDate) + " 지출 내역");
 
         switch (nowDate.getDayOfWeek()) {
             case SUNDAY:
@@ -268,26 +272,24 @@ public class ExpenditureWeeklyFragment extends Fragment {
                             Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
                             responseStatistics = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<ExpenditureStatistics>() {}.getType());
 
-                            tvEmpty.setVisibility(View.GONE);
-                            llExpenditure.setVisibility(View.VISIBLE);
+                            if (responseStatistics.getGoalCategoryInfoList().isEmpty()) {
+                                tvEmpty.setVisibility(View.VISIBLE);
+                                llExpenditure.setVisibility(View.GONE);
+                            } else {
+                                tvEmpty.setVisibility(View.GONE);
+                                llExpenditure.setVisibility(View.VISIBLE);
 
-                            setEtcList();
-                            drawCategoryPieChart();
-                            setContent();
-                        } else {
-                            tvEmpty.setVisibility(View.VISIBLE);
-                            llExpenditure.setVisibility(View.GONE);
+                                setEtcList();
+                                drawCategoryPieChart();
+                                setContent();
+                            }
                         }
                     }
-                } else {
-                    Log.e("week", "11 error: " + response.code());
-                    return;
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d("week", "11 failure : "+ t.getMessage());
                 Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -380,6 +382,8 @@ public class ExpenditureWeeklyFragment extends Fragment {
 
     // 주별 소비 동향 가져오기 : 그래프에 사용
     private void getWeeklyTrend(LocalDate currentDate){
+        Log.d("trend", currentDate.toString());
+
         HeaderRetrofit headerRetrofit = new HeaderRetrofit();
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);
@@ -391,6 +395,8 @@ public class ExpenditureWeeklyFragment extends Fragment {
                 if (response.isSuccessful()) {
                     JsonObject responseJson = response.body();
                     Log.d("trend", responseJson.toString());
+
+                    Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
                 } else {
                     Log.e("trend", "22 error: " + response.code());
 
