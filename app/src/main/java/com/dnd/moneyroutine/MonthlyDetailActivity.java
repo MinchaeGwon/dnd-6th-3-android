@@ -17,17 +17,21 @@ import com.dnd.moneyroutine.adapter.MonthlyDetailAdapter;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.dto.CategoryType;
-import com.dnd.moneyroutine.dto.ExpenditureDetail;
+import com.dnd.moneyroutine.dto.MonthlyDetail;
+import com.dnd.moneyroutine.dto.MonthlyExpenditure;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.LocalDateSerializer;
 import com.dnd.moneyroutine.service.RetrofitService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,8 +49,6 @@ public class MonthlyDetailActivity extends AppCompatActivity {
     private TextView tvTotal;
     private RecyclerView rcContent;
 
-    private ExpenditureDetail expenditureDetailDto;
-
     private String token;
 
     private LocalDate startDate;
@@ -59,12 +61,13 @@ public class MonthlyDetailActivity extends AppCompatActivity {
     private int totalExpense;
 
     private boolean etc;
-    private ArrayList<CategoryType> etcCategory;
+    private ArrayList<CategoryType> etcCategoryTypes;
+    private ArrayList<String> etcCategoryNames;
+
+    private HashMap<LocalDate, ArrayList<MonthlyDetail>> detailMap;
+    private MonthlyDetailAdapter adapter;
 
     DecimalFormat decimalFormat = new DecimalFormat("#,###");
-
-    private MonthlyDetailAdapter adapter;
-    private ArrayList<ExpenditureDetail> expenditureDetailDtoArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,22 +79,17 @@ public class MonthlyDetailActivity extends AppCompatActivity {
         initView();
         initField();
         setCategoryInfo();
-
-        initAdapter();
-        setListener();
-
-        if (etc) {
-            for (int i = 0; i < etcCategory.size(); i++) {
-                CategoryType etcType = etcCategory.get(i);
-                getDetailServer(startDate, endDate, etcType.getCategoryId(), etcType.isCustom(), i == etcCategory.size() - 1);
-            }
-        } else {
-            getDetailServer(startDate, endDate, type.getCategoryId(), type.isCustom(), true);
-        }
     }
 
     private void initView() {
         ivBack = findViewById(R.id.iv_back_monthly_detail);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         tvTitle = findViewById(R.id.tv_monthly_detail_title);
         tvCategoryName = findViewById(R.id.tv_month_detail_category);
         tvPercent = findViewById(R.id.tv_monthly_detail_percent);
@@ -100,6 +98,8 @@ public class MonthlyDetailActivity extends AppCompatActivity {
     }
 
     private void initField() {
+        detailMap = new HashMap<>();
+
         Intent intent = getIntent();
 
         startDate = (LocalDate) intent.getSerializableExtra("startDate");
@@ -115,7 +115,8 @@ public class MonthlyDetailActivity extends AppCompatActivity {
         etc = intent.getBooleanExtra("etc", false);
 
         if (etc) {
-            etcCategory = (ArrayList<CategoryType>) intent.getSerializableExtra("etcCategoryType");
+            etcCategoryTypes = (ArrayList<CategoryType>) intent.getSerializableExtra("etcCategoryType");
+            etcCategoryNames = (ArrayList<String>) intent.getSerializableExtra("etcCategoryName");
         }
     }
 
@@ -134,24 +135,15 @@ public class MonthlyDetailActivity extends AppCompatActivity {
 
         tvTitle.setText(categoryName);
         tvTotal.setText("총 " + decimalFormat.format(totalExpense) + "원");
-    }
 
-    private void initAdapter(){
-        expenditureDetailDtoArrayList= new ArrayList<>();
-//        expenditureDetailDtoArrayList.add(new ExpenditureDetailDto(LocalDate.now(),3000,"학식"));
-
-        adapter = new MonthlyDetailAdapter(expenditureDetailDtoArrayList);
-        rcContent.setLayoutManager(new LinearLayoutManager(this));
-        rcContent.setAdapter(adapter);
-    }
-
-    private void setListener() {
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
+        if (etc) {
+            for (int i = 0; i < etcCategoryTypes.size(); i++) {
+                CategoryType etcType = etcCategoryTypes.get(i);
+                getDetailServer(startDate, endDate, etcType.getCategoryId(), etcType.isCustom(), i == etcCategoryTypes.size() - 1);
             }
-        });
+        } else {
+            getDetailServer(startDate, endDate, type.getCategoryId(), type.isCustom(), true);
+        }
     }
 
     // 월별 카테고리 소비 상세 내역 가져오기
@@ -171,27 +163,48 @@ public class MonthlyDetailActivity extends AppCompatActivity {
                     if (responseJson.get("statusCode").getAsInt() == 200) {
                         if (!responseJson.get("data").isJsonNull()) {
                             Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
-//                            expenditureDetailDto = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<WeeklyExpenditureDetail>() {}.getType());
+
+                            HashMap<LocalDate, ArrayList<MonthlyDetail>> responseDetail = gson.fromJson(responseJson.getAsJsonObject("data"),
+                                    new TypeToken<HashMap<LocalDate, ArrayList<MonthlyDetail>>>() {}.getType());
+
+                            if (etc) {
+                                responseDetail.forEach((date, detail) -> {
+                                    // 해당 날짜가 이미 있는 경우 리스트 추가만 함
+                                    if (detailMap.containsKey(date)) {
+                                        detailMap.get(date).addAll(detail);
+                                    } else {
+                                        detailMap.put(date, detail);
+                                    }
+                                });
+                            } else {
+                                detailMap.putAll(responseDetail);
+                            }
 
                             if (last) {
-
-                            } else {
-
+                                setExpenditureInfo();
                             }
                         }
 
                     }
-                } else {
-                    Log.e(TAG, "error: " + response.code());
-                    return;
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d(TAG, t.getMessage());
                 Toast.makeText(MonthlyDetailActivity.this, "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    // 일별 소비내역 정보 바인딩
+    private void setExpenditureInfo() {
+        ArrayList<MonthlyExpenditure> monthlyList = new ArrayList<>();
+
+        detailMap.forEach((date, detail) -> monthlyList.add(new MonthlyExpenditure(date, detail)));
+        Collections.sort(monthlyList);
+
+        MonthlyDetailAdapter monthlyDetailAdapter = new MonthlyDetailAdapter(monthlyList, etc);
+        rcContent.setLayoutManager(new LinearLayoutManager(MonthlyDetailActivity.this));
+        rcContent.setAdapter(monthlyDetailAdapter);
     }
 }

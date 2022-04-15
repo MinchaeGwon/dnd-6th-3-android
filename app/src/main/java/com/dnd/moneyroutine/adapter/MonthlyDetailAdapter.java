@@ -1,76 +1,71 @@
 package com.dnd.moneyroutine.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.dto.ExpenditureDetail;
+import com.dnd.moneyroutine.custom.Common;
+import com.dnd.moneyroutine.dto.MonthlyExpenditure;
 
 import java.util.ArrayList;
 
-public class MonthlyDetailAdapter  extends RecyclerView.Adapter<MonthlyDetailAdapter.ViewHolder> {
+public class MonthlyDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<ExpenditureDetail> expenditureDetailList;
+    private Context context;
+    private ArrayList<MonthlyExpenditure> monthlyList;
+    private boolean etc;
 
-    public MonthlyDetailAdapter(ArrayList<ExpenditureDetail> list) {
-        this.expenditureDetailList = list;
+    public MonthlyDetailAdapter(ArrayList<MonthlyExpenditure> monthlyList, boolean etc) {
+        this.monthlyList = monthlyList;
+        this.etc = etc;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_monthly_detail, parent, false);
-
-        return new ViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
+        View view = LayoutInflater.from(context).inflate(R.layout.item_monthly_detail, parent, false);
+        return new MonthlyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MonthlyDetailAdapter.ViewHolder holder, int position) {
-
-        holder.onBind(expenditureDetailList.get(position));
-
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof MonthlyViewHolder) {
+            MonthlyExpenditure monthlyExpenditure = monthlyList.get(position);
+            ((MonthlyViewHolder) holder).setItem(monthlyExpenditure);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return expenditureDetailList.size();
+        return monthlyList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    private class MonthlyViewHolder extends RecyclerView.ViewHolder {
+        TextView tvDate;
+        RecyclerView rvDetail;
 
-        private TextView tvDate;
-        private RecyclerView rcContent;
-        private MonthlyDetailContentAdapter adapter;
-        private ArrayList<ExpenditureDetail> mList;
-
-
-        public ViewHolder(@NonNull View itemView) {
+        public MonthlyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvDate=itemView.findViewById(R.id.tv_date_monthly_detail);
-            rcContent=itemView.findViewById(R.id.rc_content_monthly_detail);
+            tvDate = itemView.findViewById(R.id.tv_date_monthly_detail);
+            rvDetail = itemView.findViewById(R.id.rv_content_monthly_detail);
         }
 
-        private void onBind(ExpenditureDetail expenditureDetailDto){
+        // 실제 view에 객체 내용을 적용시키는 메소드
+        public void setItem(MonthlyExpenditure monthly) {
+            tvDate.setText(Common.getExpenseLocalToString(monthly.getDate()));
 
-//            tvDate.setText(expenditureDetailDto.getDate().format(DateTimeFormatter.ofPattern("M월 d일")));
-//            mList = new ArrayList<>();
-//            mList.add(new ExpenditureDetailDto(LocalDate.now(),3000,"dd"));
-//
-//
-//            adapter=new MonthlyDetailContentAdapter(mList);
-//            rcContent.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
-//            rcContent.setAdapter(adapter);
-
-
+            MonthlyDetailContentAdapter monthlyDetailContentAdapter = new MonthlyDetailContentAdapter(monthly.getExpenditureList(), etc);
+            rvDetail.setLayoutManager(new LinearLayoutManager(context));
+            rvDetail.setAdapter(monthlyDetailContentAdapter);
         }
-
-
-
     }
 }
