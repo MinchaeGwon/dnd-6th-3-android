@@ -24,9 +24,10 @@ import com.dnd.moneyroutine.custom.Common;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.WeekPickerDialog;
-import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
+import com.dnd.moneyroutine.dto.ExpenditureDetail;
 import com.dnd.moneyroutine.dto.GoalCategoryInfo;
 import com.dnd.moneyroutine.dto.ExpenditureStatistics;
+import com.dnd.moneyroutine.dto.WeeklyTrend;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.LocalDateSerializer;
 import com.dnd.moneyroutine.service.RetrofitService;
@@ -297,9 +298,8 @@ public class ExpenditureWeeklyFragment extends Fragment {
 
     private void setEtcList() {
         goalCategoryInfoList = (ArrayList<GoalCategoryInfo>) responseStatistics.getGoalCategoryInfoList();
-        goalCategoryInfoList.sort(Collections.reverseOrder());
 
-        ArrayList<ExpenditureDetailDto> etcList = new ArrayList<>();
+        ArrayList<ExpenditureDetail> etcList = new ArrayList<>();
         int etcPercent = 0;
         int etcExpense = 0;
 
@@ -309,7 +309,7 @@ public class ExpenditureWeeklyFragment extends Fragment {
             etcPercent += info.getPercentage();
             etcExpense += info.getExpense();
 
-            for (ExpenditureDetailDto expenditure : info.getExpenditureList()) {
+            for (ExpenditureDetail expenditure : info.getExpenditureList()) {
                 expenditure.setCategoryName(info.getCategoryName());
             }
 
@@ -397,6 +397,9 @@ public class ExpenditureWeeklyFragment extends Fragment {
                     Log.d("trend", responseJson.toString());
 
                     Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
+
+                    ArrayList<WeeklyTrend> weeklyTrends = gson.fromJson(responseJson.getAsJsonObject("data").getAsJsonArray("weekExpenseInfoDtoList"),
+                            new TypeToken<ArrayList<WeeklyTrend>>() {}.getType());
                 } else {
                     Log.e("trend", "22 error: " + response.code());
 

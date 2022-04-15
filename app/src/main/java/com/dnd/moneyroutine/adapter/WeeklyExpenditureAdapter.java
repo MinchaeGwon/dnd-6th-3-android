@@ -1,6 +1,5 @@
 package com.dnd.moneyroutine.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
+import com.dnd.moneyroutine.dto.ExpenditureDetail;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -19,17 +18,15 @@ import java.util.ArrayList;
 // 소비내역 탭 : 주별 상세 내역에 사용되는 adpater
 public class WeeklyExpenditureAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context context;
-    private ArrayList<ExpenditureDetailDto> expenditureList;
+    private ArrayList<ExpenditureDetail> expenditureList;
 
-    public WeeklyExpenditureAdapter(ArrayList<ExpenditureDetailDto> expenditureList) {
+    public WeeklyExpenditureAdapter(ArrayList<ExpenditureDetail> expenditureList) {
         this.expenditureList = expenditureList;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_expenditure_content, parent, false);
         return new ExpenditureViewHolder(view);
     }
@@ -37,7 +34,7 @@ public class WeeklyExpenditureAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ExpenditureViewHolder) {
-            ExpenditureDetailDto detail = expenditureList.get(position);
+            ExpenditureDetail detail = expenditureList.get(position);
             ((ExpenditureViewHolder) holder).setItem(detail);
         }
     }
@@ -63,7 +60,7 @@ public class WeeklyExpenditureAdapter extends RecyclerView.Adapter<RecyclerView.
         }
 
         // 실제 view에 객체 내용을 적용시키는 메소드
-        public void setItem(ExpenditureDetailDto expenditure) {
+        public void setItem(ExpenditureDetail expenditure) {
             LocalDate today = LocalDate.now();
             LocalDate date = expenditure.getDate();
             if (date.getYear() != today.getYear()) {

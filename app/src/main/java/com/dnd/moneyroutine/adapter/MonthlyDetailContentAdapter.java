@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
+import com.dnd.moneyroutine.dto.ExpenditureDetail;
 
 import java.util.ArrayList;
 
@@ -17,9 +17,9 @@ import java.util.ArrayList;
 public class MonthlyDetailContentAdapter extends RecyclerView.Adapter<MonthlyDetailContentAdapter.ViewHolder> {
 
 
-    ArrayList<ExpenditureDetailDto> expenditureDetailList;
+    ArrayList<ExpenditureDetail> expenditureDetailList;
 
-    public MonthlyDetailContentAdapter(ArrayList<ExpenditureDetailDto> list) {
+    public MonthlyDetailContentAdapter(ArrayList<ExpenditureDetail> list) {
         this.expenditureDetailList = list;
     }
 
@@ -57,7 +57,7 @@ public class MonthlyDetailContentAdapter extends RecyclerView.Adapter<MonthlyDet
 
         }
 
-        private void onBind(ExpenditureDetailDto expenditureDetailDto) {
+        private void onBind(ExpenditureDetail expenditureDetailDto) {
             tvName.setText(expenditureDetailDto.getExpenseDetail());
             tvAmount.setText(expenditureDetailDto.getExpense()+"원");
 

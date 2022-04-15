@@ -9,15 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
+import com.dnd.moneyroutine.dto.ExpenditureDetail;
 
 import java.util.ArrayList;
 
 public class MonthlyDetailAdapter  extends RecyclerView.Adapter<MonthlyDetailAdapter.ViewHolder> {
 
-    private ArrayList<ExpenditureDetailDto> expenditureDetailList;
+    private ArrayList<ExpenditureDetail> expenditureDetailList;
 
-    public MonthlyDetailAdapter(ArrayList<ExpenditureDetailDto> list) {
+    public MonthlyDetailAdapter(ArrayList<ExpenditureDetail> list) {
         this.expenditureDetailList = list;
     }
 
@@ -46,7 +46,7 @@ public class MonthlyDetailAdapter  extends RecyclerView.Adapter<MonthlyDetailAda
         private TextView tvDate;
         private RecyclerView rcContent;
         private MonthlyDetailContentAdapter adapter;
-        private ArrayList<ExpenditureDetailDto> mList;
+        private ArrayList<ExpenditureDetail> mList;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -56,7 +56,7 @@ public class MonthlyDetailAdapter  extends RecyclerView.Adapter<MonthlyDetailAda
             rcContent=itemView.findViewById(R.id.rc_content_monthly_detail);
         }
 
-        private void onBind(ExpenditureDetailDto expenditureDetailDto){
+        private void onBind(ExpenditureDetail expenditureDetailDto){
 
 //            tvDate.setText(expenditureDetailDto.getDate().format(DateTimeFormatter.ofPattern("M월 d일")));
 //            mList = new ArrayList<>();

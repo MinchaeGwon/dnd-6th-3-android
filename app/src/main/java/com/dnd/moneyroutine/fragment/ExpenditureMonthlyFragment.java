@@ -16,17 +16,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dnd.moneyroutine.MonthlyDetailActivity;
 import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.adapter.ExpenditureCategoryAdapter;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.YearMonthPickerDialog;
 import com.dnd.moneyroutine.dto.CategoryType;
-import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
+import com.dnd.moneyroutine.dto.ExpenditureDetail;
 import com.dnd.moneyroutine.dto.GoalCategoryInfo;
-import com.dnd.moneyroutine.dto.MonthlyExpense;
+import com.dnd.moneyroutine.dto.MonthlyTrend;
 import com.dnd.moneyroutine.dto.ExpenditureStatistics;
+import com.dnd.moneyroutine.dto.WeeklyTrend;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.LocalDateSerializer;
 import com.dnd.moneyroutine.service.RetrofitService;
@@ -97,9 +97,9 @@ public class ExpenditureMonthlyFragment extends Fragment {
     private ArrayList<GoalCategoryInfo> goalCategoryInfoList;
     private DecimalFormat decimalFormat;
 
-    private ExpenditureDetailDto expenditureDetailDto;
+    private ExpenditureDetail expenditureDetailDto;
 
-    private List<MonthlyExpense> monthlyTrend;
+    private List<MonthlyTrend> monthlyTrend;
 
     private LocalDate nowDate;
     private LocalDate startDate;
@@ -250,7 +250,6 @@ public class ExpenditureMonthlyFragment extends Fragment {
 
     private void setEtcList() {
         goalCategoryInfoList = (ArrayList<GoalCategoryInfo>) responseMonthStatistics.getGoalCategoryInfoList();
-        goalCategoryInfoList.sort(Collections.reverseOrder());
 
         ArrayList<CategoryType> etcCategoryTypes = new ArrayList<>();
         ArrayList<String> etcCategoryNames = new ArrayList<>();
@@ -352,7 +351,8 @@ public class ExpenditureMonthlyFragment extends Fragment {
                     Log.d(TAG, responseJson.toString());
 
                     Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
-
+                    ArrayList<MonthlyTrend> monthlyTrends = gson.fromJson(responseJson.getAsJsonObject("data").getAsJsonArray("monthExpenseInfoDtoList"),
+                            new TypeToken<ArrayList<MonthlyTrend>>() {}.getType());
                 }
             }
 

@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.dnd.moneyroutine.adapter.GoalCategoryGridAdapter;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
-import com.dnd.moneyroutine.dto.ExpenditureDetail;
+import com.dnd.moneyroutine.dto.DiaryDetail;
 import com.dnd.moneyroutine.dto.CategoryCompact;
 import com.dnd.moneyroutine.enums.EmotionEnum;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
@@ -46,7 +46,7 @@ public class ExpenseDetailActivity extends AppCompatActivity {
 
     private String token;
     private EmotionEnum emotion;
-    private ExpenditureDetail expenditure;
+    private DiaryDetail detail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class ExpenseDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         emotion = (EmotionEnum) intent.getSerializableExtra("emotion");
-        expenditure = (ExpenditureDetail) intent.getSerializableExtra("expenditureDetail");
+        detail = (DiaryDetail) intent.getSerializableExtra("expenditureDetail");
 
         initView();
         setDetailInfo();
@@ -83,9 +83,9 @@ public class ExpenseDetailActivity extends AppCompatActivity {
     }
 
     private void setDetailInfo() {
-        tvCategory.setText(expenditure.getName());
+        tvCategory.setText(detail.getCategoryName());
 
-        LocalDate date = expenditure.getDate();
+        LocalDate date = detail.getDate();
 
         if (date.getYear() == LocalDate.now().getYear()) {
             tvDate.setText(date.getMonthValue() + "월 " + date.getDayOfMonth() + "일");
@@ -93,14 +93,14 @@ public class ExpenseDetailActivity extends AppCompatActivity {
             tvDate.setText(date.getYear() + "년 " + date.getMonthValue() + "월 " + date.getDayOfMonth() + "일");
         }
 
-        tvContent.setText(expenditure.getExpenseDetail());
+        tvContent.setText(detail.getExpenseDetail());
 
         DecimalFormat myFormatter = new DecimalFormat("###,###");
-        String expense = myFormatter.format(expenditure.getExpense());
+        String expense = myFormatter.format(detail.getExpense());
         tvExpense.setText(expense + "원");
 
         rgEmotion.check(mappingEmotionId());
-        tvEmotionDetail.setText(expenditure.getEmotionDetail());
+        tvEmotionDetail.setText(detail.getEmotionDetail());
     }
 
     // 사용자가 선택한 카테고리 가져오기
@@ -137,7 +137,7 @@ public class ExpenseDetailActivity extends AppCompatActivity {
     }
 
     private void setGoalCategory(ArrayList<CategoryCompact> categoryList) {
-        GoalCategoryGridAdapter goalCategoryGridAdapter = new GoalCategoryGridAdapter(categoryList, expenditure.getCategoryId(), expenditure.isCustom(), true);
+        GoalCategoryGridAdapter goalCategoryGridAdapter = new GoalCategoryGridAdapter(categoryList, detail.getCategoryId(), detail.isCustom(), true);
 
         rvCategory.setLayoutManager(new GridLayoutManager(this, 3));
         rvCategory.setAdapter(goalCategoryGridAdapter);

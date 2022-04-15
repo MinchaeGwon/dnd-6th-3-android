@@ -16,5 +16,5 @@ public class DailyDiary implements Serializable {
     private int amount;
 
     @SerializedName("expenditureDtoList")
-    private ArrayList<ExpenditureDetail> expenditureList;
+    private ArrayList<DiaryDetail> expenditureList;
 }

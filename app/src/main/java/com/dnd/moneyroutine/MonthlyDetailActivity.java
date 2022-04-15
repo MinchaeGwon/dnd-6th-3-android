@@ -17,7 +17,7 @@ import com.dnd.moneyroutine.adapter.MonthlyDetailAdapter;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.dto.CategoryType;
-import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
+import com.dnd.moneyroutine.dto.ExpenditureDetail;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.LocalDateSerializer;
 import com.dnd.moneyroutine.service.RetrofitService;
@@ -45,7 +45,7 @@ public class MonthlyDetailActivity extends AppCompatActivity {
     private TextView tvTotal;
     private RecyclerView rcContent;
 
-    private ExpenditureDetailDto expenditureDetailDto;
+    private ExpenditureDetail expenditureDetailDto;
 
     private String token;
 
@@ -64,7 +64,7 @@ public class MonthlyDetailActivity extends AppCompatActivity {
     DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
     private MonthlyDetailAdapter adapter;
-    private ArrayList<ExpenditureDetailDto> expenditureDetailDtoArrayList;
+    private ArrayList<ExpenditureDetail> expenditureDetailDtoArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
