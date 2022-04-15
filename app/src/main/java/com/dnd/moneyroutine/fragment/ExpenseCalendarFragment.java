@@ -1,7 +1,6 @@
 package com.dnd.moneyroutine.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,8 +36,6 @@ public class ExpenseCalendarFragment extends BottomSheetDialogFragment {
     private ImageButton ibCancel;
     private GridView gvCalendar;
     private TextView tvHeader;
-    private ImageButton ibPrev;
-    private ImageButton ibNext;
 
     private Calendar selectDate;
 
@@ -88,8 +85,6 @@ public class ExpenseCalendarFragment extends BottomSheetDialogFragment {
     private void initView(View v) {
         ibCancel = v.findViewById(R.id.ib_calendar_cancel);
         tvHeader = v.findViewById(R.id.tv_calendar_header);
-        ibPrev = v.findViewById(R.id.ib_calendar_prev);
-        ibNext = v.findViewById(R.id.ib_calendar_next);
         gvCalendar = v.findViewById(R.id.gv_calendar);
     }
 
@@ -99,22 +94,6 @@ public class ExpenseCalendarFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 dismiss();
-            }
-        });
-
-        ibPrev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectDate.add(Calendar.MONTH, -1);
-                setCalendar();
-            }
-        });
-
-        ibNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectDate.add(Calendar.MONTH, 1);
-                setCalendar();
             }
         });
 

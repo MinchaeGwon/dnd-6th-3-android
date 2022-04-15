@@ -48,11 +48,11 @@
 
         <ImageButton
             android:id="@+id/ib_calendar_prev"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginEnd="5dp"
             android:adjustViewBounds="true"
-            android:background="@drawable/btn_right_more_black"
+            android:background="@drawable/icon_right_arrow_light_gray"
             android:rotationY="180"
             android:scaleType="centerInside" />
 
@@ -73,11 +73,11 @@
 
         <ImageButton
             android:id="@+id/ib_calendar_next"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginStart="5dp"
             android:adjustViewBounds="true"
-            android:background="@drawable/btn_right_more_black"
+            android:background="@drawable/icon_right_arrow_light_gray"
             android:scaleType="centerInside" />
     </LinearLayout>
 
