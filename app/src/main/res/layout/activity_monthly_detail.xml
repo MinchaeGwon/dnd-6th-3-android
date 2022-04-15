@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/iv_back_monthly_detail"
-            android:layout_width="10dp"
-            android:layout_height="18dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -41,7 +41,7 @@
         app:layout_constraintEnd_toEndOf="@+id/view"
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toTopOf="@+id/view"
-        app:srcCompat="@drawable/coffee" />
+        app:srcCompat="@drawable/coffee_color" />
 
     <LinearLayout
         android:id="@+id/linearLayout"

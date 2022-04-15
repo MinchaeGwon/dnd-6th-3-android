@@ -9,8 +9,8 @@
 
     <ImageButton
         android:id="@+id/ib_dtl_expense_back"
-        android:layout_width="10dp"
-        android:layout_height="18dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_weight="0"
@@ -188,7 +188,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="0"
                         android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/won" />
+                        app:srcCompat="@drawable/won_black" />
 
                     <TextView
                         android:id="@+id/tv_dtl_expense_money"

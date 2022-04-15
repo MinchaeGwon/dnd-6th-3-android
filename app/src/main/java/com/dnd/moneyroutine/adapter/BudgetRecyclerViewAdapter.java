@@ -317,16 +317,16 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                 public void onFocusChange(View view, boolean isFocus) {
                     if (isFocus) {
                         llBudget.setBackgroundResource(R.drawable.textbox_typing);
-                        ivWon.setImageResource(R.drawable.won);
+                        ivWon.setImageResource(R.drawable.won_black);
                         tvWon.setTextColor(Color.parseColor("#495057"));
                     } else {
                         if (etBudget.length() > 0) {
-                            ivWon.setImageResource(R.drawable.won);
+                            ivWon.setImageResource(R.drawable.won_black);
                             tvWon.setTextColor(Color.parseColor("#495057"));
                             llBudget.setBackgroundResource(R.drawable.textbox_default);
                         } else {
                             llBudget.setBackgroundResource(R.drawable.textbox_default);
-                            ivWon.setImageResource(R.drawable.won_grey);
+                            ivWon.setImageResource(R.drawable.won_gray);
                             tvWon.setTextColor(Color.parseColor("#ADB5BD"));
                         }
                     }

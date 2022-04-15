@@ -9,8 +9,8 @@
 
     <ImageButton
         android:id="@+id/ib_add_cat_back"
-        android:layout_width="10dp"
-        android:layout_height="18dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_weight="0"
@@ -95,7 +95,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="52dp"
-                android:background="@drawable/budget_button"
+                android:background="@drawable/round_stroke_dee2e6"
                 android:gravity="center"
                 android:orientation="horizontal">
 

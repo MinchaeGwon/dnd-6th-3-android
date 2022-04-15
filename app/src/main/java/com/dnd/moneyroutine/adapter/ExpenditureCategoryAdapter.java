@@ -186,19 +186,19 @@ public class ExpenditureCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
         private void setCategoryColor(int index) {
             switch (index) {
                 case 0:
-                    colorView.setBackgroundResource(R.drawable.square_c896fa);
+                    colorView.setBackgroundResource(R.drawable.rectangle_c896fa);
                     tvCategoryCnt.setTextColor(Color.parseColor("#8F30E9"));
                     break;
                 case 1:
-                    colorView.setBackgroundResource(R.drawable.square_a3bcff);
+                    colorView.setBackgroundResource(R.drawable.rectangle_a3bcff);
                     tvCategoryCnt.setTextColor(Color.parseColor("#2F6EE0"));
                     break;
                 case 2:
-                    colorView.setBackgroundResource(R.drawable.square_7ae2f9);
+                    colorView.setBackgroundResource(R.drawable.rectangle_7ae2f9);
                     tvCategoryCnt.setTextColor(Color.parseColor("#0C6672"));
                     break;
                 case 3:
-                    colorView.setBackgroundResource(R.drawable.square_ced4da);
+                    colorView.setBackgroundResource(R.drawable.rectangle_ced4da);
                     tvCategoryCnt.setTextColor(Color.parseColor("#868E96"));
                     break;
             }

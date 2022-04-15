@@ -321,7 +321,7 @@
                             android:layout_height="32dp"
                             android:layout_marginTop="9dp"
                             android:layout_marginEnd="99dp"
-                            android:background="@drawable/stroke_dee2e5_radius_16"
+                            android:background="@drawable/rectangle_stroke_dee2e5_radius_16"
                             app:layout_constraintEnd_toEndOf="@+id/pie_chart_month"
                             app:layout_constraintTop_toTopOf="@+id/pie_chart_month">
 

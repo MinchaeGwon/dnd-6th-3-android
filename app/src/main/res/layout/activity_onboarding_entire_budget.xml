@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/iv_back_entire"
-        android:layout_width="10dp"
-        android:layout_height="18dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="18dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/circlegray" />
+            app:srcCompat="@drawable/circle_ced4da" />
 
         <ImageView
             android:id="@+id/imageView9"
@@ -40,14 +40,14 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/circleblack" />
+            app:srcCompat="@drawable/circle_212529" />
 
         <ImageView
             android:id="@+id/imageView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/circlegray" />
+            app:srcCompat="@drawable/circle_ced4da" />
     </LinearLayout>
 
     <TextView
@@ -102,7 +102,7 @@
             android:layout_weight="0"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/won_grey" />
+            app:srcCompat="@drawable/won_gray" />
 
         <EditText
             android:id="@+id/et_entire_budget"
@@ -151,7 +151,7 @@
             android:layout_height="38dp"
             android:layout_marginRight="8dp"
             android:layout_weight="1"
-            android:background="@drawable/budget_button"
+            android:background="@drawable/round_stroke_dee2e6"
             android:fontFamily="@font/spoqa_han_sans_neo_medium"
             android:text="20만원"
             android:textColor="#343A40" />
@@ -162,7 +162,7 @@
             android:layout_height="38dp"
             android:layout_marginRight="8dp"
             android:layout_weight="1"
-            android:background="@drawable/budget_button"
+            android:background="@drawable/round_stroke_dee2e6"
             android:fontFamily="@font/spoqa_han_sans_neo_medium"
             android:text="30만원"
             android:textColor="#343A40" />
@@ -173,7 +173,7 @@
             android:layout_height="38dp"
             android:layout_marginRight="8dp"
             android:layout_weight="1"
-            android:background="@drawable/budget_button"
+            android:background="@drawable/round_stroke_dee2e6"
             android:fontFamily="@font/spoqa_han_sans_neo_medium"
             android:text="40만원"
             android:textColor="#343A40" />
@@ -183,7 +183,7 @@
             android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:layout_weight="1"
-            android:background="@drawable/budget_button"
+            android:background="@drawable/round_stroke_dee2e6"
             android:fontFamily="@font/spoqa_han_sans_neo_medium"
             android:text="50만원"
             android:textColor="#343A40" />
@@ -196,7 +196,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="56dp"
-        android:background="@drawable/button_enable_selector"
+        android:background="@drawable/button_enabled_false"
         android:enabled="false"
         android:fontFamily="@font/spoqa_han_sans_neo_bold"
         android:text="다음"
