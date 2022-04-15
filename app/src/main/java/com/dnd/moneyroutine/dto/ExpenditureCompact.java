@@ -1,5 +1,7 @@
 package com.dnd.moneyroutine.dto;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -13,5 +15,6 @@ public class ExpenditureCompact implements Serializable {
     private String emotionDetail;
 
     // 나머지 카테고리를 위해 추가한 것
+    @SerializedName("name")
     private String categoryName;
 }
