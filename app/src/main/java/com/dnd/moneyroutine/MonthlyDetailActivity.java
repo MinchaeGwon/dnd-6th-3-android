@@ -139,15 +139,15 @@ public class MonthlyDetailActivity extends AppCompatActivity {
         if (etc) {
             for (int i = 0; i < etcCategoryTypes.size(); i++) {
                 CategoryType etcType = etcCategoryTypes.get(i);
-                getDetailServer(startDate, endDate, etcType.getCategoryId(), etcType.isCustom(), i == etcCategoryTypes.size() - 1);
+                getDetailServer(etcType.getCategoryId(), etcType.isCustom(), etcCategoryNames.get(i), i == etcCategoryTypes.size() - 1);
             }
         } else {
-            getDetailServer(startDate, endDate, type.getCategoryId(), type.isCustom(), true);
+            getDetailServer(type.getCategoryId(), type.isCustom(), categoryName, true);
         }
     }
 
     // 월별 카테고리 소비 상세 내역 가져오기
-    private void getDetailServer(LocalDate startDate, LocalDate endDate, int categoryId, boolean custom, boolean last) {
+    private void getDetailServer(int categoryId, boolean custom, String categoryName, boolean last) {
         HeaderRetrofit headerRetrofit = new HeaderRetrofit();
         Retrofit retrofit = headerRetrofit.getTokenHeaderInstance(token);
         RetrofitService retroService = retrofit.create(RetrofitService.class);
@@ -160,31 +160,32 @@ public class MonthlyDetailActivity extends AppCompatActivity {
                     JsonObject responseJson = response.body();
                     Log.d(TAG, responseJson.toString());
 
-                    if (responseJson.get("statusCode").getAsInt() == 200) {
-                        if (!responseJson.get("data").isJsonNull()) {
-                            Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
+                    if (responseJson.get("statusCode").getAsInt() == 200 && !responseJson.get("data").isJsonNull()) {
+                        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
 
-                            HashMap<LocalDate, ArrayList<MonthlyDetail>> responseDetail = gson.fromJson(responseJson.getAsJsonObject("data"),
-                                    new TypeToken<HashMap<LocalDate, ArrayList<MonthlyDetail>>>() {}.getType());
+                        HashMap<LocalDate, ArrayList<MonthlyDetail>> responseDetail = gson.fromJson(responseJson.getAsJsonObject("data"),
+                                new TypeToken<HashMap<LocalDate, ArrayList<MonthlyDetail>>>() {}.getType());
 
-                            if (etc) {
-                                responseDetail.forEach((date, detail) -> {
-                                    // 해당 날짜가 이미 있는 경우 리스트 추가만 함
-                                    if (detailMap.containsKey(date)) {
-                                        detailMap.get(date).addAll(detail);
-                                    } else {
-                                        detailMap.put(date, detail);
-                                    }
-                                });
-                            } else {
-                                detailMap.putAll(responseDetail);
-                            }
+                        if (etc) {
+                            responseDetail.forEach((date, detail) -> {
+                                for (MonthlyDetail expenditure : detail) {
+                                    expenditure.setCategoryName(categoryName);
+                                }
 
-                            if (last) {
-                                setExpenditureInfo();
-                            }
+                                // 해당 날짜가 이미 있는 경우 리스트 추가만 함
+                                if (detailMap.containsKey(date)) {
+                                    detailMap.get(date).addAll(detail);
+                                } else {
+                                    detailMap.put(date, detail);
+                                }
+                            });
+                        } else {
+                            detailMap.putAll(responseDetail);
                         }
 
+                        if (last) {
+                            setExpenditureInfo();
+                        }
                     }
                 }
             }

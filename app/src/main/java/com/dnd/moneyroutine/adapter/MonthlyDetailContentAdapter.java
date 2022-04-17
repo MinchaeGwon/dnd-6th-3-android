@@ -64,16 +64,11 @@ public class MonthlyDetailContentAdapter extends RecyclerView.Adapter<RecyclerVi
         // 실제 view에 객체 내용을 적용시키는 메소드
         public void setItem(MonthlyDetail detail) {
             tvContent.setText(detail.getExpenseDetail());
+            tvCategory.setText(detail.getCategoryName());
 
             DecimalFormat myFormatter = new DecimalFormat("###,###");
             String expense = myFormatter.format(detail.getExpense());
             tvExpense.setText(expense + "원");
-
-            if (etc) {
-                tvCategory.setVisibility(View.VISIBLE);
-            } else {
-                tvCategory.setVisibility(View.GONE);
-            }
         }
     }
 }

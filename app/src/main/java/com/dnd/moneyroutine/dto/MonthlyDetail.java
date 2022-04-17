@@ -7,4 +7,7 @@ import lombok.Setter;
 public class MonthlyDetail {
     private String expenseDetail;
     private int expense;
+
+    // 나머지 카테고리를 위해 추가한 것
+    private String categoryName;
 }
