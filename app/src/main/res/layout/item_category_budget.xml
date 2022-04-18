@@ -7,10 +7,9 @@
     android:layout_marginTop="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_start_cateory"
+        android:id="@+id/layout_start_category"
         android:layout_width="56dp"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_category_item_budget"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -76,7 +75,7 @@
         android:paddingRight="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/layout_start_cateory"
+        app:layout_constraintStart_toEndOf="@+id/layout_start_category"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -86,7 +85,7 @@
             android:layout_weight="0"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/won_grey" />
+            app:srcCompat="@drawable/won_gray" />
 
         <EditText
             android:id="@+id/et_budget_detail"

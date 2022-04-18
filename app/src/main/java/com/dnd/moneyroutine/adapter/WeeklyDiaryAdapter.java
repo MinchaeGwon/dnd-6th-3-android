@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.ExpenseDetailActivity;
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.dto.ExpenditureDetail;
+import com.dnd.moneyroutine.dto.DiaryDetail;
 import com.dnd.moneyroutine.enums.EmotionEnum;
 
 import java.text.DecimalFormat;
@@ -23,9 +23,9 @@ public class WeeklyDiaryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private Context context;
     
     private EmotionEnum emotion;
-    private ArrayList<ExpenditureDetail> expenditureList;
+    private ArrayList<DiaryDetail> expenditureList;
     
-    public WeeklyDiaryAdapter(EmotionEnum emotion, ArrayList<ExpenditureDetail> expenditureList) {
+    public WeeklyDiaryAdapter(EmotionEnum emotion, ArrayList<DiaryDetail> expenditureList) {
         this.emotion = emotion;
         this.expenditureList = expenditureList;
     }
@@ -41,8 +41,8 @@ public class WeeklyDiaryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ExpenditureViewHolder) {
-            ExpenditureDetail expenditure = expenditureList.get(position);
-            ((ExpenditureViewHolder) holder).setItem(expenditure);
+            DiaryDetail detail = expenditureList.get(position);
+            ((ExpenditureViewHolder) holder).setItem(detail);
         }
     }
 
@@ -77,15 +77,15 @@ public class WeeklyDiaryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         // 실제 view에 객체 내용을 적용시키는 메소드
-        public void setItem(ExpenditureDetail expenditure) {
-            tvCategory.setText(expenditure.getName());
+        public void setItem(DiaryDetail detail) {
+            tvCategory.setText(detail.getCategoryName());
 
             DecimalFormat myFormatter = new DecimalFormat("###,###");
-            String expense = myFormatter.format(expenditure.getExpense());
+            String expense = myFormatter.format(detail.getExpense());
             tvExpense.setText(expense + "원");
 
-            tvExpenseDetail.setText(expenditure.getExpenseDetail());
-            tvEmotionDetail.setText(expenditure.getEmotionDetail());
+            tvExpenseDetail.setText(detail.getExpenseDetail());
+            tvEmotionDetail.setText(detail.getEmotionDetail());
         }
     }
 }

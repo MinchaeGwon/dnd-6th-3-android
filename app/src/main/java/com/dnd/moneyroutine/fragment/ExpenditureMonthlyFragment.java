@@ -16,17 +16,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dnd.moneyroutine.MonthlyDetailActivity;
 import com.dnd.moneyroutine.R;
 import com.dnd.moneyroutine.adapter.ExpenditureCategoryAdapter;
 import com.dnd.moneyroutine.custom.Constants;
 import com.dnd.moneyroutine.custom.PreferenceManager;
 import com.dnd.moneyroutine.custom.YearMonthPickerDialog;
 import com.dnd.moneyroutine.dto.CategoryType;
-import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
+import com.dnd.moneyroutine.dto.ExpenditureDetail;
 import com.dnd.moneyroutine.dto.GoalCategoryInfo;
-import com.dnd.moneyroutine.dto.MonthlyExpense;
+import com.dnd.moneyroutine.dto.MonthlyTrend;
 import com.dnd.moneyroutine.dto.ExpenditureStatistics;
+import com.dnd.moneyroutine.dto.WeeklyTrend;
 import com.dnd.moneyroutine.service.HeaderRetrofit;
 import com.dnd.moneyroutine.service.LocalDateSerializer;
 import com.dnd.moneyroutine.service.RetrofitService;
@@ -97,9 +97,9 @@ public class ExpenditureMonthlyFragment extends Fragment {
     private ArrayList<GoalCategoryInfo> goalCategoryInfoList;
     private DecimalFormat decimalFormat;
 
-    private ExpenditureDetailDto expenditureDetailDto;
+    private ExpenditureDetail expenditureDetailDto;
 
-    private List<MonthlyExpense> monthlyTrend;
+    private List<MonthlyTrend> monthlyTrend;
 
     private LocalDate nowDate;
     private LocalDate startDate;
@@ -218,7 +218,6 @@ public class ExpenditureMonthlyFragment extends Fragment {
                 if (response.isSuccessful()) {
                     JsonObject responseJson = response.body();
 
-                    Log.d(TAG, "1111111111111");
                     Log.d(TAG, responseJson.toString());
 
                     if (responseJson.get("statusCode").getAsInt() == 200) {
@@ -226,26 +225,24 @@ public class ExpenditureMonthlyFragment extends Fragment {
                             Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
                             responseMonthStatistics = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<ExpenditureStatistics>() {}.getType());
 
-                            tvEmpty.setVisibility(View.GONE);
-                            llExpenditure.setVisibility(View.VISIBLE);
+                            if (responseMonthStatistics.getGoalCategoryInfoList().isEmpty()) {
+                                tvEmpty.setVisibility(View.VISIBLE);
+                                llExpenditure.setVisibility(View.GONE);
+                            } else {
+                                tvEmpty.setVisibility(View.GONE);
+                                llExpenditure.setVisibility(View.VISIBLE);
 
-                            setEtcList();
-                            drawPieChart();
-                            setContent();
-                        } else {
-                            tvEmpty.setVisibility(View.VISIBLE);
-                            llExpenditure.setVisibility(View.GONE);
+                                setEtcList();
+                                drawPieChart();
+                                setContent();
+                            }
                         }
                     }
-                } else {
-                    Log.e(TAG, "error 1111: " + response.code());
-                    return;
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d(TAG, "1111" + t.getMessage());
                 Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -253,7 +250,6 @@ public class ExpenditureMonthlyFragment extends Fragment {
 
     private void setEtcList() {
         goalCategoryInfoList = (ArrayList<GoalCategoryInfo>) responseMonthStatistics.getGoalCategoryInfoList();
-        goalCategoryInfoList.sort(Collections.reverseOrder());
 
         ArrayList<CategoryType> etcCategoryTypes = new ArrayList<>();
         ArrayList<String> etcCategoryNames = new ArrayList<>();
@@ -352,29 +348,16 @@ public class ExpenditureMonthlyFragment extends Fragment {
                 if (response.isSuccessful()) {
                     JsonObject responseJson = response.body();
 
-                    Log.d(TAG, "22222222222");
                     Log.d(TAG, responseJson.toString());
 
-                    Gson gson = new Gson();
-                    monthlyTrend = gson.fromJson(responseJson.getAsJsonObject("data"), new TypeToken<MonthlyDetailActivity>() {}.getType());
-
-//                    if (responseJson.get("statusCode").getAsInt() == 200) {
-//                        if (!responseJson.get("data").isJsonNull()) {
-////                            JsonArray jsonArray = responseJson.get("data").getAsJsonArray();
-//
-//                        }
-//
-//                    }
-
-                } else {
-                    Log.e(TAG, "error22222: " + response.code());
-                    return;
+                    Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer()).create();
+                    ArrayList<MonthlyTrend> monthlyTrends = gson.fromJson(responseJson.getAsJsonObject("data").getAsJsonArray("monthExpenseInfoDtoList"),
+                            new TypeToken<ArrayList<MonthlyTrend>>() {}.getType());
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d(TAG, "2222222222" + t.getMessage());
                 Toast.makeText(getContext(), "네트워크가 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });

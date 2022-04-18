@@ -48,6 +48,17 @@ public class Common {
         }
     }
 
+    // 월별 소비내역 상세 지출 날짜에 사용
+    public static String getExpenseLocalToString(LocalDate date) {
+        LocalDate today = LocalDate.now();
+
+        if (today.getYear() != date.getYear()) {
+            return date.getYear() + "년 " + date.getMonthValue() + "월 " + date.getDayOfMonth() + "일";
+        } else {
+            return date.getMonthValue() + "월 " + date.getDayOfMonth() + "일";
+        }
+    }
+
     public static String getCalendarToString(Calendar date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date.getTime());

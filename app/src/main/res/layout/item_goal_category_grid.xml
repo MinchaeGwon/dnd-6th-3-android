@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/coffee" />
+        app:srcCompat="@drawable/coffee_color" />
 
     <TextView
         android:id="@+id/tv_custom_category"

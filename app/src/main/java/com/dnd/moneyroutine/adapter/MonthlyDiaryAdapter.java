@@ -65,7 +65,7 @@ public class MonthlyDiaryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public void setItem(ExpenditureCompact expenditure) {
             tvExpenseDetail.setText(expenditure.getExpenseDetail());
             tvEmotionDetail.setText(expenditure.getEmotionDetail());
-            tvCategoryName.setText(expenditure.getName());
+            tvCategoryName.setText(expenditure.getCategoryName());
 
             LocalDate today = LocalDate.now();
             LocalDate date = expenditure.getDate();

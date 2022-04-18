@@ -15,15 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.MonthlyDetailActivity;
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.dto.CategoryType;
-import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
 import com.dnd.moneyroutine.dto.GoalCategoryInfo;
 import com.dnd.moneyroutine.dto.MonthlyDiary;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 // 다이어리 월별 카테고리, 소비내역 주/월별 카테고리에 사용되는 adpater
 public class ExpenditureCategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -149,7 +146,7 @@ public class ExpenditureCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
             });
         }
 
-        // 실제 view에 객체 내용을 적용시키는 메소드
+        // 실제 월별 다이어리 객체 내용을 적용시키는 메소드
         public void setDiaryItem(MonthlyDiary monthly) {
             setCategoryColor(getBindingAdapterPosition());
 
@@ -161,7 +158,7 @@ public class ExpenditureCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
             rvExpense.setLayoutManager(new LinearLayoutManager(context));
         }
 
-        // 실제 view에 객체 내용을 적용시키는 메소드
+        // 실제 주/월별 객체 내용을 적용시키는 메소드
         public void setExpenditureItem(GoalCategoryInfo category) {
             setCategoryColor(getBindingAdapterPosition());
 
@@ -189,19 +186,19 @@ public class ExpenditureCategoryAdapter extends RecyclerView.Adapter<RecyclerVie
         private void setCategoryColor(int index) {
             switch (index) {
                 case 0:
-                    colorView.setBackgroundResource(R.drawable.square_c896fa);
+                    colorView.setBackgroundResource(R.drawable.rectangle_c896fa);
                     tvCategoryCnt.setTextColor(Color.parseColor("#8F30E9"));
                     break;
                 case 1:
-                    colorView.setBackgroundResource(R.drawable.square_a3bcff);
+                    colorView.setBackgroundResource(R.drawable.rectangle_a3bcff);
                     tvCategoryCnt.setTextColor(Color.parseColor("#2F6EE0"));
                     break;
                 case 2:
-                    colorView.setBackgroundResource(R.drawable.square_7ae2f9);
+                    colorView.setBackgroundResource(R.drawable.rectangle_7ae2f9);
                     tvCategoryCnt.setTextColor(Color.parseColor("#0C6672"));
                     break;
                 case 3:
-                    colorView.setBackgroundResource(R.drawable.square_ced4da);
+                    colorView.setBackgroundResource(R.drawable.rectangle_ced4da);
                     tvCategoryCnt.setTextColor(Color.parseColor("#868E96"));
                     break;
             }

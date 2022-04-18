@@ -9,13 +9,13 @@
 
     <ImageButton
         android:id="@+id/ib_sign2_back"
-        android:layout_width="10dp"
-        android:layout_height="18dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:layout_weight="0"
         android:adjustViewBounds="true"
-        android:background="@drawable/btn_black_back"
+        android:background="@drawable/icon_left_arrow"
         android:scaleType="centerInside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -63,9 +63,9 @@
 
     <ImageButton
         android:id="@+id/ib_sign2_password_remove"
-        android:layout_width="19.64dp"
-        android:layout_height="19.64dp"
-        android:layout_marginEnd="19dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="17dp"
         android:layout_weight="0"
         android:adjustViewBounds="true"
         android:background="@drawable/icon_erase"
@@ -103,9 +103,9 @@
 
     <ImageButton
         android:id="@+id/ib_sign2_password_repeat_remove"
-        android:layout_width="19.64dp"
-        android:layout_height="19.64dp"
-        android:layout_marginEnd="19dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="17dp"
         android:layout_weight="0"
         android:adjustViewBounds="true"
         android:background="@drawable/icon_erase"

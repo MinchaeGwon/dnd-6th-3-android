@@ -1,5 +1,6 @@
 package com.dnd.moneyroutine.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,59 +10,65 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dnd.moneyroutine.R;
-import com.dnd.moneyroutine.dto.ExpenditureDetailDto;
+import com.dnd.moneyroutine.custom.Common;
+import com.dnd.moneyroutine.dto.MonthlyDetail;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+public class MonthlyDetailContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-public class MonthlyDetailContentAdapter extends RecyclerView.Adapter<MonthlyDetailContentAdapter.ViewHolder> {
+    private Context context;
+    private ArrayList<MonthlyDetail> expenditureList;
+    private boolean etc;
 
-
-    ArrayList<ExpenditureDetailDto> expenditureDetailList;
-
-    public MonthlyDetailContentAdapter(ArrayList<ExpenditureDetailDto> list) {
-        this.expenditureDetailList = list;
+    public MonthlyDetailContentAdapter(ArrayList<MonthlyDetail> expenditureList, boolean etc) {
+        this.expenditureList = expenditureList;
+        this.etc = etc;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_monthly_detail_content, parent, false);
-
-
-        return new ViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
+        View view = LayoutInflater.from(context).inflate(R.layout.item_monthly_detail_content, parent, false);
+        return new ExpenditureViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MonthlyDetailContentAdapter.ViewHolder holder, int position) {
-        holder.onBind(expenditureDetailList.get(position));
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ExpenditureViewHolder) {
+            MonthlyDetail detail = expenditureList.get(position);
+            ((ExpenditureViewHolder) holder).setItem(detail);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return expenditureDetailList.size();
+        return expenditureList.size();
     }
 
+    private class ExpenditureViewHolder extends RecyclerView.ViewHolder {
+        TextView tvContent;
+        TextView tvCategory;
+        TextView tvExpense;
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView tvName;
-        private TextView tvAmount;
-
-        public ViewHolder(@NonNull View itemView) {
+        public ExpenditureViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvName=itemView.findViewById(R.id.tv_name_content_monthly_detail);
-            tvAmount=itemView.findViewById(R.id.tv_amount_content_month);
-
+            tvContent = itemView.findViewById(R.id.tv_name_content_monthly_detail);
+            tvCategory = itemView.findViewById(R.id.tv_name_content_monthly_category);
+            tvExpense = itemView.findViewById(R.id.tv_amount_content_month);
         }
 
-        private void onBind(ExpenditureDetailDto expenditureDetailDto) {
-            tvName.setText(expenditureDetailDto.getExpenseDetail());
-            tvAmount.setText(expenditureDetailDto.getExpense()+"원");
+        // 실제 view에 객체 내용을 적용시키는 메소드
+        public void setItem(MonthlyDetail detail) {
+            tvContent.setText(detail.getExpenseDetail());
+            tvCategory.setText(detail.getCategoryName());
 
+            DecimalFormat myFormatter = new DecimalFormat("###,###");
+            String expense = myFormatter.format(detail.getExpense());
+            tvExpense.setText(expense + "원");
         }
-
     }
 }

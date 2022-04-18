@@ -3,20 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="40dp">
 
     <TextView
         android:id="@+id/tv_name_content_monthly_detail"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
         android:fontFamily="@font/spoqa_han_sans_neo_regular"
         android:gravity="center_vertical"
+        android:maxEms="10"
+        android:maxLines="1"
         android:text="학식"
         android:textColor="#212529"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_name_content_monthly_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:text="교통비"
+        android:textColor="#868E96 "
+        android:textSize="12sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_name_content_monthly_detail"
+        app:layout_constraintStart_toEndOf="@+id/tv_name_content_monthly_detail"
+        app:layout_constraintTop_toTopOf="@+id/tv_name_content_monthly_detail" />
 
     <TextView
         android:id="@+id/tv_amount_content_month"
@@ -25,7 +42,7 @@
         android:fontFamily="@font/spoqa_han_sans_neo_medium"
         android:text="8000원"
         android:textColor="#212529"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_name_content_monthly_detail"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
